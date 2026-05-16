@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTR4 实时图形实验</title>
+    <link rel="stylesheet" href="./src/styles.css?v=20260516-2" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">RTR4 Chapter 5.4</p>
+          <h1>抗锯齿采样实验</h1>
+        </div>
+        <div class="status-pill" id="gpuStatus">WebGL2 初始化中</div>
+      </header>
+
+      <section class="lab-layout" aria-label="SSAA 与 MSAA 对比实验">
+        <aside class="controls" aria-label="实验控制">
+          <div class="control-group">
+            <label for="rotation">三角形旋转</label>
+            <input id="rotation" type="range" min="-35" max="35" value="12" step="1" />
+            <output id="rotationValue" for="rotation">12°</output>
+          </div>
+
+          <div class="control-group">
+            <label for="scale">三角形大小</label>
+            <input id="scale" type="range" min="38" max="82" value="58" step="1" />
+            <output id="scaleValue" for="scale">58%</output>
+          </div>
+
+          <div class="control-group">
+            <label for="renderResolution">渲染分辨率</label>
+            <input id="renderResolution" type="range" min="20" max="100" value="35" step="5" />
+            <output id="renderResolutionValue" for="renderResolution">35%</output>
+          </div>
+
+          <div class="control-group">
+            <label for="samples">采样强度</label>
+            <select id="samples">
+              <option value="2">2x</option>
+              <option value="4" selected>4x</option>
+              <option value="8">8x</option>
+            </select>
+          </div>
+
+          <div class="metric-panel">
+            <div>
+              <span>基础渲染尺寸</span>
+              <strong id="basePixels">-</strong>
+            </div>
+            <div>
+              <span>SSAA 渲染尺寸</span>
+              <strong id="ssaaPixels">-</strong>
+            </div>
+            <div>
+              <span>MSAA 样本上限</span>
+              <strong id="maxSamples">-</strong>
+            </div>
+          </div>
+        </aside>
+
+        <section class="viewport-grid">
+          <article class="viewport-panel">
+            <div class="panel-heading">
+              <h2>无抗锯齿</h2>
+              <span>1 sample / pixel</span>
+            </div>
+            <canvas id="noaaCanvas" width="520" height="420"></canvas>
+          </article>
+
+          <article class="viewport-panel">
+            <div class="panel-heading">
+              <h2>SSAA</h2>
+              <span id="ssaaLabel">4x supersampling</span>
+            </div>
+            <canvas id="ssaaCanvas" width="520" height="420"></canvas>
+          </article>
+
+          <article class="viewport-panel">
+            <div class="panel-heading">
+              <h2>MSAA</h2>
+              <span id="msaaLabel">4x multisampling</span>
+            </div>
+            <canvas id="msaaCanvas" width="520" height="420"></canvas>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.js?v=20260516-2"></script>
+  </body>
+</html>
