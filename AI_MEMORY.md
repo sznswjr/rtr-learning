@@ -1,6 +1,6 @@
 # AI Project Memory
 
-Last updated: 2026-05-16
+Last updated: 2026-05-30
 
 ## Project
 
@@ -11,16 +11,16 @@ Last updated: 2026-05-16
 
 ## Current Scope
 
-- Chapter 5.4 anti-aliasing experiment.
-- Renders one triangle in three paths:
-  - No AA: direct single-sample WebGL2 render.
-  - SSAA: render to a larger texture, then downsample to the visible canvas.
-  - MSAA: render to a multisampled renderbuffer, then resolve to a texture.
-- UI controls:
-  - Triangle rotation.
-  - Triangle scale.
-  - Render resolution, default `35%`, intended to make aliasing visible on high-DPI screens.
-  - Sample count: `2x`, `4x`, `8x`.
+- Chapter 5 is presented as an ordered set of interactive experiments:
+  - 5.1 shading models: Lambert, Gooch, and toon-style sphere visualizations.
+  - 5.2 light attenuation: inverse-square, finite radius, and windowed falloff curves.
+  - 5.3.1 computation frequency: object-, vertex-, and pixel-frequency shading comparison.
+  - 5.4 anti-aliasing: No AA, SSAA, and MSAA WebGL2 comparison.
+  - 5.4.2 sampling patterns: center, grid, rotated grid, N-Rooks, stratified random, Poisson-like.
+  - 5.5 transparency and compositing: source-over ordering and weighted OIT approximation.
+  - 5.6 display encoding: linear coverage/filtering before gamma/sRGB-style encoding.
+- The homepage navigation groups experiments by chapter ranges: 5.1-5.3, 5.4, and 5.5-5.6.
+- Local knowledge base is tracked as a Git submodule at `knowledge/Real-Time-Rendering-4th-CN`, pinned to `9c2e724e688fc921ec0486d8fde4f516af2a5873` from `https://github.com/Morakito/Real-Time-Rendering-4th-CN.git`.
 
 ## Stack
 
@@ -49,6 +49,19 @@ sudo cp /home/ubuntu/rtr4-web-lab/src/styles.css /var/www/www.jrqz776.com/src/st
 ```
 
 When changing JavaScript or CSS, update the query-string version in `index.html` because Nginx caches static assets for 7 days.
+
+Latest production deployment:
+
+- Date: 2026-05-30
+- Deployed Chapter 5 experiment index and new Canvas/WebGL experiments.
+- Asset cache version in `index.html`: `20260530-1`.
+- Verification passed:
+  - `node --check /home/ubuntu/rtr4-web-lab/src/main.js`
+  - `git diff --check`
+  - `sudo nginx -t`
+  - `curl -I https://www.jrqz776.com` returned `HTTP/2 200`
+  - `curl -I http://www.jrqz776.com` returned `301` to HTTPS
+  - `curl -I https://proxy.jrqz776.com/api.proxy.97ae8184734ddb6e` returned expected `HTTP/2 415`
 
 ## Server Context
 

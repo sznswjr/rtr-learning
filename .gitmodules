@@ -1,0 +1,3 @@
+[submodule "knowledge/Real-Time-Rendering-4th-CN"]
+	path = knowledge/Real-Time-Rendering-4th-CN
+	url = https://github.com/Morakito/Real-Time-Rendering-4th-CN.git
