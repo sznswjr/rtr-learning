@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="./src/styles.css?v=20260530-1" />
+    <link rel="stylesheet" href="./src/styles.css?v=20260614-2" />
   </head>
   <body>
     <main class="app-shell">
@@ -18,10 +18,24 @@
 
       <section class="home-panel" aria-label="实验首页">
         <div class="home-panel-copy">
-          <p class="eyebrow">Chapter 5</p>
-          <h2>着色基础实验索引</h2>
+          <p class="eyebrow">RTR4 Labs</p>
+          <h2>实时图形实验索引</h2>
         </div>
         <nav class="home-nav" aria-label="实验导航">
+          <div class="home-nav-group home-nav-feature">
+            <span>Translation</span>
+            <a href="./translations/rtr4-cn.html">
+              <strong>RTR4 中文翻译</strong>
+              <small>已整理 Chapter 0-2，后续章节按同一阅读页扩展</small>
+            </a>
+          </div>
+          <div class="home-nav-group">
+            <span>2</span>
+            <a href="#rendering-pipeline">
+              <strong>图形渲染管线</strong>
+              <small>应用、几何、光栅化、像素处理的阶段流动</small>
+            </a>
+          </div>
           <div class="home-nav-group">
             <span>5.1 - 5.3</span>
             <a href="#shading-models">
@@ -60,6 +74,67 @@
             </a>
           </div>
         </nav>
+      </section>
+
+      <section class="experiment-section" id="rendering-pipeline" aria-label="2 图形渲染管线实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 2</p>
+          <h2>图形渲染管线</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="图形渲染管线控制">
+            <div class="control-group">
+              <label for="pipelineFocus">观察阶段</label>
+              <select id="pipelineFocus">
+                <option value="application">应用阶段</option>
+                <option value="geometry" selected>几何处理</option>
+                <option value="rasterization">光栅化</option>
+                <option value="pixel">像素处理</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="pipelineComplexity">场景复杂度</label>
+              <input id="pipelineComplexity" type="range" min="3" max="14" value="8" step="1" />
+              <output id="pipelineComplexityValue" for="pipelineComplexity">8 个物体</output>
+            </div>
+
+            <div class="control-group">
+              <label for="pipelineClipMode">裁剪模式</label>
+              <select id="pipelineClipMode">
+                <option value="off">不裁剪</option>
+                <option value="frustum" selected>视锥裁剪</option>
+                <option value="aggressive">激进裁剪</option>
+              </select>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>提交图元</span>
+                <strong id="pipelineSubmitted">-</strong>
+              </div>
+              <div>
+                <span>保留图元</span>
+                <strong id="pipelineVisible">-</strong>
+              </div>
+              <div>
+                <span>估算片元</span>
+                <strong id="pipelineFragments">-</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2 id="pipelineFocusLabel">几何处理</h2>
+                <span>application → geometry → rasterization → pixel</span>
+              </div>
+              <canvas class="diagram-canvas pipeline-canvas" id="pipelineCanvas" width="980" height="560"></canvas>
+            </article>
+          </section>
+        </div>
       </section>
 
       <section class="experiment-section" id="shading-models" aria-label="5.1 着色模型实验">
@@ -510,6 +585,6 @@
       </section>
     </main>
 
-    <script type="module" src="./src/main.js?v=20260530-1"></script>
+    <script type="module" src="./src/main.js?v=20260614-2"></script>
   </body>
 </html>

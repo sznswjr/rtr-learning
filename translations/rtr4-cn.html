@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTR4 中文翻译 | Chapter 0-2</title>
+    <link rel="stylesheet" href="../src/styles.css?v=20260614-2" />
+  </head>
+  <body>
+    <main class="app-shell translation-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Real-Time Rendering 4th</p>
+          <h1>RTR4 中文翻译</h1>
+        </div>
+        <a class="status-pill nav-pill" href="../index.html">返回实验首页</a>
+      </header>
+
+      <section class="translation-hero" aria-label="翻译首页">
+        <div>
+          <p class="eyebrow">Chapter 0-2</p>
+          <h2>前言、简介与渲染管线</h2>
+          <p>
+            本页整理《Real-Time Rendering, Fourth Edition》的中文译本前言、简介与图形渲染管线部分，内容来源为本地知识库
+            <code>knowledge/Real-Time-Rendering-4th-CN/sourceFile</code>。
+          </p>
+        </div>
+        <nav class="translation-jump" aria-label="章节内导航">
+          <a href="#about-book">关于本书</a>
+          <a href="#links">相关链接</a>
+          <a href="#preface">序言</a>
+          <a href="#chapter-1">简介</a>
+          <a href="#notation">符号</a>
+          <a href="#chapter-2">渲染管线</a>
+          <a href="#pipeline-stages">管线阶段</a>
+          <a href="#toc">目录</a>
+        </nav>
+      </section>
+
+      <div class="translation-layout">
+        <aside class="translation-sidebar" aria-label="翻译章节">
+          <p class="eyebrow">翻译进度</p>
+          <a class="is-active" href="#chapter-0">Chapter 0 前言</a>
+          <a class="is-active" href="#chapter-1">Chapter 1 简介</a>
+          <a class="is-active" href="#chapter-2">Chapter 2 图形渲染管线</a>
+          <span>Chapter 3 图形处理单元</span>
+          <span>Chapter 4 变换</span>
+          <span>Chapter 5 着色基础</span>
+        </aside>
+
+        <article class="translation-article" id="chapter-0">
+          <section id="about-book">
+            <p class="eyebrow">About</p>
+            <h2>关于本书</h2>
+            <dl class="book-facts">
+              <div>
+                <dt>英文名称</dt>
+                <dd>Real-Time Rendering, Fourth Edition</dd>
+              </div>
+              <div>
+                <dt>原作者</dt>
+                <dd>
+                  Tomas Akenine-Moller, Eric Haines, Naty Hoffman, Angelo Pesce,
+                  Michal Iwanicki, Sebastien Hillaire
+                </dd>
+              </div>
+              <div>
+                <dt>翻译者</dt>
+                <dd>Morakito</dd>
+              </div>
+              <div>
+                <dt>本地译本版本</dt>
+                <dd>v1.1，更新时间 2025.3.12</dd>
+              </div>
+            </dl>
+            <p>
+              这个中文译本覆盖 RTR4 第 1 章到第 26 章。附录、参考文献和勘误内容分别通过在线站点、
+              参考文献站点与参考文献合集补充。本页面先把 Chapter 0 前言放入站内，方便和交互实验互相跳转。
+            </p>
+            <p>
+              译本适合与参考文献合集搭配阅读：前者帮助建立章节脉络，后者用于追踪具体论文、技术报告和实现细节。
+            </p>
+          </section>
+
+          <section id="links">
+            <p class="eyebrow">References</p>
+            <h2>相关链接</h2>
+            <ul class="link-list">
+              <li><a href="https://www.realtimerendering.com/">Real-Time Rendering 官方网站</a></li>
+              <li><a href="https://www.realtimerendering.com/corrigenda.html">RTR4 勘误页面</a></li>
+              <li><a href="https://www.realtimerendering.com/refs.html">RTR4 参考文献页面</a></li>
+              <li><a href="https://github.com/Morakito/Real-Time-Rendering-4th-CN">中文译本源文件仓库</a></li>
+              <li><a href="https://github.com/QianMo/Real-Time-Rendering-4th-Bibliography-Collection">参考文献合集仓库</a></li>
+              <li><a href="../knowledge/Real-Time-Rendering-4th-CN/sourceFile/Chapter%200%20%E5%89%8D%E8%A8%80.md">本地 Chapter 0 Markdown 源文件</a></li>
+              <li><a href="../knowledge/Real-Time-Rendering-4th-CN/sourceFile/Chapter%201%20Introduction%20%E7%AE%80%E4%BB%8B.md">本地 Chapter 1 Markdown 源文件</a></li>
+              <li><a href="../knowledge/Real-Time-Rendering-4th-CN/sourceFile/Chapter%202%20The%20Graphics%20Rendering%20Pipeline%20%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF.md">本地 Chapter 2 Markdown 源文件</a></li>
+            </ul>
+          </section>
+
+          <section id="preface">
+            <p class="eyebrow">Preface</p>
+            <h2>序言</h2>
+            <p>
+              Chapter 0 的序言引用毛星云的自序，核心是从早年接触游戏、萌生游戏开发理想到长期学习和写作的经历。
+              这段文字把技术学习和创作动机放在一起：游戏画面带来的吸引力，最终转化为研习图形学、游戏编程和知识整理的持续行动。
+            </p>
+            <p>
+              序言也解释了中文资料的重要性。高质量英文资料往往门槛较高，早期中文资料又常常不够系统，这会让许多学习者在入门阶段受阻。
+              因此，译本的价值不只是把文本变成中文，也是在实时渲染、游戏开发和图形学学习之间搭一条更易进入的路径。
+            </p>
+            <blockquote>
+              希望我们可以一起努力，翻过那座山。
+            </blockquote>
+          </section>
+
+          <section id="toc">
+            <p class="eyebrow">Contents</p>
+            <h2>目录</h2>
+            <div class="chapter-list">
+              <a href="#chapter-0"><strong>Chapter 0</strong><span>前言</span></a>
+              <a href="#chapter-1"><strong>Chapter 1</strong><span>Introduction 简介</span></a>
+              <a href="#chapter-2"><strong>Chapter 2</strong><span>The Graphics Rendering Pipeline 图形渲染管线</span></a>
+              <span><strong>Chapter 3</strong><span>The Graphics Processing Unit 图形处理单元</span></span>
+              <span><strong>Chapter 4</strong><span>Transform 变换</span></span>
+              <span><strong>Chapter 5</strong><span>Shading Basics 着色基础</span></span>
+              <span><strong>Chapter 6</strong><span>Texturing 纹理</span></span>
+              <span><strong>Chapter 7</strong><span>Shadows 阴影</span></span>
+              <span><strong>Chapter 8</strong><span>Light and Color 光与颜色</span></span>
+              <span><strong>Chapter 9</strong><span>Physically Based Shading 基于物理的着色</span></span>
+              <span><strong>Chapter 10</strong><span>Local Illumination 局部光照</span></span>
+              <span><strong>Chapter 11</strong><span>Global Illumination 全局光照</span></span>
+              <span><strong>Chapter 12</strong><span>Image-Space Effects 图像空间特效</span></span>
+              <span><strong>Chapter 13</strong><span>Beyond Polygons 超越多边形</span></span>
+              <span><strong>Chapter 14</strong><span>Volumetric and Translucency Rendering 体积与半透明渲染</span></span>
+              <span><strong>Chapter 15</strong><span>Non-Photorealistic Rendering 非真实感渲染</span></span>
+              <span><strong>Chapter 16</strong><span>Polygonal Techniques 多边形技术</span></span>
+              <span><strong>Chapter 17</strong><span>Curves and Curved Surfaces 曲线和曲面</span></span>
+              <span><strong>Chapter 18</strong><span>Pipeline Optimization 管线优化</span></span>
+              <span><strong>Chapter 19</strong><span>Acceleration Algorithms 加速算法</span></span>
+              <span><strong>Chapter 20</strong><span>Efficient Shading 高效着色</span></span>
+              <span><strong>Chapter 21</strong><span>Virtual and Augmented Reality 虚拟现实和增强现实</span></span>
+              <span><strong>Chapter 22</strong><span>Intersection Test Methods 相交测试方法</span></span>
+              <span><strong>Chapter 23</strong><span>Graphics Hardware 图形硬件</span></span>
+              <span><strong>Chapter 24</strong><span>The Future 未来</span></span>
+              <span><strong>Chapter 25</strong><span>Collision Detection 碰撞检测</span></span>
+              <span><strong>Chapter 26</strong><span>Real-Time Ray Tracing 实时光线追踪</span></span>
+            </div>
+          </section>
+
+          <section id="chapter-1">
+            <p class="eyebrow">Chapter 1</p>
+            <h2>Introduction 简介</h2>
+            <p>
+              实时渲染关注的是快速生成图像，并让用户的观察、输入和系统下一帧的输出形成连续反馈。
+              当这个循环足够快时，观看者不会把画面感知为一张张离散图片，而会进入一个可交互的动态过程。
+            </p>
+            <p>
+              帧率通常用 FPS 或 Hz 描述。低帧率只能提供有限的交互感，而游戏、虚拟现实和增强现实会追求更高且更稳定的帧率，
+              因为显示延迟直接影响动作反馈和沉浸感。电影常见的 24 FPS 可以通过快门重复照亮来降低闪烁，
+              但这类刷新率并不等同于应用真正生成新图像的显示速率。
+            </p>
+            <p>
+              本书讨论的实时渲染并不只是“画得快”，它通常指把三维场景转换为二维图像。交互性、三维场景和图形加速硬件共同构成了现代实时渲染的基本语境。
+              从早期消费级 3D 加速卡到今天电脑、手机和平板中的 GPU，硬件进步让实时图形从少数应用扩展到游戏、影视预览、工程可视化、XR 和设计工具中。
+            </p>
+          </section>
+
+          <section id="chapter-1-overview">
+            <p class="eyebrow">1.1 Overview</p>
+            <h2>内容概述</h2>
+            <p>
+              第 1 章先建立全书地图：第 2 到第 4 章解释图形渲染管线、GPU 和变换；第 5 到第 12 章进入外观、纹理、阴影、颜色、
+              基于物理的着色、局部光照、全局光照和图像空间特效；第 13 到第 17 章扩展几何表示，包括点云、体素、体积、非真实感风格、
+              多边形处理以及曲线曲面。
+            </p>
+            <p>
+              后半部分更偏工程效率和系统能力：第 18 到第 20 章讨论管线优化、剔除、LOD 和高效着色；第 21 章覆盖 VR/AR 的稳定帧率问题；
+              第 22 到第 23 章介绍相交测试与图形硬件；第 24 章展望未来。碰撞检测和实时光线追踪作为额外章节通过配套网站提供。
+            </p>
+          </section>
+
+          <section id="notation">
+            <p class="eyebrow">1.2 Notation</p>
+            <h2>符号和定义</h2>
+            <p>
+              本书在进入具体算法前先统一数学符号。角度和标量通常是实数；向量和点使用粗体小写字母；
+              矩阵使用粗体大写字母；平面、三角形、线段和几何实体也有固定的记法，便于后续章节在变换、相交测试和着色推导中保持一致。
+            </p>
+            <div class="term-grid">
+              <div><strong>角度</strong><span>小写希腊字母，例如 alpha、theta。</span></div>
+              <div><strong>标量</strong><span>小写斜体，用于单个数值。</span></div>
+              <div><strong>向量 / 点</strong><span>小写粗体，常用列向量表示。</span></div>
+              <div><strong>矩阵</strong><span>大写粗体，常见尺寸包括 2x2、3x3、4x4。</span></div>
+              <div><strong>平面</strong><span>由法线和一个标量定义，把空间分成两个半空间。</span></div>
+              <div><strong>三角形</strong><span>由三个顶点定义，是图形硬件最常见的渲染图元之一。</span></div>
+            </div>
+            <p>
+              齐次坐标用四个分量统一表示点和向量：最后一个分量为 0 时表示向量，为 1 时表示点。
+              这种表示法让点、向量和矩阵变换可以放在同一套计算框架中，是第 4 章变换内容的基础。
+            </p>
+            <p>
+              操作符方面，点乘、叉乘、转置、行列式、绝对值、范数、阶乘和二项式系数都会频繁出现。
+              着色计算还会常用限制操作：把负值截到 0，或者把输入约束在 0 到 1 的区间内。
+            </p>
+          </section>
+
+          <section id="geometry-and-shading">
+            <p class="eyebrow">1.2.2 - 1.2.3</p>
+            <h2>几何定义与着色</h2>
+            <p>
+              几乎所有图形硬件的基本绘制图元都是点、线和三角形。一个模型或物体由几何实体组成；
+              场景则是待渲染物体、材质、灯光和观察信息的集合。物体可以是车辆、建筑、线条，也可以由曲线、曲面、细分曲面或更复杂的层级结构表示。
+            </p>
+            <p>
+              “着色”这个词在图形学中有两个常见含义。它可以指最终视觉外观的计算，例如着色模型、着色方程和卡通渲染；
+              也可以指渲染系统中的可编程组件，例如顶点着色器、片元着色器和着色器语言。阅读时需要根据上下文判断它指的是外观模型，还是 GPU 程序阶段。
+            </p>
+          </section>
+
+          <section id="chapter-1-resources">
+            <p class="eyebrow">Resources</p>
+            <h2>深入阅读和资源</h2>
+            <p>
+              本章最后强调配套网站的重要性。实时渲染领域变化很快，书中会优先保留基础概念和不容易过时的技术，
+              而最新链接、补充资料、线性代数附录和各章资源则通过
+              <a href="https://www.realtimerendering.com/">realtimerendering.com</a>
+              持续更新。
+            </p>
+          </section>
+
+          <section id="chapter-2">
+            <p class="eyebrow">Chapter 2</p>
+            <h2>The Graphics Rendering Pipeline 图形渲染管线</h2>
+            <p>
+              图形渲染管线是实时渲染的核心工具。它根据虚拟相机、三维物体、光源、材质、纹理和着色方程等信息，
+              把场景转换为一张二维图像。最终图像中的位置和形状主要由几何结构、环境和相机决定，
+              物体外观则由材质属性、光照、纹理和着色计算共同决定。
+            </p>
+            <p>
+              本章重点解释管线中每个阶段“做什么”，而不是深入实现细节。后续章节会继续展开各阶段的算法、API 用法和硬件实现。
+            </p>
+          </section>
+
+          <section id="pipeline-stages">
+            <p class="eyebrow">2.1 Pipeline</p>
+            <h2>渲染管线的架构</h2>
+            <p>
+              管线的意义在于把总任务拆成多个阶段，并让不同阶段并行处理连续输入。整体速度由最慢的阶段决定，
+              因此实时渲染中的性能分析经常要寻找瓶颈，而不是只看某个局部算法是否足够快。
+            </p>
+            <div class="term-grid">
+              <div><strong>应用阶段</strong><span>通常运行在 CPU 上，处理输入、动画、物理、碰撞、剔除和提交绘制数据。</span></div>
+              <div><strong>几何处理阶段</strong><span>通常运行在 GPU 上，处理顶点、变换、投影、裁剪和屏幕映射。</span></div>
+              <div><strong>光栅化阶段</strong><span>把点、线、三角形等图元转换为屏幕上的片元，并插值相关属性。</span></div>
+              <div><strong>像素处理阶段</strong><span>计算片元颜色，执行深度、模板、混合等操作，并写入帧缓冲。</span></div>
+            </div>
+            <p>
+              FPS、Hz 和每帧耗时都可以描述渲染速度。FPS 常用于描述生成图像的速率，Hz 更多用于硬件刷新频率；
+              实际优化时，每帧耗时通常更直观，因为一帧中的工作量会随场景复杂度变化。
+            </p>
+          </section>
+
+          <section id="application-geometry">
+            <p class="eyebrow">2.2 - 2.3</p>
+            <h2>应用阶段与几何处理</h2>
+            <p>
+              应用阶段由程序控制，开发者可以通过算法和数据组织影响后续管线负载。例如剔除不可见物体、减少提交三角形数量、
+              更新相机和动画状态，都会直接影响 GPU 后续要处理的工作。现代 GPU 也可以通过计算着色器承担部分通用计算任务。
+            </p>
+            <p>
+              几何处理阶段负责逐顶点和逐三角形相关任务。顶点着色器会计算顶点位置，也会输出法线、颜色、纹理坐标等后续需要插值的数据。
+              一个模型通常先在模型空间中定义，经过模型变换进入世界空间，再经过观察变换进入相机或观察空间。
+            </p>
+            <p>
+              投影会把可视空间变换为规范可视体。常见投影包括正交投影和透视投影：前者保持平行线平行，常用于工程和编辑场景；
+              后者体现近大远小，是实时三维画面中最常见的相机模型。投影之后，裁剪会丢弃完全不可见的图元，
+              并把跨越边界的图元裁成位于可视空间内部的新图元。
+            </p>
+            <p>
+              几何处理的最后一步是屏幕映射：把规范设备坐标映射到窗口坐标。这里还会涉及像素中心、坐标原点和深度范围等 API 约定，
+              例如 OpenGL 和 DirectX 在屏幕坐标方向与深度范围上存在一些历史差异。
+            </p>
+          </section>
+
+          <section id="raster-pixel">
+            <p class="eyebrow">2.4 - 2.5</p>
+            <h2>光栅化与像素处理</h2>
+            <p>
+              光栅化阶段接收已经变换和投影好的图元，找出它覆盖了哪些像素或采样点，并生成片元。
+              三角形设置会计算边界方程和插值所需的数据；三角形遍历会检查覆盖范围，并对顶点属性做透视正确插值。
+            </p>
+            <p>
+              像素处理阶段包含像素着色和合并。像素着色器使用插值后的数据计算颜色，纹理化是其中最常见、最重要的技术之一。
+              合并阶段则决定片元能否写入颜色缓冲，并处理深度测试、模板测试、alpha、混合和其他光栅操作。
+            </p>
+            <p>
+              z-buffer 是最常见的可见性算法。每个像素记录当前最近的深度值，新片元只有在更靠近相机时才会更新深度和颜色。
+              这个方法简单高效，也允许不透明物体以任意顺序渲染；但它只记录一个深度值，因此透明物体通常需要排序或使用顺序无关透明算法。
+            </p>
+          </section>
+
+          <section id="pipeline-review">
+            <p class="eyebrow">2.6 Review</p>
+            <h2>回顾整个管线</h2>
+            <p>
+              一个模型从应用程序进入管线后，应用阶段先更新相机、物体状态和绘制数据；几何处理阶段把顶点与法线变换到合适空间，
+              完成投影、裁剪和屏幕映射；光栅化阶段把图元覆盖区域转换为片元；像素处理阶段计算颜色并通过深度、模板和混合规则写入帧缓冲。
+            </p>
+            <p>
+              帧缓冲是颜色缓冲、深度缓冲、模板缓冲等缓冲区的统称。为了避免用户看到逐步绘制过程，实时渲染通常采用双缓冲：
+              场景先绘制到后置缓冲区，完成后再与屏幕上显示的前置缓冲区交换。
+            </p>
+          </section>
+
+          <section id="chapter-2-resources">
+            <p class="eyebrow">Conclusion</p>
+            <h2>总结与扩展阅读</h2>
+            <p>
+              本章描述的管线来自几十年来实时图形 API 和图形硬件的发展。它不是唯一可能的渲染管线；
+              离线渲染、光线追踪和路径追踪有不同的演化路径。现代实时渲染通常假设使用可编程 GPU，
+              开发者可以明确控制顶点、像素等阶段中的计算。
+            </p>
+            <p>
+              补充阅读可以关注 Blinn 的 <cite>A Trip Down the Graphics Pipeline</cite>、
+              OpenGL Red Book，以及
+              <a href="https://www.realtimerendering.com/">realtimerendering.com</a>
+              上的渲染管线与引擎实现资源。
+            </p>
+          </section>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>
