@@ -1,5 +1,5 @@
-import { prepareCanvas } from "../../render/canvas.js?v=20260628-4";
-import { blendOver, mixRgb, rgbToCss } from "../../render/color.js?v=20260628-4";
+import { prepareCanvas } from "../../render/canvas.js?v=20260628-5";
+import { blendOver, mixRgb, rgbToCss } from "../../render/color.js?v=20260628-5";
 
 const transparencyState = {
   alpha: 56,

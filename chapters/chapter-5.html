@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 5 着色基础 | RTR4 实时图形实验</title>
+    <link rel="stylesheet" href="../src/styles.css?v=20260628-5" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Real-Time Rendering 4th</p>
+          <h1>Chapter 5 着色基础</h1>
+        </div>
+        <div class="topbar-actions">
+          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
+          <div class="status-pill" id="gpuStatus">WebGL2 初始化中</div>
+        </div>
+      </header>
+
+      <section class="experiment-section" id="shading-models" aria-label="5.1 着色模型实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 5.1</p>
+          <h2>着色模型</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="着色模型控制">
+            <div class="control-group">
+              <label for="shadingModel">模型</label>
+              <select id="shadingModel">
+                <option value="lambert">Lambert 漫反射</option>
+                <option value="gooch" selected>Gooch 冷暖插值</option>
+                <option value="toon">分段卡通</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="lightAngle">光源方向</label>
+              <input id="lightAngle" type="range" min="-160" max="160" value="-42" step="1" />
+              <output id="lightAngleValue" for="lightAngle">-42°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="surfaceHue">表面色相</label>
+              <input id="surfaceHue" type="range" min="0" max="360" value="176" step="1" />
+              <output id="surfaceHueValue" for="surfaceHue">176°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="highlightStrength">高光强度</label>
+              <input id="highlightStrength" type="range" min="0" max="100" value="58" step="1" />
+              <output id="highlightStrengthValue" for="highlightStrength">58%</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>中心 n · l</span>
+                <strong id="normalDotLight">-</strong>
+              </div>
+              <div>
+                <span>主导操作</span>
+                <strong id="shadingOperation">-</strong>
+              </div>
+              <div>
+                <span>显示目标</span>
+                <strong>材质外观</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2 id="shadingModelLabel">Gooch 冷暖插值</h2>
+                <span>normal · light</span>
+              </div>
+              <canvas class="diagram-canvas tall-canvas" id="shadingModelCanvas" width="980" height="560"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="experiment-section" id="light-attenuation" aria-label="5.2 光源衰减实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 5.2</p>
+          <h2>光源衰减</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="光源衰减控制">
+            <div class="control-group">
+              <label for="attenuationDistance">采样距离</label>
+              <input id="attenuationDistance" type="range" min="10" max="320" value="116" step="1" />
+              <output id="attenuationDistanceValue" for="attenuationDistance">1.16</output>
+            </div>
+
+            <div class="control-group">
+              <label for="attenuationRadius">最小半径</label>
+              <input id="attenuationRadius" type="range" min="4" max="80" value="28" step="1" />
+              <output id="attenuationRadiusValue" for="attenuationRadius">0.28</output>
+            </div>
+
+            <div class="control-group">
+              <label for="attenuationRange">最大范围</label>
+              <input id="attenuationRange" type="range" min="120" max="420" value="300" step="5" />
+              <output id="attenuationRangeValue" for="attenuationRange">3.00</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>平方反比</span>
+                <strong id="inverseSquareValue">-</strong>
+              </div>
+              <div>
+                <span>窗口函数</span>
+                <strong id="windowValue">-</strong>
+              </div>
+              <div>
+                <span>最终衰减</span>
+                <strong id="combinedAttenuationValue">-</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>点光源距离衰减</h2>
+                <span>1 / r² · window</span>
+              </div>
+              <canvas class="diagram-canvas" id="lightAttenuationCanvas" width="980" height="520"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="experiment-section" id="shading-frequency" aria-label="5.3.1 计算频率实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 5.3.1</p>
+          <h2>计算频率</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="计算频率控制">
+            <div class="control-group">
+              <label for="frequencyLightAngle">光源方向</label>
+              <input id="frequencyLightAngle" type="range" min="-160" max="160" value="-54" step="1" />
+              <output id="frequencyLightAngleValue" for="frequencyLightAngle">-54°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="frequencyBands">采样密度</label>
+              <input id="frequencyBands" type="range" min="3" max="18" value="7" step="1" />
+              <output id="frequencyBandsValue" for="frequencyBands">7</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>逐物体</span>
+                <strong>1 次</strong>
+              </div>
+              <div>
+                <span>逐顶点</span>
+                <strong id="vertexFrequencyCount">-</strong>
+              </div>
+              <div>
+                <span>逐像素</span>
+                <strong>每片元</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="comparison-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>逐物体</h2>
+                <span>object</span>
+              </div>
+              <canvas class="diagram-canvas frequency-canvas" id="objectFrequencyCanvas" width="420" height="360"></canvas>
+            </article>
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>逐顶点</h2>
+                <span>vertex</span>
+              </div>
+              <canvas class="diagram-canvas frequency-canvas" id="vertexFrequencyCanvas" width="420" height="360"></canvas>
+            </article>
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>逐像素</h2>
+                <span>pixel</span>
+              </div>
+              <canvas class="diagram-canvas frequency-canvas" id="pixelFrequencyCanvas" width="420" height="360"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="experiment-section" id="aa-compare" aria-label="SSAA 与 MSAA 对比实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 5.4</p>
+          <h2>SSAA 与 MSAA 对比</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="实验控制">
+          <div class="control-group">
+              <label for="rotation">三角形旋转</label>
+              <input id="rotation" type="range" min="-35" max="35" value="12" step="1" />
+              <output id="rotationValue" for="rotation">12°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="scale">三角形大小</label>
+              <input id="scale" type="range" min="38" max="82" value="58" step="1" />
+              <output id="scaleValue" for="scale">58%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="renderResolution">渲染分辨率</label>
+              <input id="renderResolution" type="range" min="20" max="100" value="35" step="5" />
+              <output id="renderResolutionValue" for="renderResolution">35%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="samples">采样强度</label>
+              <select id="samples">
+                <option value="2">2x</option>
+                <option value="4" selected>4x</option>
+                <option value="8">8x</option>
+              </select>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>基础渲染尺寸</span>
+                <strong id="basePixels">-</strong>
+              </div>
+              <div>
+                <span>SSAA 渲染尺寸</span>
+                <strong id="ssaaPixels">-</strong>
+              </div>
+              <div>
+                <span>MSAA 样本上限</span>
+                <strong id="maxSamples">-</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>无抗锯齿</h2>
+                <span>1 sample / pixel</span>
+              </div>
+              <canvas id="noaaCanvas" width="520" height="420"></canvas>
+            </article>
+
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>SSAA</h2>
+                <span id="ssaaLabel">4x supersampling</span>
+              </div>
+              <canvas id="ssaaCanvas" width="520" height="420"></canvas>
+            </article>
+
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>MSAA</h2>
+                <span id="msaaLabel">4x multisampling</span>
+              </div>
+              <canvas id="msaaCanvas" width="520" height="420"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="experiment-section" id="sampling-patterns" aria-label="5.4.2 采样模式实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 5.4.2</p>
+          <h2>采样模式</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="采样模式控制">
+            <div class="control-group">
+              <label for="samplePattern">采样模式</label>
+              <select id="samplePattern">
+                <option value="center">中心点</option>
+                <option value="grid" selected>规则网格</option>
+                <option value="rotatedGrid">旋转网格</option>
+                <option value="nrooks">N-Rooks</option>
+                <option value="stratified">分层随机</option>
+                <option value="poisson">Poisson 分布</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="sampleCount">样本数量</label>
+              <select id="sampleCount">
+                <option value="1">1 sample</option>
+                <option value="2">2 samples</option>
+                <option value="4" selected>4 samples</option>
+                <option value="8">8 samples</option>
+                <option value="16">16 samples</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="edgeAngle">边缘角度</label>
+              <input id="edgeAngle" type="range" min="-70" max="70" value="28" step="1" />
+              <output id="edgeAngleValue" for="edgeAngle">28°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="edgeOffset">边缘偏移</label>
+              <input id="edgeOffset" type="range" min="-45" max="45" value="0" step="1" />
+              <output id="edgeOffsetValue" for="edgeOffset">0%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="sampleSeed">随机种子</label>
+              <input id="sampleSeed" type="range" min="1" max="24" value="7" step="1" />
+              <output id="sampleSeedValue" for="sampleSeed">7</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>当前模式</span>
+                <strong id="activePatternLabel">-</strong>
+              </div>
+              <div>
+                <span>覆盖样本</span>
+                <strong id="coveredSamples">-</strong>
+              </div>
+              <div>
+                <span>平均覆盖率</span>
+                <strong id="averageCoverage">-</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="sampling-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>单像素采样位置</h2>
+                <span id="samplingPatternLabel">4 samples</span>
+              </div>
+              <canvas class="sampling-canvas" id="samplingPatternCanvas" width="640" height="520"></canvas>
+            </article>
+
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>边缘覆盖结果</h2>
+                <span id="samplingCoverageLabel">coverage grid</span>
+              </div>
+              <canvas class="sampling-canvas" id="samplingCoverageCanvas" width="760" height="520"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="experiment-section" id="transparency-compositing" aria-label="5.5 透明合成实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 5.5</p>
+          <h2>透明度、Alpha 与合成</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="透明合成控制">
+            <div class="control-group">
+              <label for="transparentAlpha">Alpha</label>
+              <input id="transparentAlpha" type="range" min="10" max="92" value="56" step="1" />
+              <output id="transparentAlphaValue" for="transparentAlpha">56%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="transparentOrder">绘制顺序</label>
+              <select id="transparentOrder">
+                <option value="redFirst">红色先画</option>
+                <option value="blueFirst" selected>蓝色先画</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="oitBias">加权偏置</label>
+              <input id="oitBias" type="range" min="0" max="100" value="54" step="1" />
+              <output id="oitBiasValue" for="oitBias">54%</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>over 顺序</span>
+                <strong id="transparentOrderLabel">-</strong>
+              </div>
+              <div>
+                <span>重叠 Alpha</span>
+                <strong id="transparentOverlapAlpha">-</strong>
+              </div>
+              <div>
+                <span>OIT 近似</span>
+                <strong>weighted</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>顺序相关与加权透明</h2>
+                <span>source over destination</span>
+              </div>
+              <canvas class="diagram-canvas" id="transparencyCanvas" width="980" height="520"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="experiment-section" id="display-encoding" aria-label="5.6 显示编码实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 5.6</p>
+          <h2>显示编码</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="显示编码控制">
+            <div class="control-group">
+              <label for="gammaValue">Gamma 近似</label>
+              <input id="gammaValue" type="range" min="180" max="260" value="220" step="1" />
+              <output id="gammaValueLabel" for="gammaValue">2.20</output>
+            </div>
+
+            <div class="control-group">
+              <label for="edgeContrast">边缘对比</label>
+              <input id="edgeContrast" type="range" min="40" max="100" value="100" step="1" />
+              <output id="edgeContrastValue" for="edgeContrast">100%</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>线性 50%</span>
+                <strong id="encodedMidtone">-</strong>
+              </div>
+              <div>
+                <span>混合空间</span>
+                <strong>linear first</strong>
+              </div>
+              <div>
+                <span>观察点</span>
+                <strong>边缘亮度</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>线性混合与显示编码</h2>
+                <span>coverage → encode</span>
+              </div>
+              <canvas class="diagram-canvas" id="displayEncodingCanvas" width="980" height="520"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../src/pages/chapter-5.js?v=20260628-5"></script>
+  </body>
+</html>

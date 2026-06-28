@@ -1,5 +1,5 @@
-import { prepareCanvas } from "../../render/canvas.js?v=20260628-4";
-import { TAU } from "../../render/math.js?v=20260628-4";
+import { prepareCanvas } from "../../render/canvas.js?v=20260628-5";
+import { TAU } from "../../render/math.js?v=20260628-5";
 
 const samplingState = {
   edgeAngle: 28,

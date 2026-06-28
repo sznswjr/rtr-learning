@@ -48,6 +48,13 @@ a {
   margin-bottom: 24px;
 }
 
+.topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .eyebrow {
   margin: 0 0 8px;
   color: #8ed4c7;
@@ -110,7 +117,7 @@ h1 {
 
 .home-nav {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 12px;
 }
 

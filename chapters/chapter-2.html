@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 2 图形渲染管线 | RTR4 实时图形实验</title>
+    <link rel="stylesheet" href="../src/styles.css?v=20260628-5" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Real-Time Rendering 4th</p>
+          <h1>Chapter 2 图形渲染管线</h1>
+        </div>
+        <a class="status-pill nav-pill" href="../index.html">实验首页</a>
+      </header>
+
+      <section class="experiment-section" id="rendering-pipeline" aria-label="2 图形渲染管线实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 2</p>
+          <h2>图形渲染管线</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="图形渲染管线控制">
+            <div class="control-group">
+              <label for="pipelineFocus">观察阶段</label>
+              <select id="pipelineFocus">
+                <option value="application">应用阶段</option>
+                <option value="geometry" selected>几何处理</option>
+                <option value="rasterization">光栅化</option>
+                <option value="pixel">像素处理</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="pipelineComplexity">场景复杂度</label>
+              <input id="pipelineComplexity" type="range" min="3" max="14" value="8" step="1" />
+              <output id="pipelineComplexityValue" for="pipelineComplexity">8 个物体</output>
+            </div>
+
+            <div class="control-group">
+              <label for="pipelineClipMode">裁剪模式</label>
+              <select id="pipelineClipMode">
+                <option value="off">不裁剪</option>
+                <option value="frustum" selected>视锥裁剪</option>
+                <option value="aggressive">激进裁剪</option>
+              </select>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>提交图元</span>
+                <strong id="pipelineSubmitted">-</strong>
+              </div>
+              <div>
+                <span>保留图元</span>
+                <strong id="pipelineVisible">-</strong>
+              </div>
+              <div>
+                <span>估算片元</span>
+                <strong id="pipelineFragments">-</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2 id="pipelineFocusLabel">几何处理</h2>
+                <span>application → geometry → rasterization → pixel</span>
+              </div>
+              <canvas class="diagram-canvas pipeline-canvas" id="pipelineCanvas" width="980" height="560"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../src/pages/chapter-2.js?v=20260628-5"></script>
+  </body>
+</html>

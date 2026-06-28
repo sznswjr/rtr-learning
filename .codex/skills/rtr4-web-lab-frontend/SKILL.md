@@ -8,18 +8,21 @@ description: Use when extending this RTR4 Web Lab project with new rendering exp
 ## Workflow
 
 1. Keep production static unless the task clearly requires a build step.
-2. Add or update experiment metadata in `src/app/lab-registry.js` before changing homepage navigation.
-3. Keep each experiment's visible controls explicit: parameter inputs, derived metrics, and one primary viewport or comparison grid.
-4. Prefer small Canvas/WebGL helpers over framework abstractions. Introduce Vite/TypeScript only when module growth or type safety justifies the migration.
-5. When JavaScript modules change, update cache versions in `index.html` and any static import query strings.
-6. Update deployment docs when adding files that must be copied to `/var/www/www.jrqz776.com`.
-7. This is a remote server. Do not hand off `127.0.0.1` as the user preview URL; deploy to production and verify `https://www.jrqz776.com`.
+2. Keep the homepage as a chapter index. Do not put all experiments inline on `index.html`.
+3. Add or update experiment metadata in `src/app/lab-registry.js` before changing homepage navigation.
+4. Keep each experiment's visible controls explicit: parameter inputs, derived metrics, and one primary viewport or comparison grid.
+5. Prefer small Canvas/WebGL helpers over framework abstractions. Introduce Vite/TypeScript only when module growth or type safety justifies the migration.
+6. When JavaScript modules change, update cache versions in HTML entry scripts and any static import query strings.
+7. Update deployment docs when adding files that must be copied to `/var/www/www.jrqz776.com`.
+8. This is a remote server. Do not hand off `127.0.0.1` as the user preview URL; deploy to production and verify `https://www.jrqz776.com`.
 
 ## Architecture Rules
 
 - `index.html` owns page structure and stable experiment mount points.
 - `src/app/lab-registry.js` owns lab/content metadata used by navigation and future chapter indexes.
 - `src/app/home-nav.js` renders homepage navigation from registry data.
+- `chapters/chapter-2.html` and `chapters/chapter-5.html` own current chapter page structure.
+- `src/pages/` owns page entry scripts.
 - `src/labs/chapter-2/pipeline.js` owns the Chapter 2 rendering pipeline lab.
 - `src/labs/chapter-5/` owns the Chapter 5 labs.
 - `src/main.js` is a small entrypoint only; do not grow it with experiment state or drawing code.

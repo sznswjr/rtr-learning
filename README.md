@@ -40,8 +40,11 @@ git submodule update --init --recursive
 ## 架构约定
 
 - 生产仍然是静态站点，不需要构建步骤。
+- 首页只保留章节索引，不直接承载全部实验。
+- 章节页按 URL 拆分：`chapters/chapter-2.html`、`chapters/chapter-5.html`。
 - 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成。
-- 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应页面或实验模块。
+- 页面入口脚本放在 `src/pages/`，章节实验模块放在 `src/labs/<chapter>/`。
+- 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应章节页面或实验模块。
 - Chapter 2 图形渲染管线实验已拆到 `src/labs/chapter-2/pipeline.js`。
 - Chapter 5 实验已按主题拆到 `src/labs/chapter-5/`。
 - `src/main.js` 只负责导入模块并按顺序初始化实验。
@@ -62,8 +65,12 @@ git submodule update --init --recursive
 sudo cp /home/ubuntu/rtr4-web-lab/index.html /var/www/www.jrqz776.com/index.html
 sudo cp /home/ubuntu/rtr4-web-lab/src/main.js /var/www/www.jrqz776.com/src/main.js
 sudo cp /home/ubuntu/rtr4-web-lab/src/styles.css /var/www/www.jrqz776.com/src/styles.css
+sudo mkdir -p /var/www/www.jrqz776.com/chapters
+sudo cp /home/ubuntu/rtr4-web-lab/chapters/*.html /var/www/www.jrqz776.com/chapters/
 sudo mkdir -p /var/www/www.jrqz776.com/src/app
 sudo cp /home/ubuntu/rtr4-web-lab/src/app/*.js /var/www/www.jrqz776.com/src/app/
+sudo mkdir -p /var/www/www.jrqz776.com/src/pages
+sudo cp /home/ubuntu/rtr4-web-lab/src/pages/*.js /var/www/www.jrqz776.com/src/pages/
 sudo mkdir -p /var/www/www.jrqz776.com/src/render
 sudo cp /home/ubuntu/rtr4-web-lab/src/render/*.js /var/www/www.jrqz776.com/src/render/
 sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-2

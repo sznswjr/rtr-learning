@@ -1,4 +1,4 @@
-import { homeNavGroups } from "./lab-registry.js?v=20260628-4";
+import { homeNavGroups } from "./lab-registry.js?v=20260628-5";
 
 function appendTextElement(parent, tagName, text) {
   const element = document.createElement(tagName);

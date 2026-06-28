@@ -1,5 +1,5 @@
-import { mixRgb, scaleRgb } from "./color.js?v=20260628-4";
-import { clamp, dot3, normalize3 } from "./math.js?v=20260628-4";
+import { mixRgb, scaleRgb } from "./color.js?v=20260628-5";
+import { clamp, dot3, normalize3 } from "./math.js?v=20260628-5";
 
 export function getSphereColor(normal, light, model, baseColor, highlightStrength) {
   const ndotl = dot3(normal, light);
