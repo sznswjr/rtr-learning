@@ -1,0 +1,9 @@
+{
+  "name": "rtr4-web-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:js": "node --check src/main.js && node --check src/app/home-nav.js && node --check src/app/lab-registry.js && node --check src/render/canvas.js && node --check src/render/color.js && node --check src/render/math.js && node --check src/render/shading.js && node --check src/render/webgl.js && node --check src/labs/chapter-2/pipeline.js && node --check src/labs/chapter-5/anti-aliasing.js && node --check src/labs/chapter-5/display-encoding.js && node --check src/labs/chapter-5/light-attenuation.js && node --check src/labs/chapter-5/sampling-patterns.js && node --check src/labs/chapter-5/shading-frequency.js && node --check src/labs/chapter-5/shading-models.js && node --check src/labs/chapter-5/transparency-compositing.js"
+  }
+}

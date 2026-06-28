@@ -37,12 +37,51 @@
 git submodule update --init --recursive
 ```
 
+## 架构约定
+
+- 生产仍然是静态站点，不需要构建步骤。
+- 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成。
+- 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应页面或实验模块。
+- Chapter 2 图形渲染管线实验已拆到 `src/labs/chapter-2/pipeline.js`。
+- Chapter 5 实验已按主题拆到 `src/labs/chapter-5/`。
+- `src/main.js` 只负责导入模块并按顺序初始化实验。
+- 共享 Canvas、颜色、数学、着色和 WebGL 工具位于 `src/render/`。
+- `package.json` 只提供本地检查脚本；生产不依赖 Node、npm 或前端包管理器。
+- 修改 JavaScript 模块时，除了更新 `index.html` 里的入口 query-string，也要同步更新静态 import URL 上的版本号，避免 Nginx 7 天缓存命中旧模块。
+
 ## 部署位置
 
 - 源码：`/home/ubuntu/rtr4-web-lab`
 - Nginx Web root：`/var/www/www.jrqz776.com`
 - Nginx site：`/etc/nginx/sites-available/www.jrqz776.com`
 - 域名：`www.jrqz776.com`
+
+## 部署命令
+
+```bash
+sudo cp /home/ubuntu/rtr4-web-lab/index.html /var/www/www.jrqz776.com/index.html
+sudo cp /home/ubuntu/rtr4-web-lab/src/main.js /var/www/www.jrqz776.com/src/main.js
+sudo cp /home/ubuntu/rtr4-web-lab/src/styles.css /var/www/www.jrqz776.com/src/styles.css
+sudo mkdir -p /var/www/www.jrqz776.com/src/app
+sudo cp /home/ubuntu/rtr4-web-lab/src/app/*.js /var/www/www.jrqz776.com/src/app/
+sudo mkdir -p /var/www/www.jrqz776.com/src/render
+sudo cp /home/ubuntu/rtr4-web-lab/src/render/*.js /var/www/www.jrqz776.com/src/render/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-2
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-2/*.js /var/www/www.jrqz776.com/src/labs/chapter-2/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-5
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-5/*.js /var/www/www.jrqz776.com/src/labs/chapter-5/
+sudo mkdir -p /var/www/www.jrqz776.com/translations
+sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
+```
+
+## 验证
+
+```bash
+npm run check:js
+git diff --check
+sudo nginx -t
+curl -I https://www.jrqz776.com
+```
 
 ## DNS
 
