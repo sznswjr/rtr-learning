@@ -1,4 +1,4 @@
-import { homeNavGroups } from "./lab-registry.js?v=20260628-5";
+import { homeNavGroups, labRegistry } from "./lab-registry.js?v=20260704-1";
 
 function appendTextElement(parent, tagName, text) {
   const element = document.createElement(tagName);
@@ -7,15 +7,61 @@ function appendTextElement(parent, tagName, text) {
   return element;
 }
 
-function createNavEntry(entry) {
+function getChapterLabs(entry) {
+  const chapterNumber = entry.id.replace("chapter-", "");
+  return labRegistry.filter((lab) => lab.chapter.split(".")[0] === chapterNumber);
+}
+
+function createEntryMeta(entry, labs) {
+  const meta = document.createElement("div");
+  meta.className = "home-nav-meta";
+
+  if (entry.range) {
+    appendTextElement(meta, "span", entry.range);
+  }
+
+  if (labs.length > 0) {
+    const renderers = [...new Set(labs.map((lab) => lab.renderer.toUpperCase()))].join(" / ");
+    appendTextElement(meta, "span", `${labs.length} labs`);
+    appendTextElement(meta, "span", renderers);
+  }
+
+  return meta;
+}
+
+function createLabLink(lab) {
   const link = document.createElement("a");
+  link.className = "home-nav-lab";
+  link.href = lab.href;
+  link.dataset.entryId = lab.id;
+  link.textContent = `${lab.chapter} ${lab.title}`;
+  return link;
+}
+
+function createNavEntry(entry) {
+  const item = document.createElement("article");
+  item.className = "home-nav-entry";
+
+  const labs = getChapterLabs(entry);
+  const link = document.createElement("a");
+  link.className = "home-nav-card";
   link.href = entry.href;
   link.dataset.entryId = entry.id;
 
   appendTextElement(link, "strong", entry.title);
   appendTextElement(link, "small", entry.summary);
+  link.append(createEntryMeta(entry, labs));
 
-  return link;
+  item.append(link);
+
+  if (labs.length > 0) {
+    const labList = document.createElement("div");
+    labList.className = "home-nav-labs";
+    labs.forEach((lab) => labList.append(createLabLink(lab)));
+    item.append(labList);
+  }
+
+  return item;
 }
 
 function createNavGroup(group) {

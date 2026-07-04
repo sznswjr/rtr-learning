@@ -63,6 +63,14 @@ export const labRegistry = [
     href: "./chapters/chapter-5.html#display-encoding",
     renderer: "canvas2d",
   },
+  {
+    id: "texture-filtering",
+    chapter: "6",
+    title: "纹理过滤",
+    summary: "无过滤、双线性、三线性、SAT、各向异性过滤",
+    href: "./chapters/chapter-6.html#texture-filtering",
+    renderer: "canvas2d",
+  },
 ];
 
 export const chapterRegistry = [
@@ -79,6 +87,13 @@ export const chapterRegistry = [
     summary: "着色模型、光源衰减、频率、抗锯齿、采样、透明和显示编码",
     href: "./chapters/chapter-5.html",
     range: "Chapter 5.1-5.6",
+  },
+  {
+    id: "chapter-6",
+    title: "Chapter 6 纹理",
+    summary: "纹理过滤、MIP、面积平均和各向异性采样",
+    href: "./chapters/chapter-6.html",
+    range: "Chapter 6",
   },
 ];
 

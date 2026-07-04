@@ -1,5 +1,5 @@
-import { drawArrow, prepareCanvas, roundedRectPath } from "../../render/canvas.js?v=20260628-5";
-import { TAU } from "../../render/math.js?v=20260628-5";
+import { drawArrow, prepareCanvas, roundedRectPath } from "../../render/canvas.js?v=20260704-1";
+import { TAU } from "../../render/math.js?v=20260704-1";
 
 const pipelineState = {
   clipMode: "frustum",

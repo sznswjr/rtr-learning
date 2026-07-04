@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter 6 纹理 | RTR4 实时图形实验</title>
+    <link rel="stylesheet" href="../src/styles.css?v=20260704-2" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Real-Time Rendering 4th</p>
+          <h1>Chapter 6 纹理</h1>
+        </div>
+        <a class="status-pill nav-pill" href="../index.html">实验首页</a>
+      </header>
+
+      <nav class="chapter-nav" data-chapter="6" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="texture-filtering" aria-label="6 纹理过滤实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 6</p>
+          <h2>纹理过滤对比</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="纹理过滤控制">
+            <div class="control-group">
+              <label for="textureDetail">纹理细节</label>
+              <input id="textureDetail" type="range" min="8" max="26" value="18" step="1" />
+              <output id="textureDetailValue" for="textureDetail">18x</output>
+            </div>
+
+            <div class="control-group">
+              <label for="textureViewAngle">斜视角度</label>
+              <input id="textureViewAngle" type="range" min="42" max="82" value="72" step="1" />
+              <output id="textureViewAngleValue" for="textureViewAngle">72°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="textureMipBias">MIP 偏移</label>
+              <input id="textureMipBias" type="range" min="-100" max="100" value="0" step="5" />
+              <output id="textureMipBiasValue" for="textureMipBias">0.00</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>远处 footprint</span>
+                <strong id="textureFootprintValue">-</strong>
+              </div>
+              <div>
+                <span>各向异性比</span>
+                <strong id="textureAnisoValue">-</strong>
+              </div>
+              <div>
+                <span>最清晰稳定</span>
+                <strong>anisotropic</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>同一斜向纹理的五种采样结果</h2>
+                <span>nearest / bilinear / trilinear / SAT / anisotropic</span>
+              </div>
+              <canvas class="diagram-canvas texture-filter-canvas" id="textureFilteringCanvas" width="1280" height="720"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../src/pages/chapter-6.js?v=20260704-1"></script>
+  </body>
+</html>

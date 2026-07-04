@@ -26,6 +26,9 @@
   - 对比 source-over 绘制顺序和加权顺序无关透明近似
 - Chapter 5.6 显示编码
   - 展示线性空间滤波后编码与直接输出覆盖率的差异
+- Chapter 6 纹理过滤
+  - 对比无过滤、双线性、三线性、SAT 和各向异性过滤
+  - 斜视高频纹理让 aliasing、MIP 模糊、面积平均和各向异性保细节的差异更明显
 
 ## 知识库
 
@@ -41,12 +44,14 @@ git submodule update --init --recursive
 
 - 生产仍然是静态站点，不需要构建步骤。
 - 首页只保留章节索引，不直接承载全部实验。
-- 章节页按 URL 拆分：`chapters/chapter-2.html`、`chapters/chapter-5.html`。
-- 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成。
+- 章节页按 URL 拆分：`chapters/chapter-2.html`、`chapters/chapter-5.html`、`chapters/chapter-6.html`。
+- 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成，章节卡片会显示实验数量、渲染后端和实验直达链接。
+- 章节页内目录由 `src/app/chapter-nav.js` 从同一注册表生成。
 - 页面入口脚本放在 `src/pages/`，章节实验模块放在 `src/labs/<chapter>/`。
-- 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应章节页面或实验模块。
+- 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应章节页面或实验模块；首页直达链接和章节页内目录会随注册表更新。
 - Chapter 2 图形渲染管线实验已拆到 `src/labs/chapter-2/pipeline.js`。
 - Chapter 5 实验已按主题拆到 `src/labs/chapter-5/`。
+- Chapter 6 纹理过滤实验位于 `src/labs/chapter-6/texture-filtering.js`。
 - `src/main.js` 只负责导入模块并按顺序初始化实验。
 - 共享 Canvas、颜色、数学、着色和 WebGL 工具位于 `src/render/`。
 - `package.json` 只提供本地检查脚本；生产不依赖 Node、npm 或前端包管理器。
@@ -77,6 +82,8 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-2
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-2/*.js /var/www/www.jrqz776.com/src/labs/chapter-2/
 sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-5
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-5/*.js /var/www/www.jrqz776.com/src/labs/chapter-5/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-6
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-6/*.js /var/www/www.jrqz776.com/src/labs/chapter-6/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
 ```
@@ -85,10 +92,13 @@ sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776
 
 ```bash
 npm run check:js
+npm run check:ui
 git diff --check
 sudo nginx -t
 curl -I https://www.jrqz776.com
 ```
+
+`npm run check:ui` 使用 Playwright 打开生产站点，检查首页和章节页的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白，并把截图输出到 `.tmp/ui-checks/`。
 
 ## DNS
 

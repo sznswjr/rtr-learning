@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chapter 5 着色基础 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260628-5" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260704-2" />
   </head>
   <body>
     <main class="app-shell">
@@ -18,6 +18,8 @@
           <div class="status-pill" id="gpuStatus">WebGL2 初始化中</div>
         </div>
       </header>
+
+      <nav class="chapter-nav" data-chapter="5" aria-label="章节实验导航"></nav>
 
       <section class="experiment-section" id="shading-models" aria-label="5.1 着色模型实验">
         <div class="section-heading">
@@ -206,7 +208,7 @@
 
         <div class="lab-layout">
           <aside class="controls" aria-label="实验控制">
-          <div class="control-group">
+            <div class="control-group">
               <label for="rotation">三角形旋转</label>
               <input id="rotation" type="range" min="-35" max="35" value="12" step="1" />
               <output id="rotationValue" for="rotation">12°</output>
@@ -467,6 +469,6 @@
       </section>
     </main>
 
-    <script type="module" src="../src/pages/chapter-5.js?v=20260628-5"></script>
+    <script type="module" src="../src/pages/chapter-5.js?v=20260704-1"></script>
   </body>
 </html>

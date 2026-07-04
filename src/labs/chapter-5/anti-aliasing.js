@@ -1,5 +1,5 @@
-import { TAU } from "../../render/math.js?v=20260628-5";
-import { assertFramebuffer, createProgram, getMaxSamples } from "../../render/webgl.js?v=20260628-5";
+import { TAU } from "../../render/math.js?v=20260704-1";
+import { assertFramebuffer, createProgram, getMaxSamples } from "../../render/webgl.js?v=20260704-1";
 
 const vertexSource = `#version 300 es
 in vec2 position;

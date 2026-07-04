@@ -95,30 +95,32 @@ h1 {
 
 .home-panel {
   display: grid;
-  grid-template-columns: minmax(220px, 0.45fr) minmax(0, 1.55fr);
-  gap: 18px;
-  align-items: stretch;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
   margin-bottom: 34px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  padding: 18px;
+  padding: 22px;
   background: rgba(18, 24, 25, 0.82);
 }
 
 .home-panel-copy {
   display: grid;
-  align-content: center;
+  align-content: start;
+  max-width: 760px;
 }
 
 .home-panel-copy h2 {
-  font-size: clamp(1.35rem, 2vw, 2.1rem);
+  font-size: clamp(1.75rem, 3vw, 3rem);
   line-height: 1.1;
 }
 
 .home-nav {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 12px;
+  grid-template-columns: minmax(280px, 0.62fr) minmax(0, 1.38fr);
+  gap: 18px;
+  align-items: start;
 }
 
 .home-nav-group {
@@ -133,41 +135,87 @@ h1 {
   font-weight: 700;
 }
 
-.home-nav a {
+.home-nav-entry {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.home-nav-card {
   display: grid;
   gap: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  min-height: 92px;
+  min-height: 112px;
   padding: 14px;
   background: #131819;
   color: #d6e6e2;
   text-decoration: none;
 }
 
-.home-nav a:hover {
+.home-nav-card:hover,
+.home-nav-lab:hover {
   border-color: rgba(142, 212, 199, 0.45);
   color: #eef4f2;
 }
 
-.home-nav-feature a {
+.home-nav-feature .home-nav-card {
   border-color: rgba(142, 212, 199, 0.34);
   background: #142223;
 }
 
-.home-nav strong {
+.home-nav-card > strong {
   color: #eef4f2;
   font-size: 1.08rem;
 }
 
-.home-nav small {
+.home-nav-card > small {
   color: #93a9a4;
   font-size: 0.82rem;
   line-height: 1.45;
 }
 
+.home-nav-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-self: end;
+  margin-top: 4px;
+}
+
+.home-nav-meta span {
+  border: 1px solid rgba(142, 212, 199, 0.18);
+  border-radius: 999px;
+  padding: 4px 7px;
+  background: rgba(142, 212, 199, 0.08);
+  color: #b8d1cc;
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.home-nav-labs {
+  display: grid;
+  gap: 6px;
+}
+
+.home-nav-group:not(.home-nav-feature) .home-nav-labs {
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+}
+
+.home-nav-lab {
+  min-height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: rgba(19, 24, 25, 0.72);
+  color: #bfd1cd;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
 .experiment-section {
-  scroll-margin-top: 24px;
+  scroll-margin-top: 92px;
 }
 
 .experiment-section + .experiment-section {
@@ -183,6 +231,53 @@ h1 {
 .section-heading h2 {
   font-size: clamp(1.45rem, 2vw, 2.25rem);
   line-height: 1.1;
+}
+
+.chapter-nav {
+  display: flex;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  overflow-x: auto;
+  margin: -6px 0 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(16, 19, 20, 0.94);
+}
+
+.chapter-nav a {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #131819;
+  color: #b8cac6;
+  text-decoration: none;
+}
+
+.chapter-nav a:hover,
+.chapter-nav a.is-active {
+  border-color: rgba(142, 212, 199, 0.42);
+  background: rgba(142, 212, 199, 0.12);
+  color: #eef4f2;
+}
+
+.chapter-nav span {
+  color: #8ed4c7;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.chapter-nav strong {
+  font-size: 0.86rem;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
 .lab-layout {
@@ -354,6 +449,10 @@ canvas {
 
 .pipeline-canvas {
   aspect-ratio: 1.75;
+}
+
+.texture-filter-canvas {
+  aspect-ratio: 1.78;
 }
 
 .nav-pill {
@@ -593,6 +692,10 @@ canvas {
     grid-template-columns: 1fr;
   }
 
+  .chapter-nav {
+    position: static;
+  }
+
   .translation-hero,
   .translation-layout {
     grid-template-columns: 1fr;
@@ -625,8 +728,28 @@ canvas {
     grid-template-columns: 1fr;
   }
 
+  .panel-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .panel-heading span {
+    white-space: normal;
+  }
+
   .home-nav {
     grid-template-columns: 1fr;
+  }
+
+  .chapter-nav {
+    margin-bottom: 18px;
+  }
+
+  .chapter-nav a {
+    min-width: 128px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
   .metric-panel {
