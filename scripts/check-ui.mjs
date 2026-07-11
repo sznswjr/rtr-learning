@@ -4,6 +4,7 @@ import { chromium } from "playwright";
 
 const baseUrl = (process.argv[2] ?? process.env.UI_CHECK_BASE_URL ?? "https://www.jrqz776.com").replace(/\/$/, "");
 const outputDir = path.resolve(".tmp/ui-checks");
+const interactionTimings = [];
 
 const viewports = [
   { name: "desktop", width: 1440, height: 900 },
@@ -16,7 +17,7 @@ const pages = [
   {
     name: "home",
     path: "/",
-    selectors: [".topbar", ".home-panel", ".home-nav", ".home-nav-card"],
+    selectors: [".topbar", ".home-panel", ".home-nav-card"],
   },
   {
     name: "chapter-2",
@@ -35,6 +36,11 @@ const pages = [
     path: "/chapters/chapter-6.html",
     selectors: [".chapter-nav", "#texture-filtering", "#textureFilteringCanvas"],
     canvasIds: ["textureFilteringCanvas"],
+  },
+  {
+    name: "reading",
+    path: "/translations/rtr4-cn.html",
+    selectors: [".translation-hero", ".translation-sidebar", ".translation-article", ".translation-action"],
   },
 ];
 
@@ -168,6 +174,112 @@ async function checkCanvasPixels(page, canvasIds, label) {
   });
 }
 
+async function checkAccessibility(page, label) {
+  const audit = await page.evaluate(() => {
+    const labelledElementExists = (element) => {
+      const labelledBy = element.getAttribute("aria-labelledby");
+      return Boolean(labelledBy && labelledBy.split(/\s+/).every((id) => document.getElementById(id)));
+    };
+
+    return {
+      canvasIssues: [...document.querySelectorAll("canvas")]
+        .filter((canvas) => canvas.getAttribute("role") !== "img" || !labelledElementExists(canvas))
+        .map((canvas) => canvas.id),
+      currentChapterLinks: document.querySelectorAll('.chapter-nav a[aria-current="location"]').length,
+      hasChapterNav: Boolean(document.querySelector(".chapter-nav")),
+      mainTargetExists: Boolean(document.getElementById("main-content")),
+      rangeIssues: [...document.querySelectorAll('input[type="range"]')]
+        .filter((input) => !input.getAttribute("aria-valuetext"))
+        .map((input) => input.id),
+      skipTarget: document.querySelector(".skip-link")?.getAttribute("href"),
+    };
+  });
+
+  assert(audit.mainTargetExists, `${label}: #main-content is missing`);
+  assert(audit.skipTarget === "#main-content", `${label}: skip link is missing or points to the wrong target`);
+  assert(audit.canvasIssues.length === 0, `${label}: inaccessible canvases ${JSON.stringify(audit.canvasIssues)}`);
+  assert(audit.rangeIssues.length === 0, `${label}: ranges missing aria-valuetext ${JSON.stringify(audit.rangeIssues)}`);
+  if (audit.hasChapterNav) {
+    assert(audit.currentChapterLinks === 1, `${label}: expected one current chapter link, got ${audit.currentChapterLinks}`);
+  }
+}
+
+async function checkResponsiveNavigation(page, viewport, label) {
+  const chapterNav = page.locator(".chapter-nav");
+  if ((await chapterNav.count()) === 0) {
+    const readingNav = page.locator(".translation-sidebar");
+    if ((await readingNav.count()) > 0 && viewport.width <= 820) {
+      const position = await readingNav.evaluate((element) => getComputedStyle(element).position);
+      assert(position === "sticky", `${label}: reading navigation should remain sticky, got ${position}`);
+    }
+    return;
+  }
+
+  const position = await chapterNav.evaluate((element) => getComputedStyle(element).position);
+  assert(position === "sticky", `${label}: chapter navigation should remain sticky, got ${position}`);
+
+  if (viewport.width <= 820) {
+    const touchIssues = await page.evaluate(() => {
+      return [...document.querySelectorAll(".chapter-nav a, .status-pill, select")]
+        .filter((element) => {
+          const rect = element.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0 && rect.height < 40;
+        })
+        .map((element) => ({ height: Math.round(element.getBoundingClientRect().height), text: element.textContent?.trim() }));
+    });
+    assert(touchIssues.length === 0, `${label}: undersized touch targets ${JSON.stringify(touchIssues)}`);
+  }
+}
+
+async function checkResponsiveCanvasLayout(page, viewport, label) {
+  const pipeline = page.locator("#pipelineCanvas");
+  if ((await pipeline.count()) > 0) {
+    const layout = await pipeline.getAttribute("data-layout");
+    const expected = viewport.width <= 600 ? "compact" : "wide";
+    assert(layout === expected, `${label}: pipeline layout ${layout}, expected ${expected}`);
+  }
+
+  const texture = page.locator("#textureFilteringCanvas");
+  if ((await texture.count()) > 0) {
+    const layout = await texture.getAttribute("data-layout");
+    const expected = viewport.width <= 600 ? "2x3" : viewport.width <= 920 ? "3x2" : "5x1";
+    assert(layout === expected, `${label}: texture layout ${layout}, expected ${expected}`);
+  }
+}
+
+async function checkKeyboardEntry(page, label) {
+  await page.locator("body").press("Tab");
+  const activeClass = await page.evaluate(() => document.activeElement?.className ?? "");
+  assert(activeClass.includes("skip-link"), `${label}: first keyboard target should be the skip link, got ${activeClass}`);
+}
+
+async function checkInteractionLatency(page, label) {
+  const interactions = [
+    { name: "shading", selector: "#surfaceHue", threshold: 160 },
+    { name: "texture", selector: "#textureDetail", threshold: 250 },
+  ];
+
+  for (const interaction of interactions) {
+    const control = page.locator(interaction.selector);
+    if ((await control.count()) === 0) {
+      continue;
+    }
+
+    const duration = await control.evaluate(async (input) => {
+      const start = performance.now();
+      input.value = input.value === input.max ? input.min : input.max;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      return performance.now() - start;
+    });
+    interactionTimings.push({ duration, label: `${label}/${interaction.name}` });
+    assert(
+      duration < interaction.threshold,
+      `${label}: ${interaction.name} interaction took ${Math.round(duration)}ms`,
+    );
+  }
+}
+
 async function checkPage(browser, pageConfig, viewport) {
   const label = `${pageConfig.name}/${viewport.name}`;
   const page = await browser.newPage({ viewport });
@@ -197,9 +309,14 @@ async function checkPage(browser, pageConfig, viewport) {
     await checkHorizontalOverflow(page, label);
     await checkCrushedText(page, label);
     await checkCanvasPixels(page, pageConfig.canvasIds, label);
+    await checkAccessibility(page, label);
+    await checkResponsiveNavigation(page, viewport, label);
+    await checkResponsiveCanvasLayout(page, viewport, label);
 
     const screenshotPath = path.join(outputDir, `${pageConfig.name}-${viewport.name}.png`);
     await page.screenshot({ fullPage: true, path: screenshotPath });
+    await checkKeyboardEntry(page, label);
+    await checkInteractionLatency(page, label);
 
     assert(consoleErrors.length === 0, `${label}: console errors\n${consoleErrors.join("\n")}`);
     assert(pageErrors.length === 0, `${label}: page errors\n${pageErrors.join("\n")}`);
@@ -227,5 +344,9 @@ try {
 }
 
 console.log(`UI check passed for ${pages.length} pages x ${viewports.length} viewports.`);
+if (interactionTimings.length > 0) {
+  const slowest = interactionTimings.reduce((current, timing) => timing.duration > current.duration ? timing : current);
+  console.log(`Slowest measured interaction: ${Math.round(slowest.duration)}ms (${slowest.label}).`);
+}
 console.log(`Screenshots: ${outputDir}`);
 screenshots.forEach((screenshot) => console.log(`- ${screenshot}`));

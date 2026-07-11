@@ -1,7 +1,7 @@
-import { prepareCanvas } from "../../render/canvas.js?v=20260704-1";
-import { rgbToCss } from "../../render/color.js?v=20260704-1";
-import { TAU, getLightVector } from "../../render/math.js?v=20260704-1";
-import { getSphereColor } from "../../render/shading.js?v=20260704-1";
+import { prepareCanvas } from "../../render/canvas.js?v=20260710-1";
+import { rgbToCss } from "../../render/color.js?v=20260710-1";
+import { TAU, getLightVector } from "../../render/math.js?v=20260710-1";
+import { getSphereColor } from "../../render/shading.js?v=20260710-1";
 
 const frequencyState = {
   lightAngle: -54,

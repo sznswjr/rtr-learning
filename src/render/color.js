@@ -1,8 +1,8 @@
-import { clamp } from "./math.js?v=20260704-1";
+import { clamp } from "./math.js?v=20260710-1";
 
 export function hslToRgb(hue, saturation, lightness) {
   const c = (1 - Math.abs(2 * lightness - 1)) * saturation;
-  const hp = ((hue % 360) + 360) / 60;
+  const hp = (((hue % 360) + 360) % 360) / 60;
   const x = c * (1 - Math.abs((hp % 2) - 1));
   let rgb = [0, 0, 0];
 

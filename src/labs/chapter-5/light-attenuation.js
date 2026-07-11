@@ -1,5 +1,5 @@
-import { drawCurve, prepareCanvas } from "../../render/canvas.js?v=20260704-1";
-import { TAU, clamp, formatUnit } from "../../render/math.js?v=20260704-1";
+import { drawCurve, prepareCanvas } from "../../render/canvas.js?v=20260710-1";
+import { TAU, clamp, formatUnit } from "../../render/math.js?v=20260710-1";
 
 const attenuationState = {
   distance: 116,

@@ -1,4 +1,4 @@
-import { prepareCanvas } from "../../render/canvas.js?v=20260704-1";
+import { prepareCanvas } from "../../render/canvas.js?v=20260710-1";
 
 const TEXTURE_SIZE = 256;
 const FILTERS = [
@@ -369,47 +369,54 @@ function sampleFilter(texture, filter, footprint, state) {
   return [color[0] / taps, color[1] / taps, color[2] / taps];
 }
 
-function renderPanel(texture, filter, width, height, state) {
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  const image = ctx.createImageData(width, height);
+function renderPanels(texture, filters, width, height, displayWidth, displayHeight, state) {
+  const panels = filters.map((filter) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    return { canvas, ctx, filter, image: ctx.createImageData(width, height) };
+  });
 
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
-      const footprint = getFootprint(x, y, width, height, state);
-      const color = sampleFilter(texture, filter, footprint, state);
-      const fog = clamp((height - y) / height, 0, 1) * 0.18;
+      const displayX = ((x + 0.5) / width) * displayWidth;
+      const displayY = ((y + 0.5) / height) * displayHeight;
+      const footprint = getFootprint(displayX, displayY, displayWidth, displayHeight, state);
+      const fog = clamp((displayHeight - displayY) / displayHeight, 0, 1) * 0.18;
       const index = (y * width + x) * 4;
 
-      image.data[index] = clamp(color[0] * (1 - fog) + 18 * fog, 0, 255);
-      image.data[index + 1] = clamp(color[1] * (1 - fog) + 26 * fog, 0, 255);
-      image.data[index + 2] = clamp(color[2] * (1 - fog) + 28 * fog, 0, 255);
-      image.data[index + 3] = 255;
+      panels.forEach((panel) => {
+        const color = sampleFilter(texture, panel.filter.id, footprint, state);
+        panel.image.data[index] = clamp(color[0] * (1 - fog) + 18 * fog, 0, 255);
+        panel.image.data[index + 1] = clamp(color[1] * (1 - fog) + 26 * fog, 0, 255);
+        panel.image.data[index + 2] = clamp(color[2] * (1 - fog) + 28 * fog, 0, 255);
+        panel.image.data[index + 3] = 255;
+      });
     }
   }
 
-  ctx.putImageData(image, 0, 0);
-  return canvas;
+  panels.forEach((panel) => panel.ctx.putImageData(panel.image, 0, 0));
+  return panels.map((panel) => panel.canvas);
 }
 
-function drawPanelOverlay(ctx, panel, x, y, width, height) {
+function drawPanelOverlay(ctx, panel, x, y, width, height, compact) {
+  const headingHeight = compact ? 46 : 54;
   ctx.strokeStyle = "rgba(255, 255, 255, 0.16)";
   ctx.lineWidth = 1;
   ctx.strokeRect(x, y, width, height);
 
   ctx.fillStyle = "rgba(8, 12, 13, 0.76)";
-  ctx.fillRect(x, y, width, 54);
+  ctx.fillRect(x, y, width, headingHeight);
   ctx.fillStyle = panel.color;
   ctx.fillRect(x, y, width, 3);
 
   ctx.fillStyle = "#eef4f2";
-  ctx.font = "700 14px Inter, sans-serif";
-  ctx.fillText(panel.title, x + 10, y + 23);
+  ctx.font = compact ? "700 13px Inter, sans-serif" : "700 14px Inter, sans-serif";
+  ctx.fillText(panel.title, x + 9, y + (compact ? 20 : 23));
   ctx.fillStyle = "#a9bbb7";
-  ctx.font = "12px Inter, sans-serif";
-  ctx.fillText(panel.note, x + 10, y + 42);
+  ctx.font = compact ? "10px Inter, sans-serif" : "12px Inter, sans-serif";
+  ctx.fillText(panel.note, x + 9, y + (compact ? 37 : 42));
 }
 
 function drawFootprintGuide(ctx, x, y, width, height, color) {
@@ -429,37 +436,67 @@ function drawFootprintGuide(ctx, x, y, width, height, color) {
   ctx.setLineDash([]);
 }
 
-function draw(ctx, canvas, texture, state) {
+function draw(ctx, canvas, texture, state, quality = 1) {
   const { height, width } = prepareCanvas(canvas);
+  const compact = window.matchMedia("(max-width: 600px)").matches;
+  const medium = !compact && window.matchMedia("(max-width: 920px)").matches;
+  const columns = compact ? 2 : medium ? 3 : FILTERS.length;
+  const rows = Math.ceil(FILTERS.length / columns);
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = "#0b0d0e";
   ctx.fillRect(0, 0, width, height);
 
-  const margin = 16;
-  const top = 56;
-  const bottom = 56;
-  const gap = 10;
-  const panelWidth = Math.floor((width - margin * 2 - gap * (FILTERS.length - 1)) / FILTERS.length);
-  const panelHeight = Math.max(260, Math.floor(height - top - bottom));
+  const margin = compact ? 10 : 16;
+  const top = compact ? 70 : medium ? 62 : 56;
+  const bottom = compact ? 38 : 56;
+  const gap = compact ? 8 : 10;
+  const panelWidth = Math.floor((width - margin * 2 - gap * (columns - 1)) / columns);
+  const panelHeight = Math.max(90, Math.floor((height - top - bottom - gap * (rows - 1)) / rows));
 
   ctx.fillStyle = "#e8fff8";
-  ctx.font = "700 16px Inter, sans-serif";
-  ctx.fillText("远处高频细节用于暴露 aliasing；底部文字用于观察过滤造成的清晰度损失", margin, 26);
+  ctx.font = compact ? "700 14px Inter, sans-serif" : "700 16px Inter, sans-serif";
+  ctx.fillText(compact ? "高频纹理会暴露 aliasing" : "远处高频细节用于暴露 aliasing；底部文字用于观察过滤造成的清晰度损失", margin, 26);
   ctx.fillStyle = "#9fb0ad";
-  ctx.font = "12px Inter, sans-serif";
-  ctx.fillText("SAT 使用矩形面积平均；各向异性沿主轴多点采样，所以斜视方向更稳定也更清晰。", margin, 45);
+  ctx.font = compact ? "11px Inter, sans-serif" : "12px Inter, sans-serif";
+  ctx.fillText(
+    compact ? "比较五种方法的稳定性与细节保留" : "SAT 使用矩形面积平均；各向异性沿主轴多点采样，所以斜视方向更稳定也更清晰。",
+    margin,
+    compact ? 47 : 45,
+  );
 
+  const renderWidth = Math.max(1, Math.round(panelWidth * quality));
+  const renderHeight = Math.max(1, Math.round(panelHeight * quality));
+  const renderedPanels = renderPanels(
+    texture,
+    FILTERS,
+    renderWidth,
+    renderHeight,
+    panelWidth,
+    panelHeight,
+    state,
+  );
+  ctx.save();
+  ctx.imageSmoothingEnabled = quality >= 1;
   FILTERS.forEach((filter, index) => {
-    const x = margin + index * (panelWidth + gap);
-    const panel = renderPanel(texture, filter.id, panelWidth, panelHeight, state);
-    ctx.drawImage(panel, x, top, panelWidth, panelHeight);
-    drawPanelOverlay(ctx, filter, x, top, panelWidth, panelHeight);
-    drawFootprintGuide(ctx, x, top, panelWidth, panelHeight, filter.color);
+    const column = index % columns;
+    const row = Math.floor(index / columns);
+    const x = margin + column * (panelWidth + gap);
+    const y = top + row * (panelHeight + gap);
+    ctx.drawImage(renderedPanels[index], x, y, panelWidth, panelHeight);
+    drawPanelOverlay(ctx, filter, x, y, panelWidth, panelHeight, compact);
+    drawFootprintGuide(ctx, x, y, panelWidth, panelHeight, filter.color);
   });
+  ctx.restore();
 
   ctx.fillStyle = "#9fb0ad";
-  ctx.font = "12px Inter, sans-serif";
-  ctx.fillText("虚线：远处 footprint 明显变宽。无过滤会跳采样，双线性只混合 2x2，三线性混合 MIP，SAT 平均面积，各向异性保留斜向细节。", margin, top + panelHeight + 31);
+  ctx.font = compact ? "11px Inter, sans-serif" : "12px Inter, sans-serif";
+  ctx.fillText(
+    compact ? "调整参数，比较稳定性与细节保留。" : "虚线：远处 footprint 明显变宽。无过滤会跳采样，双线性只混合 2x2，三线性混合 MIP，SAT 平均面积，各向异性保留斜向细节。",
+    margin,
+    top + rows * panelHeight + (rows - 1) * gap + (compact ? 24 : 31),
+  );
+  canvas.dataset.layout = `${columns}x${rows}`;
+  canvas.dataset.quality = quality >= 1 ? "full" : "preview";
 }
 
 function createTexture() {
@@ -489,6 +526,9 @@ export function initTextureFilteringLab() {
     aniso: document.getElementById("textureAnisoValue"),
   };
   const texture = createTexture();
+  let renderFrame = 0;
+  let settleTimer = 0;
+  let pendingQuality = 1;
 
   function getState() {
     return {
@@ -498,7 +538,7 @@ export function initTextureFilteringLab() {
     };
   }
 
-  function render() {
+  function render(quality = 1) {
     const state = getState();
     outputs.detail.textContent = `${state.detail}x`;
     outputs.viewAngle.textContent = `${state.viewAngle}°`;
@@ -508,10 +548,33 @@ export function initTextureFilteringLab() {
     outputs.footprint.textContent = `${footprint.major.toFixed(1)} texels`;
     outputs.aniso.textContent = `${(footprint.major / Math.max(1, footprint.minor)).toFixed(1)}:1`;
 
-    draw(canvas.getContext("2d"), canvas, texture, state);
+    draw(canvas.getContext("2d"), canvas, texture, state, quality);
   }
 
-  Object.values(controls).forEach((control) => control.addEventListener("input", render));
-  window.addEventListener("resize", render);
+  function scheduleRender(quality = 1) {
+    pendingQuality = quality;
+    if (renderFrame) {
+      return;
+    }
+    renderFrame = window.requestAnimationFrame(() => {
+      renderFrame = 0;
+      render(pendingQuality);
+    });
+  }
+
+  function schedulePreviewThenFull() {
+    window.clearTimeout(settleTimer);
+    scheduleRender(0.5);
+    settleTimer = window.setTimeout(() => scheduleRender(1), 180);
+  }
+
+  Object.values(controls).forEach((control) => {
+    control.addEventListener("input", schedulePreviewThenFull);
+    control.addEventListener("change", () => {
+      window.clearTimeout(settleTimer);
+      scheduleRender(1);
+    });
+  });
+  window.addEventListener("resize", schedulePreviewThenFull);
   render();
 }

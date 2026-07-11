@@ -1,6 +1,6 @@
 # AI Project Memory
 
-Last updated: 2026-06-28
+Last updated: 2026-07-11
 
 ## Project
 
@@ -34,6 +34,9 @@ Last updated: 2026-06-28
 - The homepage navigation includes the RTR4 Chinese translation page, chapter entries, lab counts, renderer tags, and direct lab links.
 - Homepage navigation metadata now lives in `src/app/lab-registry.js` and is rendered by `src/app/home-nav.js`.
 - Chapter in-page navigation is rendered from the same registry by `src/app/chapter-nav.js`.
+- Chapter navigation stays sticky on narrow screens and tracks the active experiment with `aria-current`.
+- Chapter 2 and Chapter 6 use dedicated narrow-screen Canvas layouts; core diagrams are no longer compressed or clipped on phones.
+- Keyboard skip links, visible focus rings, Canvas accessible names, range `aria-valuetext`, reduced-motion behavior, and WebGL2 failure feedback are included site-wide.
 - Chapter 2 rendering pipeline code now lives in `src/labs/chapter-2/pipeline.js`.
 - Chapter 5 lab code now lives in `src/labs/chapter-5/`:
   - `anti-aliasing.js`
@@ -45,6 +48,8 @@ Last updated: 2026-06-28
   - `transparency-compositing.js`
 - Chapter 6 lab code now lives in `src/labs/chapter-6/texture-filtering.js`.
 - Shared Canvas, color, math, shading, and WebGL helpers now live in `src/render/`.
+- The HSL hue normalization bug in `src/render/color.js` is covered by `scripts/check-color.mjs`.
+- Expensive shading and texture controls render a coalesced preview while dragging and restore full quality after interaction settles.
 - `src/main.js` is now a small module entrypoint that initializes labs.
 - The translation page is available at `translations/rtr4-cn.html` and currently includes organized Chinese reading content for Chapter 0-2.
 - Local knowledge base is tracked as a Git submodule at `knowledge/Real-Time-Rendering-4th-CN`, pinned to `9c2e724e688fc921ec0486d8fde4f516af2a5873` from `https://github.com/Morakito/Real-Time-Rendering-4th-CN.git`.
@@ -98,11 +103,12 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 
 Latest production deployment:
 
-- Date: 2026-07-04
-- Deployed Chapter 6 texture filtering lab and navigation entry.
-- Asset cache version in `index.html`: `20260704-2` for CSS and `20260704-1` for JavaScript modules.
+- Date: 2026-07-11
+- Removed recommendation badges, prescribed learning paths, experiment prompts, and end-of-chapter continuation cards while preserving neutral chapter and experiment navigation.
+- Asset cache version: `20260711-1` for CSS and changed JavaScript modules.
 - Verification passed:
   - `npm run check:js`
+  - `npm run check:color`
   - `npm run check:ui`
   - `git diff --check`
   - `sudo nginx -t`
@@ -110,12 +116,12 @@ Latest production deployment:
   - `curl -I https://www.jrqz776.com/chapters/chapter-2.html` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/chapters/chapter-5.html` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/chapters/chapter-6.html` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/main.js?v=20260704-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/app/chapter-nav.js?v=20260704-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/pages/chapter-2.js?v=20260704-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/pages/chapter-5.js?v=20260704-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/pages/chapter-6.js?v=20260704-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-6/texture-filtering.js?v=20260704-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/main.js?v=20260711-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/app/chapter-nav.js?v=20260711-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/pages/chapter-2.js?v=20260711-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/pages/chapter-5.js?v=20260711-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/pages/chapter-6.js?v=20260711-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/labs/chapter-6/texture-filtering.js?v=20260710-1` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/translations/rtr4-cn.html` returned `HTTP/2 200`
   - `curl -I http://www.jrqz776.com` returned `301` to HTTPS
 

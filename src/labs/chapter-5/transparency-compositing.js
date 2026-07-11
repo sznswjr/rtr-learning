@@ -1,5 +1,5 @@
-import { prepareCanvas } from "../../render/canvas.js?v=20260704-1";
-import { blendOver, mixRgb, rgbToCss } from "../../render/color.js?v=20260704-1";
+import { prepareCanvas } from "../../render/canvas.js?v=20260710-1";
+import { blendOver, mixRgb, rgbToCss } from "../../render/color.js?v=20260710-1";
 
 const transparencyState = {
   alpha: 56,
@@ -36,12 +36,24 @@ function drawTransparencyPanel(ctx, x, y, width, height, label, mode) {
   const rectB = { x: x + width * 0.36, y: y + height * 0.22, w: width * 0.46, h: height * 0.42 };
 
   if (mode === "weighted") {
-    const frontWeight = 0.5 + transparencyState.bias / 200;
-    const backWeight = 1.5 - frontWeight;
-    const color = mixRgb(blue, red, frontWeight / (frontWeight + backWeight));
-    ctx.fillStyle = rgbToCss(color, alpha);
+    const redWeight = 0.5 + transparencyState.bias / 200;
+    const blueWeight = 1.5 - redWeight;
+    const weightedColor = mixRgb(blue, red, redWeight / (redWeight + blueWeight));
+    const combinedAlpha = 1 - (1 - alpha) * (1 - alpha);
+    const overlapColor = blendOver(background, weightedColor, combinedAlpha);
+    const blueOnly = blendOver(background, blue, alpha);
+    const redOnly = blendOver(background, red, alpha);
+
+    ctx.fillStyle = rgbToCss(blueOnly);
     ctx.fillRect(rectA.x, rectA.y, rectA.w, rectA.h);
+    ctx.fillStyle = rgbToCss(redOnly);
     ctx.fillRect(rectB.x, rectB.y, rectB.w, rectB.h);
+    const overlapX = Math.max(rectA.x, rectB.x);
+    const overlapY = Math.max(rectA.y, rectB.y);
+    const overlapRight = Math.min(rectA.x + rectA.w, rectB.x + rectB.w);
+    const overlapBottom = Math.min(rectA.y + rectA.h, rectB.y + rectB.h);
+    ctx.fillStyle = rgbToCss(overlapColor);
+    ctx.fillRect(overlapX, overlapY, overlapRight - overlapX, overlapBottom - overlapY);
     ctx.fillStyle = "rgba(255, 211, 138, 0.9)";
     ctx.fillRect(rectB.x, rectB.y + rectB.h - 5, rectB.w, 5);
     return;

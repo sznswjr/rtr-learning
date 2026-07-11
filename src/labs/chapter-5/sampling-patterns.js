@@ -1,5 +1,5 @@
-import { prepareCanvas } from "../../render/canvas.js?v=20260704-1";
-import { TAU } from "../../render/math.js?v=20260704-1";
+import { prepareCanvas } from "../../render/canvas.js?v=20260710-1";
+import { TAU } from "../../render/math.js?v=20260710-1";
 
 const samplingState = {
   edgeAngle: 28,
@@ -408,7 +408,7 @@ function renderSamplingLab() {
   ui.activePatternLabel.textContent = label;
   ui.coveredSamples.textContent = `${coveredCount} / ${samples.length}`;
   ui.averageCoverage.textContent = `${Math.round(averageCoverage * 100)}%`;
-  ui.samplingPatternLabel.textContent = `${samples.length} samples`;
+  ui.samplingPatternLabel.textContent = `${samples.length} 个样本`;
   ui.samplingCoverageLabel.textContent = label;
 }
 

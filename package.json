@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check:js": "node --check src/main.js && node --check src/pages/chapter-2.js && node --check src/pages/chapter-5.js && node --check src/pages/chapter-6.js && node --check src/app/chapter-nav.js && node --check src/app/home-nav.js && node --check src/app/lab-registry.js && node --check src/render/canvas.js && node --check src/render/color.js && node --check src/render/math.js && node --check src/render/shading.js && node --check src/render/webgl.js && node --check src/labs/chapter-2/pipeline.js && node --check src/labs/chapter-5/anti-aliasing.js && node --check src/labs/chapter-5/display-encoding.js && node --check src/labs/chapter-5/light-attenuation.js && node --check src/labs/chapter-5/sampling-patterns.js && node --check src/labs/chapter-5/shading-frequency.js && node --check src/labs/chapter-5/shading-models.js && node --check src/labs/chapter-5/transparency-compositing.js && node --check src/labs/chapter-6/texture-filtering.js && node --check scripts/check-ui.mjs",
-    "check:ui": "node scripts/check-ui.mjs https://www.jrqz776.com"
+    "check:js": "node --check src/main.js && node --check src/pages/chapter-2.js && node --check src/pages/chapter-5.js && node --check src/pages/chapter-6.js && node --check src/app/chapter-nav.js && node --check src/app/home-nav.js && node --check src/app/lab-registry.js && node --check src/render/canvas.js && node --check src/render/color.js && node --check src/render/math.js && node --check src/render/shading.js && node --check src/render/webgl.js && node --check src/labs/chapter-2/pipeline.js && node --check src/labs/chapter-5/anti-aliasing.js && node --check src/labs/chapter-5/display-encoding.js && node --check src/labs/chapter-5/light-attenuation.js && node --check src/labs/chapter-5/sampling-patterns.js && node --check src/labs/chapter-5/shading-frequency.js && node --check src/labs/chapter-5/shading-models.js && node --check src/labs/chapter-5/transparency-compositing.js && node --check src/labs/chapter-6/texture-filtering.js && node --check scripts/check-color.mjs && node --check scripts/check-ui.mjs",
+    "check:color": "node scripts/check-color.mjs",
+    "check:ui": "node scripts/check-ui.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1"

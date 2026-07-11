@@ -1,4 +1,4 @@
-import { homeNavGroups, labRegistry } from "./lab-registry.js?v=20260704-1";
+import { homeNavGroups, labRegistry } from "./lab-registry.js?v=20260711-1";
 
 function appendTextElement(parent, tagName, text) {
   const element = document.createElement(tagName);
@@ -21,8 +21,12 @@ function createEntryMeta(entry, labs) {
   }
 
   if (labs.length > 0) {
-    const renderers = [...new Set(labs.map((lab) => lab.renderer.toUpperCase()))].join(" / ");
-    appendTextElement(meta, "span", `${labs.length} labs`);
+    const rendererLabels = {
+      canvas2d: "Canvas 2D",
+      webgl2: "WebGL 2",
+    };
+    const renderers = [...new Set(labs.map((lab) => rendererLabels[lab.renderer] ?? lab.renderer))].join(" / ");
+    appendTextElement(meta, "span", `${labs.length} 个实验`);
     appendTextElement(meta, "span", renderers);
   }
 

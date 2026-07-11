@@ -1,5 +1,5 @@
-import { drawArrow, prepareCanvas, roundedRectPath } from "../../render/canvas.js?v=20260704-1";
-import { TAU } from "../../render/math.js?v=20260704-1";
+import { drawArrow, prepareCanvas, roundedRectPath } from "../../render/canvas.js?v=20260710-1";
+import { TAU } from "../../render/math.js?v=20260710-1";
 
 const pipelineState = {
   clipMode: "frustum",
@@ -84,7 +84,7 @@ function drawPipelineStage(ctx, stage, x, y, width, height) {
   ctx.fillText(stage.detail, x + 14, y + 47);
 }
 
-function drawPipelineScene(ctx, panel, objects, bounds) {
+function drawPipelineScene(ctx, panel, objects, bounds, compact = false) {
   const mapX = (value) => panel.x + ((value + 1.05) / 2.1) * panel.w;
   const mapY = (value) => panel.y + panel.h - ((value + 0.72) / 1.44) * panel.h;
 
@@ -117,10 +117,10 @@ function drawPipelineScene(ctx, panel, objects, bounds) {
 
   ctx.fillStyle = "#dce8e5";
   ctx.font = "700 13px ui-sans-serif, system-ui, sans-serif";
-  ctx.fillText("几何处理：变换 / 投影 / 裁剪", panel.x + 14, panel.y + 24);
+  ctx.fillText(compact ? "几何：变换 / 裁剪" : "几何处理：变换 / 投影 / 裁剪", panel.x + 14, panel.y + 24);
 }
 
-function drawPipelineScreen(ctx, panel, visibleObjects, bounds) {
+function drawPipelineScreen(ctx, panel, visibleObjects, bounds, compact = false) {
   ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
   ctx.fillRect(panel.x, panel.y, panel.w, panel.h);
   ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
@@ -148,10 +148,10 @@ function drawPipelineScreen(ctx, panel, visibleObjects, bounds) {
 
   ctx.fillStyle = "#dce8e5";
   ctx.font = "700 13px ui-sans-serif, system-ui, sans-serif";
-  ctx.fillText("屏幕映射：NDC → window", panel.x + 14, panel.y + 24);
+  ctx.fillText(compact ? "光栅化：屏幕映射" : "屏幕映射：NDC → window", panel.x + 14, panel.y + 24);
 }
 
-function drawPipelineFragments(ctx, panel, fragments) {
+function drawPipelineFragments(ctx, panel, fragments, compact = false) {
   ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
   ctx.fillRect(panel.x, panel.y, panel.w, panel.h);
   ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
@@ -178,7 +178,7 @@ function drawPipelineFragments(ctx, panel, fragments) {
   ctx.strokeRect(left, top, cell * cols, cell * rows);
   ctx.fillStyle = "#dce8e5";
   ctx.font = "700 13px ui-sans-serif, system-ui, sans-serif";
-  ctx.fillText("像素处理：着色 / 深度 / 合并", panel.x + 14, panel.y + 24);
+  ctx.fillText(compact ? "像素：着色 / 合并" : "像素处理：着色 / 深度 / 合并", panel.x + 14, panel.y + 24);
 }
 
 function renderPipelineLab() {
@@ -190,36 +190,76 @@ function renderPipelineLab() {
     { detail: "图元覆盖到片元", key: "rasterization", label: "光栅化" },
     { detail: "着色、测试、混合", key: "pixel", label: "像素处理" },
   ];
-  const pad = 24;
-  const stageGap = 16;
-  const stageW = (width - pad * 2 - stageGap * 3) / 4;
-  const stageY = 24;
-  const stageH = 70;
+  const compact = window.matchMedia("(max-width: 600px)").matches;
+  const pad = compact ? 12 : 24;
+  const stageGap = compact ? 12 : 16;
+  const stageW = compact ? width - pad * 2 : (width - pad * 2 - stageGap * 3) / 4;
+  const stageY = compact ? 12 : 24;
+  const stageH = compact ? 54 : 70;
 
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = "#0b0d0e";
   ctx.fillRect(0, 0, width, height);
 
   stages.forEach((stage, index) => {
-    const x = pad + index * (stageW + stageGap);
-    drawPipelineStage(ctx, stage, x, stageY, stageW, stageH);
+    const x = compact ? pad : pad + index * (stageW + stageGap);
+    const y = compact ? stageY + index * (stageH + stageGap) : stageY;
+    drawPipelineStage(ctx, stage, x, y, stageW, stageH);
     if (index < stages.length - 1) {
-      drawArrow(ctx, x + stageW + 4, stageY + stageH * 0.5, x + stageW + stageGap - 4, stageY + stageH * 0.5, "#5caea0");
+      if (compact) {
+        drawArrow(ctx, width * 0.5, y + stageH + 2, width * 0.5, y + stageH + stageGap - 2, "#5caea0");
+      } else {
+        drawArrow(ctx, x + stageW + 4, stageY + stageH * 0.5, x + stageW + stageGap - 4, stageY + stageH * 0.5, "#5caea0");
+      }
     }
   });
 
-  const panelTop = stageY + stageH + 34;
-  const panelH = height - panelTop - pad;
-  const panelGap = 14;
-  const panelW = (width - pad * 2 - panelGap * 2) / 3;
-  drawPipelineScene(ctx, { h: panelH, w: panelW, x: pad, y: panelTop }, metrics.objects, metrics.bounds);
-  drawPipelineScreen(
-    ctx,
-    { h: panelH, w: panelW, x: pad + panelW + panelGap, y: panelTop },
-    metrics.visible,
-    metrics.bounds,
-  );
-  drawPipelineFragments(ctx, { h: panelH, w: panelW, x: pad + panelW * 2 + panelGap * 2, y: panelTop }, metrics.fragments);
+  if (compact) {
+    const panelTop = stageY + stages.length * stageH + (stages.length - 1) * stageGap + 22;
+    const panelGap = 10;
+    const panelW = (width - pad * 2 - panelGap) / 2;
+    const panelH = Math.max(120, (height - panelTop - pad - panelGap) / 2);
+    const secondRowY = panelTop + panelH + panelGap;
+    drawPipelineScene(
+      ctx,
+      { h: panelH, w: panelW, x: pad, y: panelTop },
+      metrics.objects,
+      metrics.bounds,
+      true,
+    );
+    drawPipelineScreen(
+      ctx,
+      { h: panelH, w: panelW, x: pad + panelW + panelGap, y: panelTop },
+      metrics.visible,
+      metrics.bounds,
+      true,
+    );
+    drawPipelineFragments(
+      ctx,
+      { h: height - secondRowY - pad, w: width - pad * 2, x: pad, y: secondRowY },
+      metrics.fragments,
+      true,
+    );
+    ui.pipelineCanvas.dataset.layout = "compact";
+  } else {
+    const panelTop = stageY + stageH + 34;
+    const panelH = height - panelTop - pad;
+    const panelGap = 14;
+    const panelW = (width - pad * 2 - panelGap * 2) / 3;
+    drawPipelineScene(ctx, { h: panelH, w: panelW, x: pad, y: panelTop }, metrics.objects, metrics.bounds);
+    drawPipelineScreen(
+      ctx,
+      { h: panelH, w: panelW, x: pad + panelW + panelGap, y: panelTop },
+      metrics.visible,
+      metrics.bounds,
+    );
+    drawPipelineFragments(
+      ctx,
+      { h: panelH, w: panelW, x: pad + panelW * 2 + panelGap * 2, y: panelTop },
+      metrics.fragments,
+    );
+    ui.pipelineCanvas.dataset.layout = "wide";
+  }
 
   ui.pipelineComplexityValue.value = `${pipelineState.complexity} 个物体`;
   ui.pipelineSubmitted.textContent = `${metrics.submitted}`;
@@ -244,6 +284,15 @@ export function initPipelineLab() {
     renderPipelineLab();
   });
 
-  window.addEventListener("resize", renderPipelineLab);
+  let resizeFrame = 0;
+  window.addEventListener("resize", () => {
+    if (resizeFrame) {
+      return;
+    }
+    resizeFrame = window.requestAnimationFrame(() => {
+      resizeFrame = 0;
+      renderPipelineLab();
+    });
+  });
   renderPipelineLab();
 }

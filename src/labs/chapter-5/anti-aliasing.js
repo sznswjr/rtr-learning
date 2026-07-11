@@ -1,5 +1,5 @@
-import { TAU } from "../../render/math.js?v=20260704-1";
-import { assertFramebuffer, createProgram, getMaxSamples } from "../../render/webgl.js?v=20260704-1";
+import { TAU } from "../../render/math.js?v=20260710-1";
+import { assertFramebuffer, createProgram, getMaxSamples } from "../../render/webgl.js?v=20260710-1";
 
 const vertexSource = `#version 300 es
 in vec2 position;
@@ -356,8 +356,8 @@ function updateLabels(renderers) {
   ui.rotationValue.value = `${state.rotation}°`;
   ui.scaleValue.value = `${state.scale}%`;
   ui.renderResolutionValue.value = `${state.renderResolution}%`;
-  ui.ssaaLabel.textContent = `${state.samples}x supersampling`;
-  ui.msaaLabel.textContent = `${msaaSamples}x multisampling`;
+  ui.ssaaLabel.textContent = `${state.samples}× 超采样`;
+  ui.msaaLabel.textContent = `${msaaSamples}× 多重采样`;
   ui.maxSamples.textContent = `${maxSamples}x`;
   ui.basePixels.textContent = base?.width && base?.height ? `${base.width} × ${base.height}` : "-";
   ui.ssaaPixels.textContent = ssaaWidth && ssaaHeight ? `${ssaaWidth} × ${ssaaHeight}` : "-";
@@ -409,6 +409,19 @@ export function initAntiAliasingLab() {
   } catch (error) {
     ui.gpuStatus.textContent = "WebGL2 不可用";
     ui.gpuStatus.classList.add("is-error");
+    const section = document.querySelector("#aa-compare");
+    section?.classList.add("is-unavailable");
+    section?.querySelectorAll("input, select").forEach((control) => {
+      control.disabled = true;
+    });
+    const viewport = section?.querySelector(".viewport-grid");
+    if (viewport) {
+      const notice = document.createElement("p");
+      notice.className = "webgl-fallback";
+      notice.setAttribute("role", "alert");
+      notice.textContent = "当前设备不支持 WebGL2，抗锯齿对比已停用；本页其他 Canvas 实验仍可使用。";
+      viewport.prepend(notice);
+    }
     console.error(error);
   }
 }

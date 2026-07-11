@@ -47,6 +47,7 @@ git submodule update --init --recursive
 - 章节页按 URL 拆分：`chapters/chapter-2.html`、`chapters/chapter-5.html`、`chapters/chapter-6.html`。
 - 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成，章节卡片会显示实验数量、渲染后端和实验直达链接。
 - 章节页内目录由 `src/app/chapter-nav.js` 从同一注册表生成。
+- 长章节在手机端保留横向 sticky 目录；Chapter 2 管线图和 Chapter 6 纹理对比会在窄屏重新排版，而不是缩小桌面画布。
 - 页面入口脚本放在 `src/pages/`，章节实验模块放在 `src/labs/<chapter>/`。
 - 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应章节页面或实验模块；首页直达链接和章节页内目录会随注册表更新。
 - Chapter 2 图形渲染管线实验已拆到 `src/labs/chapter-2/pipeline.js`。
@@ -55,6 +56,7 @@ git submodule update --init --recursive
 - `src/main.js` 只负责导入模块并按顺序初始化实验。
 - 共享 Canvas、颜色、数学、着色和 WebGL 工具位于 `src/render/`。
 - `package.json` 只提供本地检查脚本；生产不依赖 Node、npm 或前端包管理器。
+- 纹理与着色滑杆使用逐帧合并和预览质量，松手后恢复全质量，避免主线程连续重绘。
 - 修改 JavaScript 模块时，除了更新 `index.html` 里的入口 query-string，也要同步更新静态 import URL 上的版本号，避免 Nginx 7 天缓存命中旧模块。
 
 ## 部署位置
@@ -92,13 +94,20 @@ sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776
 
 ```bash
 npm run check:js
+npm run check:color
 npm run check:ui
 git diff --check
 sudo nginx -t
 curl -I https://www.jrqz776.com
 ```
 
-`npm run check:ui` 使用 Playwright 打开生产站点，检查首页和章节页的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白，并把截图输出到 `.tmp/ui-checks/`。
+`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:ui` 使用 Playwright 打开生产站点，检查首页、章节页和中文导读的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
+
+如需检查尚未部署的工作区，可先启动本地静态服务器，再传入地址：
+
+```bash
+npm run check:ui -- http://127.0.0.1:4173
+```
 
 ## DNS
 

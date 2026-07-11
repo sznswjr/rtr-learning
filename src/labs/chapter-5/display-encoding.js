@@ -1,6 +1,6 @@
-import { drawCurve, prepareCanvas } from "../../render/canvas.js?v=20260704-1";
-import { rgbToCss } from "../../render/color.js?v=20260704-1";
-import { clamp, formatUnit } from "../../render/math.js?v=20260704-1";
+import { drawCurve, prepareCanvas } from "../../render/canvas.js?v=20260710-1";
+import { rgbToCss } from "../../render/color.js?v=20260710-1";
+import { clamp, formatUnit } from "../../render/math.js?v=20260710-1";
 
 const encodingState = {
   gamma: 220,

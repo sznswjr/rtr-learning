@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="通过七个交互实验理解着色、采样、抗锯齿、透明合成与显示编码。" />
     <title>Chapter 5 着色基础 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260704-2" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260711-1" />
   </head>
   <body>
-    <main class="app-shell">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <main class="app-shell" id="main-content">
       <header class="topbar">
         <div>
           <p class="eyebrow">Real-Time Rendering 4th</p>
@@ -15,7 +17,7 @@
         </div>
         <div class="topbar-actions">
           <a class="status-pill nav-pill" href="../index.html">实验首页</a>
-          <div class="status-pill" id="gpuStatus">WebGL2 初始化中</div>
+          <div class="status-pill" id="gpuStatus" role="status" aria-live="polite">WebGL2 初始化中</div>
         </div>
       </header>
 
@@ -255,7 +257,7 @@
             <article class="viewport-panel">
               <div class="panel-heading">
                 <h2>无抗锯齿</h2>
-                <span>1 sample / pixel</span>
+                <span>每像素 1 个样本</span>
               </div>
               <canvas id="noaaCanvas" width="520" height="420"></canvas>
             </article>
@@ -263,7 +265,7 @@
             <article class="viewport-panel">
               <div class="panel-heading">
                 <h2>SSAA</h2>
-                <span id="ssaaLabel">4x supersampling</span>
+                <span id="ssaaLabel">4× 超采样</span>
               </div>
               <canvas id="ssaaCanvas" width="520" height="420"></canvas>
             </article>
@@ -271,7 +273,7 @@
             <article class="viewport-panel">
               <div class="panel-heading">
                 <h2>MSAA</h2>
-                <span id="msaaLabel">4x multisampling</span>
+                <span id="msaaLabel">4× 多重采样</span>
               </div>
               <canvas id="msaaCanvas" width="520" height="420"></canvas>
             </article>
@@ -302,11 +304,11 @@
             <div class="control-group">
               <label for="sampleCount">样本数量</label>
               <select id="sampleCount">
-                <option value="1">1 sample</option>
-                <option value="2">2 samples</option>
-                <option value="4" selected>4 samples</option>
-                <option value="8">8 samples</option>
-                <option value="16">16 samples</option>
+                <option value="1">1 个样本</option>
+                <option value="2">2 个样本</option>
+                <option value="4" selected>4 个样本</option>
+                <option value="8">8 个样本</option>
+                <option value="16">16 个样本</option>
               </select>
             </div>
 
@@ -348,7 +350,7 @@
             <article class="viewport-panel">
               <div class="panel-heading">
                 <h2>单像素采样位置</h2>
-                <span id="samplingPatternLabel">4 samples</span>
+                <span id="samplingPatternLabel">4 个样本</span>
               </div>
               <canvas class="sampling-canvas" id="samplingPatternCanvas" width="640" height="520"></canvas>
             </article>
@@ -469,6 +471,6 @@
       </section>
     </main>
 
-    <script type="module" src="../src/pages/chapter-5.js?v=20260704-1"></script>
+    <script type="module" src="../src/pages/chapter-5.js?v=20260711-1"></script>
   </body>
 </html>

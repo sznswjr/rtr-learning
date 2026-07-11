@@ -1,5 +1,7 @@
 :root {
   color-scheme: dark;
+  --focus-ring: #7fffe3;
+  --sticky-nav-offset: 72px;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -32,6 +34,29 @@ select {
 
 a {
   color: inherit;
+}
+
+:where(a, button, input, select):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  transform: translateY(-160%);
+  border-radius: 6px;
+  padding: 10px 14px;
+  background: #e8fff8;
+  color: #101314;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 .app-shell {
@@ -77,8 +102,12 @@ h1 {
 }
 
 .status-pill {
+  display: inline-flex;
   flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
   min-width: 144px;
+  min-height: 44px;
   border: 1px solid rgba(142, 212, 199, 0.32);
   border-radius: 999px;
   padding: 9px 14px;
@@ -203,7 +232,9 @@ h1 {
 }
 
 .home-nav-lab {
-  min-height: 34px;
+  display: flex;
+  align-items: center;
+  min-height: 42px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   padding: 8px 10px;
@@ -240,6 +271,10 @@ h1 {
   top: 0;
   z-index: 20;
   overflow-x: auto;
+  scroll-padding-inline: 8px;
+  scroll-snap-type: x proximity;
+  scrollbar-color: rgba(142, 212, 199, 0.46) transparent;
+  scrollbar-width: thin;
   margin: -6px 0 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -252,13 +287,14 @@ h1 {
   flex: 0 0 auto;
   align-items: center;
   gap: 8px;
-  min-height: 38px;
+  min-height: 44px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   padding: 8px 10px;
   background: #131819;
   color: #b8cac6;
   text-decoration: none;
+  scroll-snap-align: center;
 }
 
 .chapter-nav a:hover,
@@ -291,7 +327,7 @@ h1 {
   display: grid;
   gap: 18px;
   position: sticky;
-  top: 20px;
+  top: var(--sticky-nav-offset);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 8px;
   padding: 18px;
@@ -326,11 +362,14 @@ h1 {
 }
 
 input[type="range"] {
+  min-height: 32px;
+  margin: 0;
   accent-color: #3fceb4;
+  cursor: pointer;
 }
 
 select {
-  min-height: 40px;
+  min-height: 44px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 6px;
   padding: 0 10px;
@@ -398,6 +437,20 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background: #15191a;
+}
+
+.webgl-fallback {
+  grid-column: 1 / -1;
+  border: 1px solid rgba(255, 123, 92, 0.4);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(255, 123, 92, 0.08);
+  color: #ffcfbf;
+  line-height: 1.55;
+}
+
+.is-unavailable .viewport-grid .viewport-panel {
+  opacity: 0.48;
 }
 
 .panel-heading {
@@ -535,9 +588,27 @@ canvas {
   text-decoration: none;
 }
 
-.translation-sidebar .is-active {
+.translation-sidebar .is-active,
+.translation-sidebar .is-available {
   background: rgba(142, 212, 199, 0.12);
   color: #e8fff8;
+}
+
+.translation-sidebar .is-available::after,
+.translation-sidebar .is-pending::after {
+  float: right;
+  margin-left: 8px;
+  color: #8ed4c7;
+  font-size: 0.72rem;
+}
+
+.translation-sidebar .is-available::after {
+  content: "已整理";
+}
+
+.translation-sidebar .is-pending::after {
+  content: "待整理";
+  color: #748783;
 }
 
 .translation-article {
@@ -552,6 +623,10 @@ canvas {
   margin-top: 34px;
   padding-top: 30px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.translation-article section {
+  scroll-margin-top: 72px;
 }
 
 .translation-article h2 {
@@ -613,6 +688,19 @@ canvas {
   padding: 12px 0 12px 16px;
   background: rgba(142, 212, 199, 0.08);
   color: #e8fff8;
+}
+
+.translation-action a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border: 1px solid rgba(142, 212, 199, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: rgba(142, 212, 199, 0.1);
+  color: #e8fff8;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .chapter-list {
@@ -692,10 +780,6 @@ canvas {
     grid-template-columns: 1fr;
   }
 
-  .chapter-nav {
-    position: static;
-  }
-
   .translation-hero,
   .translation-layout {
     grid-template-columns: 1fr;
@@ -719,6 +803,11 @@ canvas {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 7.5vw, 2rem);
+    line-height: 1.1;
   }
 
   .controls,
@@ -746,7 +835,7 @@ canvas {
   }
 
   .chapter-nav a {
-    min-width: 128px;
+    min-width: 118px;
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
@@ -764,9 +853,64 @@ canvas {
     justify-content: flex-start;
   }
 
+  .translation-sidebar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 18;
+    overflow-x: auto;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    background: rgba(16, 19, 20, 0.96);
+    scrollbar-width: thin;
+  }
+
+  .translation-sidebar .eyebrow,
+  .translation-sidebar .is-pending {
+    display: none;
+  }
+
+  .translation-sidebar a {
+    flex: 0 0 auto;
+    min-height: 42px;
+  }
+
+  .translation-sidebar .is-available::after {
+    display: none;
+  }
+
   .book-facts div,
   .term-grid,
   .chapter-list {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .pipeline-canvas {
+    aspect-ratio: 0.5;
+  }
+
+  .texture-filter-canvas {
+    aspect-ratio: 0.54;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 920px) {
+  .texture-filter-canvas {
+    aspect-ratio: 1.1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
   }
 }

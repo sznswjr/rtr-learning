@@ -1,7 +1,7 @@
-import { prepareCanvas } from "../../render/canvas.js?v=20260704-1";
-import { hslToRgb, rgbToCss } from "../../render/color.js?v=20260704-1";
-import { TAU, dot3, formatUnit, getLightVector } from "../../render/math.js?v=20260704-1";
-import { getSphereColor } from "../../render/shading.js?v=20260704-1";
+import { prepareCanvas } from "../../render/canvas.js?v=20260710-1";
+import { hslToRgb, rgbToCss } from "../../render/color.js?v=20260710-1";
+import { TAU, dot3, formatUnit, getLightVector } from "../../render/math.js?v=20260710-1";
+import { getSphereColor } from "../../render/shading.js?v=20260710-1";
 
 const shadingState = {
   model: "gooch",
@@ -25,7 +25,8 @@ const ui = {
 };
 
 function drawShadedSphere(ctx, cx, cy, radius, options) {
-  const step = Math.max(2, Math.floor(radius / 92));
+  const baseStep = Math.max(2, Math.floor(radius / 92));
+  const step = options.preview ? baseStep * 2 : baseStep;
   for (let y = -radius; y <= radius; y += step) {
     for (let x = -radius; x <= radius; x += step) {
       const nx = (x + step * 0.5) / radius;
@@ -80,7 +81,7 @@ function drawVectorGlyph(ctx, x, y, angle, color, label) {
   ctx.fillText(label, x + 48, y - 8);
 }
 
-function renderShadingModelLab() {
+function renderShadingModelLab(preview = false) {
   const { ctx, height, width } = prepareCanvas(ui.shadingModelCanvas);
   const light = getLightVector(shadingState.lightAngle);
   const baseColor = hslToRgb(shadingState.surfaceHue, 0.6, 0.56);
@@ -107,6 +108,7 @@ function renderShadingModelLab() {
     highlightStrength: shadingState.highlightStrength,
     light,
     model: shadingState.model,
+    preview,
   });
 
   const panelX = width * 0.66;
@@ -136,23 +138,51 @@ function renderShadingModelLab() {
 }
 
 export function initShadingModelsLab() {
+  let renderFrame = 0;
+  let settleTimer = 0;
+  let pendingPreview = false;
+
+  function scheduleRender(preview = false) {
+    pendingPreview = preview;
+    if (renderFrame) {
+      return;
+    }
+    renderFrame = window.requestAnimationFrame(() => {
+      renderFrame = 0;
+      renderShadingModelLab(pendingPreview);
+    });
+  }
+
+  function schedulePreviewThenFull() {
+    window.clearTimeout(settleTimer);
+    scheduleRender(true);
+    settleTimer = window.setTimeout(() => scheduleRender(false), 160);
+  }
+
   ui.shadingModel.addEventListener("change", () => {
     shadingState.model = ui.shadingModel.value;
-    renderShadingModelLab();
+    scheduleRender(false);
   });
   ui.lightAngle.addEventListener("input", () => {
     shadingState.lightAngle = Number(ui.lightAngle.value);
-    renderShadingModelLab();
+    schedulePreviewThenFull();
   });
   ui.surfaceHue.addEventListener("input", () => {
     shadingState.surfaceHue = Number(ui.surfaceHue.value);
-    renderShadingModelLab();
+    schedulePreviewThenFull();
   });
   ui.highlightStrength.addEventListener("input", () => {
     shadingState.highlightStrength = Number(ui.highlightStrength.value);
-    renderShadingModelLab();
+    schedulePreviewThenFull();
   });
 
-  window.addEventListener("resize", renderShadingModelLab);
+  [ui.lightAngle, ui.surfaceHue, ui.highlightStrength].forEach((control) => {
+    control.addEventListener("change", () => {
+      window.clearTimeout(settleTimer);
+      scheduleRender(false);
+    });
+  });
+
+  window.addEventListener("resize", schedulePreviewThenFull);
   renderShadingModelLab();
 }
