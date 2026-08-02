@@ -117,9 +117,9 @@ export const contentRegistry = [
   {
     id: "rtr4-cn",
     title: "RTR4 中文导读",
-    summary: "Chapter 0-2 的站内导读，连接书中概念与交互实验",
+    summary: "Chapter 0-26 的完整站内导读，连接全书概念与交互实验",
     href: "./translations/rtr4-cn.html",
-    range: "Chapter 0-2",
+    range: "Chapter 0-26",
   },
 ];
 

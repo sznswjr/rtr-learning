@@ -578,6 +578,9 @@ canvas {
   gap: 8px;
   position: sticky;
   top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 8px;
   padding: 16px;
@@ -706,6 +709,24 @@ canvas {
   color: #e8fff8;
   font-weight: 700;
   text-decoration: none;
+}
+
+.chapter-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chapter-topics li {
+  border: 1px solid rgba(142, 212, 199, 0.2);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(142, 212, 199, 0.07);
+  color: #bfd1cd;
+  font-size: 0.82rem;
 }
 
 .chapter-list {
@@ -863,7 +884,9 @@ canvas {
     position: sticky;
     top: 0;
     z-index: 18;
+    max-height: none;
     overflow-x: auto;
+    overflow-y: hidden;
     align-items: center;
     gap: 6px;
     padding: 8px;

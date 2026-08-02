@@ -48,12 +48,12 @@ Last updated: 2026-07-11
   - `shading-frequency.js`
   - `shading-models.js`
   - `transparency-compositing.js`
-- Chapter 6 lab code now lives in `src/labs/chapter-6/texture-filtering.js`.
+- Chapter 6 lab code now lives in `src/labs/chapter-6/`, covering texture filtering, cube-map environment mapping, and WebGL2 3D volume textures.
 - Shared Canvas, color, math, shading, and WebGL helpers now live in `src/render/`.
 - The HSL hue normalization bug in `src/render/color.js` is covered by `scripts/check-color.mjs`.
 - Expensive shading and texture controls render a coalesced preview while dragging and restore full quality after interaction settles.
 - `src/main.js` is now a small module entrypoint that initializes labs.
-- The translation page is available at `translations/rtr4-cn.html` and currently includes organized Chinese reading content for Chapter 0-2.
+- The translation page is available at `translations/rtr4-cn.html` and includes organized Chinese reading content for Chapter 0-26, with a complete chapter index, topic summaries, source links, and related lab entry points.
 - Local knowledge base is tracked as a Git submodule at `knowledge/Real-Time-Rendering-4th-CN`, pinned to `9c2e724e688fc921ec0486d8fde4f516af2a5873` from `https://github.com/Morakito/Real-Time-Rendering-4th-CN.git`.
 
 ## Stack
@@ -105,9 +105,9 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 
 Latest production deployment:
 
-- Date: 2026-07-11
-- Added Chapter 6.4 cube-map environment mapping and Chapter 6.5 WebGL2 3D texture experiments, including responsive layouts and coalesced low-resolution volume previews while controls are moving.
-- Asset cache version: `20260711-2` for CSS and the environment modules; `20260711-3` for the final volume interaction update.
+- Date: 2026-08-02
+- Completed the Chapter 0-26 Chinese guide with navigable chapter summaries, topic indexes, source references, related lab links, and a scrollable responsive chapter navigation.
+- Asset cache version: `20260802-1` for CSS, navigation modules, and page entry modules.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
@@ -115,19 +115,11 @@ Latest production deployment:
   - `git diff --check`
   - `sudo nginx -t`
   - `curl -I https://www.jrqz776.com` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/chapters/chapter-2.html` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/chapters/chapter-5.html` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/chapters/chapter-6.html` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/main.js?v=20260711-2` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/app/chapter-nav.js?v=20260711-2` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/pages/chapter-2.js?v=20260711-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/pages/chapter-5.js?v=20260711-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/pages/chapter-6.js?v=20260711-3` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-6/texture-filtering.js?v=20260710-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-6/environment-mapping.js?v=20260711-2` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-6/volume-textures.js?v=20260711-3` returned `HTTP/2 200`
+  - Production UI check passed for 5 pages across desktop, laptop, tablet, and mobile viewports.
+  - `curl -I https://www.jrqz776.com/src/main.js?v=20260802-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/styles.css?v=20260802-1` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/translations/rtr4-cn.html` returned `HTTP/2 200`
-  - `curl -I http://www.jrqz776.com` returned `301` to HTTPS
+  - The deployed translation page checksum matched the workspace file.
 
 ## Server Context
 

@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="《Real-Time Rendering 4th》Chapter 0-2 中文导读与配套实验入口。" />
-    <title>RTR4 中文导读 | Chapter 0-2</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260711-2" />
+    <meta name="description" content="《Real-Time Rendering 4th》Chapter 0-26 中文导读与配套实验入口。" />
+    <title>RTR4 中文导读 | Chapter 0-26</title>
+    <link rel="stylesheet" href="../src/styles.css?v=20260802-1" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -20,34 +20,56 @@
 
       <section class="translation-hero" aria-label="中文导读首页">
         <div>
-          <p class="eyebrow">Chapter 0-2</p>
-          <h2>前言、简介与渲染管线</h2>
+          <p class="eyebrow">Chapter 0-26</p>
+          <h2>从渲染管线到实时光线追踪</h2>
           <p>
-            本页整理《Real-Time Rendering, Fourth Edition》的中文译本前言、简介与图形渲染管线部分，内容来源为本地知识库
-            <code>knowledge/Real-Time-Rendering-4th-CN/sourceFile</code>。
+            本页按完整章节整理《Real-Time Rendering, Fourth Edition》中文译本的技术脉络，覆盖前言、正文与两个在线扩展章节。
+            内容以本地知识库 <code>knowledge/Real-Time-Rendering-4th-CN/sourceFile</code> 为依据，并连接站内交互实验。
           </p>
         </div>
         <nav class="translation-jump" aria-label="章节内导航">
           <a href="#about-book">关于本书</a>
           <a href="#links">相关链接</a>
-          <a href="#preface">序言</a>
-          <a href="#chapter-1">简介</a>
-          <a href="#notation">符号</a>
-          <a href="#chapter-2">渲染管线</a>
-          <a href="#pipeline-stages">管线阶段</a>
           <a href="#toc">目录</a>
+          <a href="#chapter-1">基础</a>
+          <a href="#chapter-5">着色</a>
+          <a href="#chapter-9">光照</a>
+          <a href="#chapter-13">几何与体积</a>
+          <a href="#chapter-18">性能</a>
+          <a href="#chapter-25">扩展章节</a>
         </nav>
       </section>
 
       <div class="translation-layout">
         <aside class="translation-sidebar" aria-label="导读章节">
-          <p class="eyebrow">整理进度</p>
+          <p class="eyebrow">完整导读</p>
           <a class="is-available" href="#chapter-0">Chapter 0 前言</a>
           <a class="is-available" href="#chapter-1">Chapter 1 简介</a>
           <a class="is-available" href="#chapter-2">Chapter 2 图形渲染管线</a>
-          <span class="is-pending">Chapter 3 图形处理单元</span>
-          <span class="is-pending">Chapter 4 变换</span>
-          <span class="is-pending">Chapter 5 着色基础</span>
+          <a class="is-available" href="#chapter-3">Chapter 3 图形处理单元</a>
+          <a class="is-available" href="#chapter-4">Chapter 4 变换</a>
+          <a class="is-available" href="#chapter-5">Chapter 5 着色基础</a>
+          <a class="is-available" href="#chapter-6">Chapter 6 纹理</a>
+          <a class="is-available" href="#chapter-7">Chapter 7 阴影</a>
+          <a class="is-available" href="#chapter-8">Chapter 8 光与颜色</a>
+          <a class="is-available" href="#chapter-9">Chapter 9 基于物理的着色</a>
+          <a class="is-available" href="#chapter-10">Chapter 10 局部光照</a>
+          <a class="is-available" href="#chapter-11">Chapter 11 全局光照</a>
+          <a class="is-available" href="#chapter-12">Chapter 12 图像空间特效</a>
+          <a class="is-available" href="#chapter-13">Chapter 13 超越多边形</a>
+          <a class="is-available" href="#chapter-14">Chapter 14 体积与半透明</a>
+          <a class="is-available" href="#chapter-15">Chapter 15 非真实感渲染</a>
+          <a class="is-available" href="#chapter-16">Chapter 16 多边形技术</a>
+          <a class="is-available" href="#chapter-17">Chapter 17 曲线和曲面</a>
+          <a class="is-available" href="#chapter-18">Chapter 18 管线优化</a>
+          <a class="is-available" href="#chapter-19">Chapter 19 加速算法</a>
+          <a class="is-available" href="#chapter-20">Chapter 20 高效着色</a>
+          <a class="is-available" href="#chapter-21">Chapter 21 VR 与 AR</a>
+          <a class="is-available" href="#chapter-22">Chapter 22 相交测试</a>
+          <a class="is-available" href="#chapter-23">Chapter 23 图形硬件</a>
+          <a class="is-available" href="#chapter-24">Chapter 24 未来</a>
+          <a class="is-available" href="#chapter-25">Chapter 25 碰撞检测</a>
+          <a class="is-available" href="#chapter-26">Chapter 26 实时光追</a>
         </aside>
 
         <article class="translation-article" id="chapter-0">
@@ -93,9 +115,8 @@
               <li><a href="https://www.realtimerendering.com/refs.html">RTR4 参考文献页面</a></li>
               <li><a href="https://github.com/Morakito/Real-Time-Rendering-4th-CN">中文译本源文件仓库</a></li>
               <li><a href="https://github.com/QianMo/Real-Time-Rendering-4th-Bibliography-Collection">参考文献合集仓库</a></li>
-              <li><a href="../knowledge/Real-Time-Rendering-4th-CN/sourceFile/Chapter%200%20%E5%89%8D%E8%A8%80.md">本地 Chapter 0 Markdown 源文件</a></li>
-              <li><a href="../knowledge/Real-Time-Rendering-4th-CN/sourceFile/Chapter%201%20Introduction%20%E7%AE%80%E4%BB%8B.md">本地 Chapter 1 Markdown 源文件</a></li>
-              <li><a href="../knowledge/Real-Time-Rendering-4th-CN/sourceFile/Chapter%202%20The%20Graphics%20Rendering%20Pipeline%20%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF.md">本地 Chapter 2 Markdown 源文件</a></li>
+              <li><a href="https://www.wolai.com/fkGSwxLu2pjWD7kiBY1V7W">中文译本在线阅读</a></li>
+              <li><a href="https://github.com/Morakito/Real-Time-Rendering-4th-CN/tree/main/sourceFile">Chapter 0-26 Markdown 源文件</a></li>
             </ul>
           </section>
 
@@ -122,30 +143,30 @@
               <a href="#chapter-0"><strong>Chapter 0</strong><span>前言</span></a>
               <a href="#chapter-1"><strong>Chapter 1</strong><span>Introduction 简介</span></a>
               <a href="#chapter-2"><strong>Chapter 2</strong><span>The Graphics Rendering Pipeline 图形渲染管线</span></a>
-              <span><strong>Chapter 3</strong><span>The Graphics Processing Unit 图形处理单元</span></span>
-              <span><strong>Chapter 4</strong><span>Transform 变换</span></span>
-              <span><strong>Chapter 5</strong><span>Shading Basics 着色基础</span></span>
-              <span><strong>Chapter 6</strong><span>Texturing 纹理</span></span>
-              <span><strong>Chapter 7</strong><span>Shadows 阴影</span></span>
-              <span><strong>Chapter 8</strong><span>Light and Color 光与颜色</span></span>
-              <span><strong>Chapter 9</strong><span>Physically Based Shading 基于物理的着色</span></span>
-              <span><strong>Chapter 10</strong><span>Local Illumination 局部光照</span></span>
-              <span><strong>Chapter 11</strong><span>Global Illumination 全局光照</span></span>
-              <span><strong>Chapter 12</strong><span>Image-Space Effects 图像空间特效</span></span>
-              <span><strong>Chapter 13</strong><span>Beyond Polygons 超越多边形</span></span>
-              <span><strong>Chapter 14</strong><span>Volumetric and Translucency Rendering 体积与半透明渲染</span></span>
-              <span><strong>Chapter 15</strong><span>Non-Photorealistic Rendering 非真实感渲染</span></span>
-              <span><strong>Chapter 16</strong><span>Polygonal Techniques 多边形技术</span></span>
-              <span><strong>Chapter 17</strong><span>Curves and Curved Surfaces 曲线和曲面</span></span>
-              <span><strong>Chapter 18</strong><span>Pipeline Optimization 管线优化</span></span>
-              <span><strong>Chapter 19</strong><span>Acceleration Algorithms 加速算法</span></span>
-              <span><strong>Chapter 20</strong><span>Efficient Shading 高效着色</span></span>
-              <span><strong>Chapter 21</strong><span>Virtual and Augmented Reality 虚拟现实和增强现实</span></span>
-              <span><strong>Chapter 22</strong><span>Intersection Test Methods 相交测试方法</span></span>
-              <span><strong>Chapter 23</strong><span>Graphics Hardware 图形硬件</span></span>
-              <span><strong>Chapter 24</strong><span>The Future 未来</span></span>
-              <span><strong>Chapter 25</strong><span>Collision Detection 碰撞检测</span></span>
-              <span><strong>Chapter 26</strong><span>Real-Time Ray Tracing 实时光线追踪</span></span>
+              <a href="#chapter-3"><strong>Chapter 3</strong><span>The Graphics Processing Unit 图形处理单元</span></a>
+              <a href="#chapter-4"><strong>Chapter 4</strong><span>Transform 变换</span></a>
+              <a href="#chapter-5"><strong>Chapter 5</strong><span>Shading Basics 着色基础</span></a>
+              <a href="#chapter-6"><strong>Chapter 6</strong><span>Texturing 纹理</span></a>
+              <a href="#chapter-7"><strong>Chapter 7</strong><span>Shadows 阴影</span></a>
+              <a href="#chapter-8"><strong>Chapter 8</strong><span>Light and Color 光与颜色</span></a>
+              <a href="#chapter-9"><strong>Chapter 9</strong><span>Physically Based Shading 基于物理的着色</span></a>
+              <a href="#chapter-10"><strong>Chapter 10</strong><span>Local Illumination 局部光照</span></a>
+              <a href="#chapter-11"><strong>Chapter 11</strong><span>Global Illumination 全局光照</span></a>
+              <a href="#chapter-12"><strong>Chapter 12</strong><span>Image-Space Effects 图像空间特效</span></a>
+              <a href="#chapter-13"><strong>Chapter 13</strong><span>Beyond Polygons 超越多边形</span></a>
+              <a href="#chapter-14"><strong>Chapter 14</strong><span>Volumetric and Translucency Rendering 体积与半透明渲染</span></a>
+              <a href="#chapter-15"><strong>Chapter 15</strong><span>Non-Photorealistic Rendering 非真实感渲染</span></a>
+              <a href="#chapter-16"><strong>Chapter 16</strong><span>Polygonal Techniques 多边形技术</span></a>
+              <a href="#chapter-17"><strong>Chapter 17</strong><span>Curves and Curved Surfaces 曲线和曲面</span></a>
+              <a href="#chapter-18"><strong>Chapter 18</strong><span>Pipeline Optimization 管线优化</span></a>
+              <a href="#chapter-19"><strong>Chapter 19</strong><span>Acceleration Algorithms 加速算法</span></a>
+              <a href="#chapter-20"><strong>Chapter 20</strong><span>Efficient Shading 高效着色</span></a>
+              <a href="#chapter-21"><strong>Chapter 21</strong><span>Virtual and Augmented Reality 虚拟现实和增强现实</span></a>
+              <a href="#chapter-22"><strong>Chapter 22</strong><span>Intersection Test Methods 相交测试方法</span></a>
+              <a href="#chapter-23"><strong>Chapter 23</strong><span>Graphics Hardware 图形硬件</span></a>
+              <a href="#chapter-24"><strong>Chapter 24</strong><span>The Future 未来</span></a>
+              <a href="#chapter-25"><strong>Chapter 25</strong><span>Collision Detection 碰撞检测</span></a>
+              <a href="#chapter-26"><strong>Chapter 26</strong><span>Real-Time Ray Tracing 实时光线追踪</span></a>
             </div>
           </section>
 
@@ -330,6 +351,299 @@
             </p>
             <p class="translation-action">
               <a href="../chapters/chapter-2.html#rendering-pipeline">打开 Chapter 2 图形渲染管线实验 →</a>
+            </p>
+          </section>
+
+          <section id="chapter-3">
+            <p class="eyebrow">Chapter 3</p>
+            <h2>The Graphics Processing Unit 图形处理单元</h2>
+            <p>
+              本章从数据并行的角度解释 GPU：大量着色器调用以成组线程执行，固定功能单元与可编程阶段共同组成现代图形管线。
+              阅读重点是理解数据怎样依次经过顶点、曲面细分、几何、像素与合并阶段，以及计算着色器如何把同一套并行硬件用于通用任务。
+            </p>
+            <ul class="chapter-topics">
+              <li>数据并行结构</li><li>可编程着色器</li><li>曲面细分与几何阶段</li><li>像素与合并阶段</li><li>计算着色器</li>
+            </ul>
+          </section>
+
+          <section id="chapter-4">
+            <p class="eyebrow">Chapter 4</p>
+            <h2>Transform 变换</h2>
+            <p>
+              变换把模型、相机和投影连接在统一的数学框架中。本章从平移、旋转、缩放和矩阵组合出发，继续讨论矩阵分解、四元数、
+              蒙皮与变形、几何缓存回放，以及正交和透视投影。关键实践是明确坐标空间、组合顺序和法线变换，避免看似细小却会贯穿整条管线的错误。
+            </p>
+            <ul class="chapter-topics">
+              <li>基本矩阵变换</li><li>四元数</li><li>顶点混合与蒙皮</li><li>变形和缓存动画</li><li>投影</li>
+            </ul>
+          </section>
+
+          <section id="chapter-5">
+            <p class="eyebrow">Chapter 5</p>
+            <h2>Shading Basics 着色基础</h2>
+            <p>
+              本章建立后续外观计算的共同语言：着色模型描述表面对光的响应，光源提供方向、颜色与衰减，实现时还要选择逐物体、逐顶点或逐像素的计算频率。
+              采样与抗锯齿、透明度和 Alpha 合成、线性颜色与显示编码则决定最终像素怎样稳定而正确地出现在屏幕上。
+            </p>
+            <ul class="chapter-topics">
+              <li>着色模型</li><li>光源与衰减</li><li>计算频率</li><li>抗锯齿</li><li>透明合成</li><li>显示编码</li>
+            </ul>
+            <p class="translation-action"><a href="../chapters/chapter-5.html">打开 Chapter 5 七个交互实验 →</a></p>
+          </section>
+
+          <section id="chapter-6">
+            <p class="eyebrow">Chapter 6</p>
+            <h2>Texturing 纹理</h2>
+            <p>
+              纹理把图像、程序信号和更高维数据映射到表面或空间。本章沿纹理管线梳理坐标、采样、过滤与 MIP 映射，随后扩展到程序化纹理、
+              纹理动画、材质与 Alpha 映射、凹凸和视差技术，以及用纹理表达光照。核心问题始终是“从哪里采样”和“一个像素覆盖多大纹理区域”。
+            </p>
+            <ul class="chapter-topics">
+              <li>纹理管线与过滤</li><li>图像和程序化纹理</li><li>材质与 Alpha 映射</li><li>凹凸和视差映射</li><li>纹理光源</li>
+            </ul>
+            <p class="translation-action"><a href="../chapters/chapter-6.html">打开 Chapter 6 纹理实验 →</a></p>
+          </section>
+
+          <section id="chapter-7">
+            <p class="eyebrow">Chapter 7</p>
+            <h2>Shadows 阴影</h2>
+            <p>
+              阴影既提供光源遮挡关系，也强化物体的接触、尺度和空间位置。本章比较平面投影、阴影体和阴影贴图三类思路，重点展开阴影贴图的精度、偏移与走样问题，
+              以及 PCF、PCSS 和可过滤阴影表示如何近似软阴影；最后延伸到体积阴影和不规则 z-buffer。
+            </p>
+            <ul class="chapter-topics">
+              <li>平面阴影</li><li>阴影体</li><li>阴影贴图</li><li>PCF 与 PCSS</li><li>可过滤与体积阴影</li>
+            </ul>
+          </section>
+
+          <section id="chapter-8">
+            <p class="eyebrow">Chapter 8</p>
+            <h2>Light and Color 光与颜色</h2>
+            <p>
+              本章把渲染中的数值与真实世界的光联系起来。辐射度量描述能量、通量、辐照度与辐亮度，光度学加入人眼响应；
+              从场景到屏幕还必须处理光谱、颜色匹配、颜色空间、曝光、色调映射与显示设备。理解这些量的单位和变换顺序，是可信光照与 HDR 输出的基础。
+            </p>
+            <ul class="chapter-topics">
+              <li>辐射度量</li><li>光度学</li><li>颜色感知</li><li>颜色空间</li><li>曝光与显示变换</li>
+            </ul>
+          </section>
+
+          <section id="chapter-9">
+            <p class="eyebrow">Chapter 9</p>
+            <h2>Physically Based Shading 基于物理的着色</h2>
+            <p>
+              基于物理的着色用守恒、互易和可测量参数约束材质响应。本章从光与相机进入 BRDF，系统解释菲涅尔反射、微观几何与微表面模型，
+              再讨论表面反射、次表面散射、布料、波动光学、分层材质以及材质混合和过滤。目标不是某一条固定公式，而是一套能在不同光照下保持一致的材质体系。
+            </p>
+            <ul class="chapter-topics">
+              <li>BRDF</li><li>菲涅尔反射</li><li>微表面理论</li><li>次表面与布料</li><li>分层材质</li><li>材质过滤</li>
+            </ul>
+          </section>
+
+          <section id="chapter-10">
+            <p class="eyebrow">Chapter 10</p>
+            <h2>Local Illumination 局部光照</h2>
+            <p>
+              局部光照关注直接光和预先表示的环境光如何作用于当前表面。本章从面光源与环境光照开始，介绍球面及半球函数、球谐等紧凑表示，
+              再比较经纬度、球面与立方体环境映射，并说明预过滤环境贴图、分裂积分和 irradiance 环境映射如何服务实时图像照明。
+            </p>
+            <ul class="chapter-topics">
+              <li>面光源</li><li>球面函数</li><li>环境映射</li><li>预过滤环境贴图</li><li>irradiance 表示</li>
+            </ul>
+            <p class="translation-action"><a href="../chapters/chapter-6.html#environment-mapping">观察立方体环境映射实验 →</a></p>
+          </section>
+
+          <section id="chapter-11">
+            <p class="eyebrow">Chapter 11</p>
+            <h2>Global Illumination 全局光照</h2>
+            <p>
+              全局光照考虑光在场景中的多次传输。本章以渲染方程为总框架，连接辐射度与光线追踪，并梳理环境光遮蔽、定向遮蔽、
+              漫反射和镜面全局光照的实时近似。预计算传输、光照探针、体素、屏幕空间反射和动态更新方法各自在范围、延迟、泄漏与成本之间取舍。
+            </p>
+            <ul class="chapter-topics">
+              <li>渲染方程</li><li>环境光遮蔽</li><li>预计算光照</li><li>动态漫反射 GI</li><li>镜面 GI</li><li>统一方法</li>
+            </ul>
+          </section>
+
+          <section id="chapter-12">
+            <p class="eyebrow">Chapter 12</p>
+            <h2>Image-Space Effects 图像空间特效</h2>
+            <p>
+              图像空间技术把已经生成的颜色、深度、法线和运动信息当作下一阶段输入。本章介绍通用滤波与双边滤波，解释重投影如何复用前一帧数据，
+              并把这些工具用于镜头光晕、泛光、景深和运动模糊。它们成本通常与屏幕分辨率相关，但必须面对遮挡、缺失信息和时间稳定性。
+            </p>
+            <ul class="chapter-topics">
+              <li>图像处理</li><li>双边滤波</li><li>时间重投影</li><li>泛光</li><li>景深</li><li>运动模糊</li>
+            </ul>
+          </section>
+
+          <section id="chapter-13">
+            <p class="eyebrow">Chapter 13</p>
+            <h2>Beyond Polygons 超越多边形</h2>
+            <p>
+              三角形不是表达复杂场景的唯一方式。本章覆盖固定视图效果、天空盒和光场，随后讨论 Sprite、图层、广告牌与 impostor 如何用图像代替几何，
+              以及位移、粒子、点和体素怎样在不同尺度表达细节。选择表示法时，需要同时考虑视角自由度、存储、更新频率和过滤方式。
+            </p>
+            <ul class="chapter-topics">
+              <li>天空盒与光场</li><li>Sprite 和广告牌</li><li>Impostor</li><li>粒子系统</li><li>点渲染</li><li>体素</li>
+            </ul>
+          </section>
+
+          <section id="chapter-14">
+            <p class="eyebrow">Chapter 14</p>
+            <h2>Volumetric and Translucency Rendering 体积与半透明渲染</h2>
+            <p>
+              本章把光从理想表面扩展到参与介质和半透明材料。吸收、外散射、内散射、透光率与相位函数构成理论基础，随后用于雾、体积光、天空和云；
+              表面部分则处理透明、折射、焦散、次表面散射、毛发与皮毛。统一视角是追踪光沿路径传播时不断变化的能量与方向分布。
+            </p>
+            <ul class="chapter-topics">
+              <li>光线散射</li><li>雾与体积光</li><li>天空和云</li><li>半透明与折射</li><li>次表面散射</li><li>毛发和皮毛</li>
+            </ul>
+            <p class="translation-action"><a href="../chapters/chapter-6.html#volume-textures">观察三维纹理与体积采样实验 →</a></p>
+          </section>
+
+          <section id="chapter-15">
+            <p class="eyebrow">Chapter 15</p>
+            <h2>Non-Photorealistic Rendering 非真实感渲染</h2>
+            <p>
+              非真实感渲染不以复制照片为唯一目标，而是把视觉风格和信息表达纳入渲染模型。本章从分段色调的卡通着色出发，比较基于几何和图像的轮廓检测，
+              再扩展到笔触表面、线条、隐藏线、光晕和文本。技术评价标准也随之变化：清晰、可控和风格一致往往比物理精确更重要。
+            </p>
+            <ul class="chapter-topics">
+              <li>卡通着色</li><li>轮廓检测</li><li>笔触风格</li><li>线条与隐藏线</li><li>文本渲染</li>
+            </ul>
+          </section>
+
+          <section id="chapter-16">
+            <p class="eyebrow">Chapter 16</p>
+            <h2>Polygonal Techniques 多边形技术</h2>
+            <p>
+              本章讨论三维数据进入实时管线之前和之后的几何工程问题：曲面如何细分为三角形，网格如何保持方向、实体性、平滑法线与无裂缝边界，
+              三角形带、索引缓冲和缓存友好布局如何减少传输与重复计算。简化、压缩和精度选择进一步决定资产在不同平台上的成本与质量。
+            </p>
+            <ul class="chapter-topics">
+              <li>数据来源</li><li>曲面细分</li><li>网格整合</li><li>索引与缓存布局</li><li>简化</li><li>压缩和精度</li>
+            </ul>
+          </section>
+
+          <section id="chapter-17">
+            <p class="eyebrow">Chapter 17</p>
+            <h2>Curves and Curved Surfaces 曲线和曲面</h2>
+            <p>
+              曲线和曲面用紧凑控制参数表达连续形状。本章从 Bézier、Hermite、Kochanek–Bartels 与 B 样条曲线进入参数曲面和 Bézier 面片，
+              然后讨论隐式表面、Loop 与 Catmull–Clark 细分。GPU 实现关心连续性、误差界、自适应细分和如何只在屏幕真正需要的地方生成几何。
+            </p>
+            <ul class="chapter-topics">
+              <li>参数化曲线</li><li>Bézier 与 B 样条</li><li>参数化和隐式曲面</li><li>细分曲面</li><li>自适应细分</li>
+            </ul>
+          </section>
+
+          <section id="chapter-18">
+            <p class="eyebrow">Chapter 18</p>
+            <h2>Pipeline Optimization 管线优化</h2>
+            <p>
+              优化从测量而不是猜测开始。本章先介绍分析与调试工具，再通过改变应用、几何、光栅化、像素和合并阶段的负载定位瓶颈；
+              随后分别讨论内存访问、API 调用、状态切换、批处理、实例化、着色成本、帧缓冲与多处理。帧时间和稳定性比单独追求平均 FPS 更能说明体验。
+            </p>
+            <ul class="chapter-topics">
+              <li>分析与调试</li><li>瓶颈定位</li><li>帧时间测量</li><li>CPU 与 API 优化</li><li>GPU 各阶段优化</li><li>多处理</li>
+            </ul>
+          </section>
+
+          <section id="chapter-19">
+            <p class="eyebrow">Chapter 19</p>
+            <h2>Acceleration Algorithms 加速算法</h2>
+            <p>
+              加速算法通过尽早拒绝不可见或不重要的工作来扩大可渲染场景。本章从 BVH、BSP、k-d 树、八叉树和场景图等空间结构出发，
+              系统比较背面、视锥体、入口、小物体与遮挡剔除；随后用 LOD、虚拟纹理、流式传输和地形技术管理超出即时内存与计算预算的大型世界。
+            </p>
+            <ul class="chapter-topics">
+              <li>空间数据结构</li><li>视锥体与遮挡剔除</li><li>层次 Z 缓冲</li><li>LOD</li><li>虚拟纹理</li><li>大型场景流式传输</li>
+            </ul>
+          </section>
+
+          <section id="chapter-20">
+            <p class="eyebrow">Chapter 20</p>
+            <h2>Efficient Shading 高效着色</h2>
+            <p>
+              当光源、材质和几何数量增长时，着色架构决定系统能否继续扩展。本章比较延迟着色、贴花、分块与聚类着色如何组织可见样本和光源，
+              并讨论延迟纹理、对象空间和纹理空间着色。共同思想是把昂贵工作推迟到信息更充分时执行，并让计算频率匹配信号变化频率。
+            </p>
+            <ul class="chapter-topics">
+              <li>延迟着色</li><li>贴花</li><li>Tiled Shading</li><li>Clustered Shading</li><li>延迟纹理</li><li>对象与纹理空间着色</li>
+            </ul>
+          </section>
+
+          <section id="chapter-21">
+            <p class="eyebrow">Chapter 21</p>
+            <h2>Virtual and Augmented Reality 虚拟现实和增强现实</h2>
+            <p>
+              VR 与 AR 把显示、跟踪、光学和实时渲染组合成闭环系统。本章先建立设备和物理要素的全景，再讨论 API 与硬件支持，
+              以及立体渲染、畸变校正、延迟补偿、注视点渲染和 AR 合成。稳定低延迟不是单一优化点，而是从传感器采样到光子输出的整条链路属性。
+            </p>
+            <ul class="chapter-topics">
+              <li>设备与跟踪</li><li>显示和光学</li><li>XR API</li><li>立体渲染</li><li>延迟补偿</li><li>注视点技术</li>
+            </ul>
+          </section>
+
+          <section id="chapter-22">
+            <p class="eyebrow">Chapter 22</p>
+            <h2>Intersection Test Methods 相交测试方法</h2>
+            <p>
+              相交测试是拾取、剔除、碰撞与光线追踪的底层工具。本章先讨论包围体构造、几何概率和实现经验，再逐一推导射线与球、盒、三角形和多边形，
+              平面与盒、三角形与三角形、包围体之间、视锥体以及线和平面的测试。实际系统既要正确处理退化情况，也要让最常见拒绝路径足够便宜。
+            </p>
+            <ul class="chapter-topics">
+              <li>GPU 拾取</li><li>包围体</li><li>射线相交</li><li>三角形测试</li><li>包围体测试</li><li>视锥体测试</li>
+            </ul>
+          </section>
+
+          <section id="chapter-23">
+            <p class="eyebrow">Chapter 23</p>
+            <h2>Graphics Hardware 图形硬件</h2>
+            <p>
+              本章深入 GPU 为何能高吞吐地执行图形和计算任务：大规模线程调度用并发隐藏延迟，寄存器和占用率限制同时驻留的工作，
+              内存层次、总线、缓存和压缩决定数据供给。后半部分把这些原则落到颜色、深度、纹理单元、具体架构案例和专用光线追踪硬件上。
+            </p>
+            <ul class="chapter-topics">
+              <li>光栅化硬件</li><li>调度与占用率</li><li>内存和总线</li><li>缓存与压缩</li><li>深度和纹理单元</li><li>光追架构</li>
+            </ul>
+          </section>
+
+          <section id="chapter-24">
+            <p class="eyebrow">Chapter 24</p>
+            <h2>The Future 未来</h2>
+            <p>
+              终章把注意力从已有算法转向仍在变化的边界：更逼真的光传输、更高效的表示、更自然的人机界面，以及研究、工具和硬件之间持续互相推动的关系。
+              它最终把问题交还给读者——实时渲染的未来不只由下一代设备定义，也由学习者选择研究、实现和分享什么来塑造。
+            </p>
+            <ul class="chapter-topics"><li>开放问题</li><li>硬件与算法演进</li><li>研究和实践</li><li>读者的下一步</li></ul>
+          </section>
+
+          <section id="chapter-25">
+            <p class="eyebrow">Chapter 25 · Online</p>
+            <h2>Collision Detection 碰撞检测</h2>
+            <p>
+              这个在线扩展章节把碰撞系统分成宽阶段、中阶段和窄阶段：先快速找出潜在碰撞对，再用空间结构和精确几何测试缩小结果。
+              后续内容覆盖射线、BSP、限时检测、可变形模型、连续碰撞、碰撞响应与粒子系统，重点是在遗漏碰撞、误报、稳定性和帧预算之间建立可控流程。
+            </p>
+            <ul class="chapter-topics">
+              <li>宽中窄阶段</li><li>空间结构</li><li>连续碰撞</li><li>可变形模型</li><li>碰撞响应</li><li>动态相交测试</li>
+            </ul>
+          </section>
+
+          <section id="chapter-26">
+            <p class="eyebrow">Chapter 26 · Online</p>
+            <h2>Real-Time Ray Tracing 实时光线追踪</h2>
+            <p>
+              这个在线扩展章节从光线生成、遍历、相交和着色的基本循环进入现代实时光追 API。顶层与底层加速结构组织实例和几何，
+              各类光追着色器控制命中与未命中后的工作；一致性、采样数量、降噪和纹理过滤则决定低样本结果能否在实时预算内保持稳定。
+            </p>
+            <ul class="chapter-topics">
+              <li>光线追踪基础</li><li>光追着色器</li><li>TLAS 与 BLAS</li><li>一致性</li><li>时空降噪</li><li>纹理过滤</li>
+            </ul>
+            <p class="translation-action">
+              <a href="https://github.com/Morakito/Real-Time-Rendering-4th-CN/tree/main/sourceFile">在中文译本仓库中阅读完整章节原文 →</a>
             </p>
           </section>
         </article>

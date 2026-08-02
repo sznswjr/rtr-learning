@@ -48,7 +48,14 @@ const pages = [
   {
     name: "reading",
     path: "/translations/rtr4-cn.html",
-    selectors: [".translation-hero", ".translation-sidebar", ".translation-article", ".translation-action"],
+    selectors: [
+      ".translation-hero",
+      ".translation-sidebar",
+      ".translation-article",
+      "#chapter-3",
+      "#chapter-26",
+      ".translation-action",
+    ],
   },
 ];
 

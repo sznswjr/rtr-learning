@@ -40,6 +40,7 @@
 
 - 中文 RTR4 参考内容作为 Git submodule 放在 `knowledge/Real-Time-Rendering-4th-CN`
 - 章节 Markdown 位于 `knowledge/Real-Time-Rendering-4th-CN/sourceFile`
+- `translations/rtr4-cn.html` 提供 Chapter 0-26 的完整站内导读、关键主题索引和相关交互实验入口
 - 检出后如果目录为空，运行：
 
 ```bash
@@ -53,7 +54,7 @@ git submodule update --init --recursive
 - 章节页按 URL 拆分：`chapters/chapter-2.html`、`chapters/chapter-5.html`、`chapters/chapter-6.html`。
 - 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成，章节卡片会显示实验数量、渲染后端和实验直达链接。
 - 章节页内目录由 `src/app/chapter-nav.js` 从同一注册表生成。
-- 长章节在手机端保留横向 sticky 目录；Chapter 2 管线图和 Chapter 6 纹理对比会在窄屏重新排版，而不是缩小桌面画布。
+- 长章节在手机端保留横向 sticky 目录；中文导读在桌面端使用可滚动章节栏，Chapter 2 管线图和 Chapter 6 纹理对比会在窄屏重新排版，而不是缩小桌面画布。
 - 页面入口脚本放在 `src/pages/`，章节实验模块放在 `src/labs/<chapter>/`。
 - 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应章节页面或实验模块；首页直达链接和章节页内目录会随注册表更新。
 - Chapter 2 图形渲染管线实验已拆到 `src/labs/chapter-2/pipeline.js`。
