@@ -71,6 +71,22 @@ export const labRegistry = [
     href: "./chapters/chapter-6.html#texture-filtering",
     renderer: "canvas2d",
   },
+  {
+    id: "environment-mapping",
+    chapter: "6.4",
+    title: "立方体贴图与环境映射",
+    summary: "比较反射、折射与 Fresnel 混合如何使用三维方向采样环境",
+    href: "./chapters/chapter-6.html#environment-mapping",
+    renderer: "webgl2",
+  },
+  {
+    id: "volume-textures",
+    chapter: "6.5",
+    title: "三维纹理与体积采样",
+    summary: "并排观察体积切片、最大强度投影与 Alpha 累积",
+    href: "./chapters/chapter-6.html#volume-textures",
+    renderer: "webgl2",
+  },
 ];
 
 export const chapterRegistry = [
@@ -91,7 +107,7 @@ export const chapterRegistry = [
   {
     id: "chapter-6",
     title: "Chapter 6 纹理",
-    summary: "比较过滤、MIP、面积平均与各向异性采样",
+    summary: "比较纹理过滤、环境映射与三维体积采样",
     href: "./chapters/chapter-6.html",
     range: "Chapter 6",
   },

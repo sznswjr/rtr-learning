@@ -508,6 +508,11 @@ canvas {
   aspect-ratio: 1.78;
 }
 
+.webgl-lab-canvas {
+  aspect-ratio: 1.78;
+  image-rendering: auto;
+}
+
 .nav-pill {
   text-decoration: none;
 }
@@ -894,6 +899,14 @@ canvas {
 
   .texture-filter-canvas {
     aspect-ratio: 0.54;
+  }
+
+  .environment-map-canvas {
+    aspect-ratio: 0.92;
+  }
+
+  .volume-texture-canvas {
+    aspect-ratio: 0.48;
   }
 }
 

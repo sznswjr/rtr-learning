@@ -34,8 +34,16 @@ const pages = [
   {
     name: "chapter-6",
     path: "/chapters/chapter-6.html",
-    selectors: [".chapter-nav", "#texture-filtering", "#textureFilteringCanvas"],
-    canvasIds: ["textureFilteringCanvas"],
+    selectors: [
+      ".chapter-nav",
+      "#texture-filtering",
+      "#textureFilteringCanvas",
+      "#environment-mapping",
+      "#environmentMappingCanvas",
+      "#volume-textures",
+      "#volumeTextureCanvas",
+    ],
+    canvasIds: ["textureFilteringCanvas", "environmentMappingCanvas", "volumeTextureCanvas"],
   },
   {
     name: "reading",
@@ -257,6 +265,8 @@ async function checkInteractionLatency(page, label) {
   const interactions = [
     { name: "shading", selector: "#surfaceHue", threshold: 160 },
     { name: "texture", selector: "#textureDetail", threshold: 250 },
+    { name: "environment", selector: "#environmentRoughness", threshold: 180 },
+    { name: "volume", selector: "#volumeSteps", threshold: 250 },
   ];
 
   for (const interaction of interactions) {

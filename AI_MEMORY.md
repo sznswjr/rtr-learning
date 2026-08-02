@@ -25,6 +25,8 @@ Last updated: 2026-07-11
 - Chapter 6 has a texture filtering comparison lab:
   - Compares nearest/no filtering, bilinear, trilinear, SAT-style area averaging, and anisotropic sampling.
   - Uses a grazing-angle high-frequency procedural texture so aliasing, MIP blur, SAT stability, and anisotropic detail retention are visually obvious.
+- Chapter 6.4 uses a real WebGL2 cube-map texture to compare reflection, refraction, and Fresnel mixing with adjustable roughness and index of refraction.
+- Chapter 6.5 uploads a procedural 64³ density field as a WebGL2 3D texture and compares an axis slice, maximum-intensity projection, and front-to-back alpha accumulation.
 - The homepage is now a chapter index instead of hosting every experiment inline.
 - Chapter pages:
   - `chapters/chapter-2.html`
@@ -104,8 +106,8 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-07-11
-- Removed recommendation badges, prescribed learning paths, experiment prompts, and end-of-chapter continuation cards while preserving neutral chapter and experiment navigation.
-- Asset cache version: `20260711-1` for CSS and changed JavaScript modules.
+- Added Chapter 6.4 cube-map environment mapping and Chapter 6.5 WebGL2 3D texture experiments, including responsive layouts and coalesced low-resolution volume previews while controls are moving.
+- Asset cache version: `20260711-2` for CSS and the environment modules; `20260711-3` for the final volume interaction update.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
@@ -116,12 +118,14 @@ Latest production deployment:
   - `curl -I https://www.jrqz776.com/chapters/chapter-2.html` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/chapters/chapter-5.html` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/chapters/chapter-6.html` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/main.js?v=20260711-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/app/chapter-nav.js?v=20260711-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/main.js?v=20260711-2` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/app/chapter-nav.js?v=20260711-2` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/src/pages/chapter-2.js?v=20260711-1` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/src/pages/chapter-5.js?v=20260711-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/pages/chapter-6.js?v=20260711-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/pages/chapter-6.js?v=20260711-3` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/src/labs/chapter-6/texture-filtering.js?v=20260710-1` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/labs/chapter-6/environment-mapping.js?v=20260711-2` returned `HTTP/2 200`
+  - `curl -I https://www.jrqz776.com/src/labs/chapter-6/volume-textures.js?v=20260711-3` returned `HTTP/2 200`
   - `curl -I https://www.jrqz776.com/translations/rtr4-cn.html` returned `HTTP/2 200`
   - `curl -I http://www.jrqz776.com` returned `301` to HTTPS
 

@@ -29,6 +29,12 @@
 - Chapter 6 纹理过滤
   - 对比无过滤、双线性、三线性、SAT 和各向异性过滤
   - 斜视高频纹理让 aliasing、MIP 模糊、面积平均和各向异性保细节的差异更明显
+- Chapter 6.4 立方体贴图与环境映射
+  - 使用程序生成的六面 Cube Map 对比反射、折射和 Fresnel 混合
+  - 可调观察角度、表面粗糙度和折射率
+- Chapter 6.5 三维纹理与体积采样
+  - 使用 WebGL2 `TEXTURE_3D` 并排展示切片、最大强度投影和 Alpha 累积
+  - 可调切片轴、切片位置、射线步数、密度阈值和体素插值
 
 ## 知识库
 
@@ -52,7 +58,7 @@ git submodule update --init --recursive
 - 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应章节页面或实验模块；首页直达链接和章节页内目录会随注册表更新。
 - Chapter 2 图形渲染管线实验已拆到 `src/labs/chapter-2/pipeline.js`。
 - Chapter 5 实验已按主题拆到 `src/labs/chapter-5/`。
-- Chapter 6 纹理过滤实验位于 `src/labs/chapter-6/texture-filtering.js`。
+- Chapter 6 的纹理过滤、环境映射和体积纹理实验位于 `src/labs/chapter-6/`。
 - `src/main.js` 只负责导入模块并按顺序初始化实验。
 - 共享 Canvas、颜色、数学、着色和 WebGL 工具位于 `src/render/`。
 - `package.json` 只提供本地检查脚本；生产不依赖 Node、npm 或前端包管理器。

@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="并排比较无过滤、双线性、三线性、SAT 与各向异性纹理过滤。" />
+    <meta name="description" content="交互比较纹理过滤、立方体环境映射与三维体积采样。" />
     <title>Chapter 6 纹理 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260711-1" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260711-2" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -73,8 +73,142 @@
           </section>
         </div>
       </section>
+
+      <section class="experiment-section" id="environment-mapping" aria-label="6.4 立方体贴图与环境映射实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 6.4</p>
+          <h2>立方体贴图与环境映射</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="环境映射控制">
+            <div class="control-group">
+              <label for="environmentMode">映射方式</label>
+              <select id="environmentMode">
+                <option value="0">反射</option>
+                <option value="1">折射</option>
+                <option value="2" selected>Fresnel 混合</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="environmentRotation">观察角度</label>
+              <input id="environmentRotation" type="range" min="-180" max="180" value="28" step="1" />
+              <output id="environmentRotationValue" for="environmentRotation">28°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="environmentRoughness">表面粗糙度</label>
+              <input id="environmentRoughness" type="range" min="0" max="100" value="18" step="1" />
+              <output id="environmentRoughnessValue" for="environmentRoughness">18%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="environmentIor">折射率</label>
+              <input id="environmentIor" type="range" min="100" max="220" value="150" step="1" />
+              <output id="environmentIorValue" for="environmentIor">1.50</output>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>方向运算</span>
+                <strong id="environmentOperation">mix(refract, reflect, F)</strong>
+              </div>
+              <div>
+                <span>正视 Fresnel</span>
+                <strong id="environmentFresnel">4.0%</strong>
+              </div>
+              <div>
+                <span>纹理查找</span>
+                <strong id="environmentDirection">samplerCube(direction)</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>方向向量采样六面环境</h2>
+                <span>reflection / refraction / Fresnel</span>
+              </div>
+              <canvas class="webgl-lab-canvas environment-map-canvas" id="environmentMappingCanvas" width="1280" height="720"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="experiment-section" id="volume-textures" aria-label="6.5 三维纹理与体积采样实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 6.5</p>
+          <h2>三维纹理与体积采样</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="体积纹理控制">
+            <div class="control-group">
+              <label for="volumeAxis">切片轴</label>
+              <select id="volumeAxis">
+                <option value="0">X 轴</option>
+                <option value="1">Y 轴</option>
+                <option value="2" selected>Z 轴</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeSlice">切片位置</label>
+              <input id="volumeSlice" type="range" min="0" max="100" value="52" step="1" />
+              <output id="volumeSliceValue" for="volumeSlice">52%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeSteps">沿射线采样</label>
+              <input id="volumeSteps" type="range" min="24" max="160" value="80" step="8" />
+              <output id="volumeStepsValue" for="volumeSteps">80</output>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeThreshold">密度阈值</label>
+              <input id="volumeThreshold" type="range" min="0" max="80" value="24" step="1" />
+              <output id="volumeThresholdValue" for="volumeThreshold">24%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeFilter">体素插值</label>
+              <select id="volumeFilter">
+                <option value="nearest">Nearest</option>
+                <option value="linear" selected>Trilinear</option>
+              </select>
+            </div>
+
+            <div class="metric-panel">
+              <div>
+                <span>体积尺寸</span>
+                <strong id="volumeDimensions">64³ voxels</strong>
+              </div>
+              <div>
+                <span>每条射线</span>
+                <strong id="volumeSamples">80 / ray</strong>
+              </div>
+              <div>
+                <span>过滤方式</span>
+                <strong id="volumeOperation">trilinear</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>同一密度场的三种观察方式</h2>
+                <span>切片 ｜ 最大强度投影 ｜ Alpha 累积</span>
+              </div>
+              <canvas class="webgl-lab-canvas volume-texture-canvas" id="volumeTextureCanvas" width="1440" height="720"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
     </main>
 
-    <script type="module" src="../src/pages/chapter-6.js?v=20260711-1"></script>
+    <script type="module" src="../src/pages/chapter-6.js?v=20260711-3"></script>
   </body>
 </html>
