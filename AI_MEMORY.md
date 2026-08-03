@@ -49,6 +49,9 @@ Last updated: 2026-08-03
 - Chapter 18 models application, geometry, fragment, and bandwidth costs while visualizing the dominant pipeline stage and using GPU timer queries when available.
 - Chapter 19 compares no culling, frustum culling, hierarchical occlusion, and screen-error LOD in a top-down instanced scene.
 - Chapter 20 compares Forward, Deferred, Tiled, and Clustered many-light evaluation domains with light-density and partition overlays.
+- Chapter 21 combines stereo disparity, inverse lens distortion, and foveated sampling zones in a dual-eye view.
+- Chapter 22 performs actual ray/AABB and ray/triangle candidate tests while exposing BVH, box, primitive, and nearest-hit stages.
+- Chapter 23 models framebuffer traffic for coherent/random access, overdraw, depth prepass, MSAA, MRTs, and color compression.
 - The homepage is now a chapter index instead of hosting every experiment inline.
 - Chapter 1-26 each have a static route at `chapters/chapter-<n>.html`; chapters without implemented labs use generated planning shells.
 - Page entry scripts live in `src/pages/`.
@@ -75,6 +78,7 @@ Last updated: 2026-08-03
 - Environment mapping lives in `src/labs/chapter-10/`; GI analysis in `chapter-11/`; the Bloom framegraph in `chapter-12/`; representation comparison in `chapter-13/`; volume textures in `chapter-14/`.
 - Stylized rendering, mesh LOD, and curve tessellation live in `src/labs/chapter-15/`, `chapter-16/`, and `chapter-17/`.
 - GPU bottleneck analysis, scene culling, and many-light shading live in `src/labs/chapter-18/`, `chapter-19/`, and `chapter-20/`.
+- Stereo/foveated rendering, ray picking, and bandwidth/cache analysis live in `src/labs/chapter-21/`, `chapter-22/`, and `chapter-23/`.
 - Shared Canvas, color, math, shading, and WebGL helpers now live in `src/render/`.
 - Shared camera, orthographic projection, transform matrices, cube/plane geometry, depth/float framebuffer, GPU timing, and postprocess foundations also live in `src/render/`.
 - The HSL hue normalization bug in `src/render/color.js` is covered by `scripts/check-color.mjs`.
@@ -156,6 +160,12 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-19
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-19/*.js /var/www/www.jrqz776.com/src/labs/chapter-19/
 sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-20
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-20/*.js /var/www/www.jrqz776.com/src/labs/chapter-20/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-21
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-21/*.js /var/www/www.jrqz776.com/src/labs/chapter-21/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-22
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-22/*.js /var/www/www.jrqz776.com/src/labs/chapter-22/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-23
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-23/*.js /var/www/www.jrqz776.com/src/labs/chapter-23/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
 ```
@@ -167,7 +177,8 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-08-03
-- Added active Chapter 18 GPU bottleneck, Chapter 19 scene-culling, and Chapter 20 many-light architecture labs; 6 generated planning pages remain.
+- Added active Chapter 21 stereo/foveated, Chapter 22 ray-picking, and Chapter 23 bandwidth/cache labs; 3 generated planning pages remain.
+- Chapter 18–20 provide GPU bottleneck, scene-culling, and many-light architecture labs.
 - Chapter 15–17 provide stylized rendering, mesh LOD, and curve tessellation labs.
 - Chapter 15 separates toon bands, outlines, and hatching; Chapter 16 compares reference and selected LODs; Chapter 17 exposes cubic Bézier control and sampling.
 - Chapter 11 isolates direct light, analytic AO, low-frequency probe light, and colored bounce light in one shared ray-intersection scene.
@@ -180,7 +191,7 @@ Latest production deployment:
 - Chapter 8 demonstrates HDR intermediate storage, exposure, tone mapping, and display encoding.
 - Chapter 9 demonstrates the GGX, Smith, and Schlick terms of a microfacet BRDF across roughness and metallic values.
 - Added reusable orthographic projection, transform/scale matrices, point transformation, cube/plane geometry, depth targets, and float framebuffer support to `src/render/`.
-- Asset cache version: `20260803-6` for CSS, navigation modules, page entry modules, and WebGL lab imports.
+- Asset cache version: `20260803-7` for CSS, navigation modules, page entry modules, and WebGL lab imports.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
@@ -190,10 +201,10 @@ Latest production deployment:
   - `sudo nginx -t`
   - `curl -I https://www.jrqz776.com` returned `HTTP/2 200`
   - Production route check passed for all Chapter 1-26 pages.
-  - Production UI check passed for 22 pages across desktop, laptop, tablet, and mobile viewports.
+  - Production UI check passed for 25 pages across desktop, laptop, tablet, and mobile viewports.
   - Production shared WebGL render-foundation check passed.
-  - The Chapter 18, 19, and 20 pages and lab modules returned `HTTP/2 200`.
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-20/many-light-shading.js?v=20260803-6` returned `HTTP/2 200`.
+  - The Chapter 21, 22, and 23 pages and lab modules returned `HTTP/2 200`.
+  - `curl -I https://www.jrqz776.com/src/labs/chapter-23/bandwidth-cache.js?v=20260803-7` returned `HTTP/2 200`.
 
 ## Server Context
 

@@ -645,6 +645,9 @@ canvas {
 .bottleneck-canvas,
 .culling-canvas,
 .many-light-canvas,
+.stereo-canvas,
+.picking-canvas,
+.bandwidth-canvas,
 .brdf-grid-canvas {
   aspect-ratio: 1.62;
 }
@@ -1460,7 +1463,10 @@ canvas {
   .curve-canvas,
   .bottleneck-canvas,
   .culling-canvas,
-  .many-light-canvas {
+  .many-light-canvas,
+  .stereo-canvas,
+  .picking-canvas,
+  .bandwidth-canvas {
     aspect-ratio: 0.92;
   }
 

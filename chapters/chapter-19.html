@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="在大型俯视场景中比较视锥剔除、遮挡剔除和 LOD。" /><title>Chapter 19 加速算法 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-6" /></head><body>
+<meta name="description" content="在大型俯视场景中比较视锥剔除、遮挡剔除和 LOD。" /><title>Chapter 19 加速算法 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-7" /></head><body>
 <a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content"><header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 19 加速算法</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-19">阅读本章</a></div></header>
 <nav class="chapter-nav" data-chapter="19" aria-label="章节实验导航"></nav><section class="experiment-section" id="scene-culling" aria-label="大场景剔除与 LOD 实验"><div class="section-heading"><p class="eyebrow">Chapter 19</p><h2>大场景剔除与 LOD</h2></div>
 <div class="lab-layout"><aside class="controls" aria-label="场景加速控制">
@@ -10,4 +10,4 @@
 <div class="control-group"><label for="cullingError">LOD 屏幕误差</label><input id="cullingError" type="range" min="1" max="12" value="5" step="1" /><output id="cullingErrorValue" for="cullingError">5 px</output></div>
 <div class="metric-panel"><div><span>场景实例</span><strong id="cullingTotal">63</strong></div><div><span>提交实例</span><strong id="cullingVisible">24</strong></div><div><span>剔除率</span><strong id="cullingRate">62%</strong></div><div><span>估算三角形</span><strong id="cullingTriangles">0.42 M</strong></div></div></aside>
 <section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>场景空间俯视图</h2><span>青色实例被提交，暗色实例被剔除，暖色为低 LOD</span></div><canvas class="webgl-lab-canvas culling-canvas" id="cullingCanvas" width="1280" height="720"></canvas><div class="concept-strip culling-stage-strip"><span data-mode="none"><strong>0</strong>全部提交</span><span data-mode="frustum"><strong>F</strong>视锥测试</span><span data-mode="occlusion"><strong>H</strong>层次遮挡</span><span data-mode="lod"><strong>L</strong>误差驱动 LOD</span></div></article></section></div></section>
-</main><script type="module" src="../src/pages/chapter-19.js?v=20260803-6"></script></body></html>
+</main><script type="module" src="../src/pages/chapter-19.js?v=20260803-7"></script></body></html>

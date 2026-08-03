@@ -172,6 +172,24 @@ const pages = [
     canvasIds: ["manyLightCanvas"],
   },
   {
+    name: "chapter-21",
+    path: "/chapters/chapter-21.html",
+    selectors: [".chapter-nav", "#stereo-foveation", "#stereoCanvas", "#vrIpd", ".vr-stage-strip"],
+    canvasIds: ["stereoCanvas"],
+  },
+  {
+    name: "chapter-22",
+    path: "/chapters/chapter-22.html",
+    selectors: [".chapter-nav", "#ray-picking", "#pickingCanvas", "#pickingTargetX", ".picking-stage-strip"],
+    canvasIds: ["pickingCanvas"],
+  },
+  {
+    name: "chapter-23",
+    path: "/chapters/chapter-23.html",
+    selectors: [".chapter-nav", "#bandwidth-cache", "#bandwidthCanvas", "#bandwidthOverdraw", ".bandwidth-stage-strip"],
+    canvasIds: ["bandwidthCanvas"],
+  },
+  {
     name: "reading",
     path: "/translations/rtr4-cn.html",
     selectors: [
@@ -272,12 +290,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-6"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-6"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-6"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-6"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-6"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-6"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-7"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-7"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-7"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-7"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-7"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-7"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -516,6 +534,9 @@ async function checkInteractionLatency(page, label) {
     { name: "bottleneck", selector: "#bottleneckFragments", threshold: 260 },
     { name: "culling", selector: "#cullingDensity", threshold: 240 },
     { name: "many-light", selector: "#lightingCount", threshold: 260 },
+    { name: "stereo", selector: "#vrIpd", threshold: 240 },
+    { name: "picking", selector: "#pickingTargetX", threshold: 240 },
+    { name: "bandwidth", selector: "#bandwidthOverdraw", threshold: 240 },
   ];
 
   for (const interaction of interactions) {

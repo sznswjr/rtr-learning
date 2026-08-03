@@ -1,4 +1,4 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-6";
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-7";
 import { initTextureFilteringLab } from "../labs/chapter-6/texture-filtering.js?v=20260710-1";
 
 renderChapterNav();
