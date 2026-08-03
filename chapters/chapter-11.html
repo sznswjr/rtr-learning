@@ -3,43 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="比较环境光遮蔽、光照探针和屏幕空间全局光照近似" />
+    <meta name="description" content="在同一 WebGL2 场景中拆分直接光、环境光遮蔽、光照探针与近似反弹光。" />
     <title>Chapter 11 全局光照 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-3" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-4" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
     <main class="app-shell" id="main-content">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">Real-Time Rendering 4th</p>
-          <h1>Chapter 11 全局光照</h1>
-        </div>
+        <div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 11 全局光照</h1></div>
         <div class="topbar-actions">
           <a class="status-pill nav-pill" href="../index.html">实验首页</a>
           <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-11">阅读本章</a>
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">实时 GI 方法对比</h2>
-          <p>比较环境光遮蔽、光照探针和屏幕空间全局光照近似。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
-        </div>
+      <nav class="chapter-nav" data-chapter="11" aria-label="章节实验导航"></nav>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>渲染方程</li>
-            <li>AO</li>
-            <li>光照探针</li>
-            <li>屏幕空间反射</li>
-        </ul>
-
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+      <section class="experiment-section" id="gi-methods" aria-label="实时全局光照方法对比实验">
+        <div class="section-heading"><p class="eyebrow">Chapter 11</p><h2>实时 GI 方法对比</h2></div>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="全局光照控制">
+            <div class="control-group">
+              <label for="giMode">观察贡献</label>
+              <select id="giMode">
+                <option value="combined" selected>完整照明</option>
+                <option value="direct">直接光</option>
+                <option value="ao">环境光遮蔽</option>
+                <option value="probe">光照探针</option>
+                <option value="bounce">反弹光</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="giAoRadius">AO 半径</label>
+              <input id="giAoRadius" type="range" min="10" max="180" value="80" step="5" />
+              <output id="giAoRadiusValue" for="giAoRadius">0.80 m</output>
+            </div>
+            <div class="control-group">
+              <label for="giProbe">探针强度</label>
+              <input id="giProbe" type="range" min="0" max="200" value="85" step="5" />
+              <output id="giProbeValue" for="giProbe">0.85×</output>
+            </div>
+            <div class="control-group">
+              <label for="giBounce">反弹强度</label>
+              <input id="giBounce" type="range" min="0" max="200" value="95" step="5" />
+              <output id="giBounceValue" for="giBounce">0.95×</output>
+            </div>
+            <div class="control-group">
+              <label for="giLightAngle">主光方向</label>
+              <input id="giLightAngle" type="range" min="-80" max="80" value="28" step="2" />
+              <output id="giLightAngleValue" for="giLightAngle">28°</output>
+            </div>
+            <div class="metric-panel">
+              <div><span>当前贡献</span><strong id="giContribution">完整照明</strong></div>
+              <div><span>可见性查询</span><strong>3 球体 / 像素</strong></div>
+              <div><span>探针</span><strong>三线性近似</strong></div>
+              <div><span>反弹</span><strong id="giBounceEnergy">0.19 相对能量</strong></div>
+            </div>
+          </aside>
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading"><h2>直接与间接光分解</h2><span>解析求交保证各模式观察同一表面点</span></div>
+              <canvas class="webgl-lab-canvas gi-canvas" id="giCanvas" width="1280" height="720"></canvas>
+              <div class="concept-strip gi-contribution-strip" aria-label="光照贡献组成">
+                <span data-mode="direct"><strong>D</strong>直接光与硬阴影</span>
+                <span data-mode="ao"><strong>A</strong>近场遮蔽</span>
+                <span data-mode="probe"><strong>P</strong>低频环境探针</span>
+                <span data-mode="bounce"><strong>B</strong>颜色反弹</span>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+    <script type="module" src="../src/pages/chapter-11.js?v=20260803-4"></script>
   </body>
 </html>

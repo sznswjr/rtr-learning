@@ -3,43 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="在网格、广告牌、粒子、点云与体素之间切换场景表示" />
+    <meta name="description" content="比较网格、广告牌、粒子和点云表达同一对象时的质量、视角依赖与图元成本。" />
     <title>Chapter 13 超越多边形 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-3" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-4" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
     <main class="app-shell" id="main-content">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">Real-Time Rendering 4th</p>
-          <h1>Chapter 13 超越多边形</h1>
-        </div>
+        <div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 13 超越多边形</h1></div>
         <div class="topbar-actions">
           <a class="status-pill nav-pill" href="../index.html">实验首页</a>
           <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-13">阅读本章</a>
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">场景表示光谱</h2>
-          <p>在网格、广告牌、粒子、点云与体素之间切换场景表示。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
-        </div>
+      <nav class="chapter-nav" data-chapter="13" aria-label="章节实验导航"></nav>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>广告牌</li>
-            <li>粒子</li>
-            <li>点云</li>
-            <li>体素</li>
-        </ul>
-
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+      <section class="experiment-section" id="scene-representations" aria-label="场景表示光谱实验">
+        <div class="section-heading"><p class="eyebrow">Chapter 13</p><h2>场景表示光谱</h2></div>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="场景表示控制">
+            <div class="control-group">
+              <label for="representationMode">强调表示</label>
+              <select id="representationMode">
+                <option value="all" selected>并排比较</option>
+                <option value="mesh">三角形网格</option>
+                <option value="billboard">广告牌</option>
+                <option value="particles">粒子</option>
+                <option value="points">点云</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="representationDetail">表示密度</label>
+              <input id="representationDetail" type="range" min="4" max="24" value="14" step="1" />
+              <output id="representationDetailValue" for="representationDetail">14 级</output>
+            </div>
+            <div class="control-group">
+              <label for="representationAngle">观察角度</label>
+              <input id="representationAngle" type="range" min="-85" max="85" value="28" step="1" />
+              <output id="representationAngleValue" for="representationAngle">28°</output>
+            </div>
+            <div class="control-group">
+              <label for="representationPointSize">点/粒子尺寸</label>
+              <input id="representationPointSize" type="range" min="25" max="110" value="62" step="5" />
+              <output id="representationPointSizeValue" for="representationPointSize">0.62×</output>
+            </div>
+            <div class="metric-panel">
+              <div><span>当前表示</span><strong id="representationName">并排比较</strong></div>
+              <div><span>网格成本</span><strong id="representationTriangles">392 三角形</strong></div>
+              <div><span>粒子成本</span><strong id="representationParticles">28 粒子</strong></div>
+              <div><span>点云成本</span><strong id="representationPoints">196 点</strong></div>
+            </div>
+          </aside>
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading"><h2>同一对象的四种表示</h2><span>旋转视角会暴露广告牌的二维假象</span></div>
+              <canvas class="webgl-lab-canvas representation-canvas" id="representationCanvas" width="1280" height="720"></canvas>
+              <div class="representation-guide" aria-label="表示方法图例">
+                <span data-representation="mesh"><strong>Mesh</strong><small>完整视角自由</small></span>
+                <span data-representation="billboard"><strong>Billboard</strong><small>2 个三角形</small></span>
+                <span data-representation="particles"><strong>Particles</strong><small>动态离散样本</small></span>
+                <span data-representation="points"><strong>Point cloud</strong><small>无显式表面</small></span>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+    <script type="module" src="../src/pages/chapter-13.js?v=20260803-4"></script>
   </body>
 </html>

@@ -637,6 +637,8 @@ canvas {
 .shadow-map-canvas,
 .hdr-display-canvas,
 .postprocess-canvas,
+.gi-canvas,
+.representation-canvas,
 .brdf-grid-canvas {
   aspect-ratio: 1.62;
 }
@@ -673,6 +675,12 @@ canvas {
   border-radius: 50%;
   color: #86e2d0;
   font-size: 0.76rem;
+}
+
+.concept-strip span.is-active {
+  background: #19302c;
+  color: #e3faf5;
+  box-shadow: inset 0 3px #50d5bc;
 }
 
 .frame-trace {
@@ -828,6 +836,38 @@ canvas {
   min-width: 0;
   font-size: 0.73rem;
   line-height: 1.25;
+}
+
+.representation-guide {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.representation-guide span {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding: 10px 12px;
+  background: #111617;
+  color: #8fa29e;
+}
+
+.representation-guide span.is-active {
+  background: #19302c;
+  box-shadow: inset 0 3px #50d5bc;
+}
+
+.representation-guide strong {
+  color: #dffbf5;
+  font-size: 0.76rem;
+}
+
+.representation-guide small {
+  font-size: 0.69rem;
+  line-height: 1.35;
 }
 
 .brdf-grid-guide {
@@ -1382,8 +1422,13 @@ canvas {
   .frame-budget-canvas,
   .shadow-map-canvas,
   .hdr-display-canvas,
-  .postprocess-canvas {
+  .postprocess-canvas,
+  .gi-canvas {
     aspect-ratio: 0.92;
+  }
+
+  .representation-canvas {
+    aspect-ratio: 1.35;
   }
 
   .brdf-grid-canvas {
@@ -1396,6 +1441,10 @@ canvas {
 
   .postprocess-chain {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .representation-guide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .brdf-grid-guide {

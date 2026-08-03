@@ -1,6 +1,6 @@
-import { createColorTarget } from "../../render/framebuffer.js?v=20260803-3";
-import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-3";
-import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-3";
+import { createColorTarget } from "../../render/framebuffer.js?v=20260803-4";
+import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-4";
+import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-4";
 
 const hdrSceneFragment = `#version 300 es
 precision highp float;

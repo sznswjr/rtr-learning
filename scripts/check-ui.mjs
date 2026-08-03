@@ -100,6 +100,12 @@ const pages = [
     canvasIds: ["environmentMappingCanvas"],
   },
   {
+    name: "chapter-11",
+    path: "/chapters/chapter-11.html",
+    selectors: [".chapter-nav", "#gi-methods", "#giCanvas", "#giAoRadius", ".gi-contribution-strip"],
+    canvasIds: ["giCanvas"],
+  },
+  {
     name: "chapter-12",
     path: "/chapters/chapter-12.html",
     selectors: [
@@ -110,6 +116,18 @@ const pages = [
       ".postprocess-chain",
     ],
     canvasIds: ["postprocessCanvas"],
+  },
+  {
+    name: "chapter-13",
+    path: "/chapters/chapter-13.html",
+    selectors: [
+      ".chapter-nav",
+      "#scene-representations",
+      "#representationCanvas",
+      "#representationDetail",
+      ".representation-guide",
+    ],
+    canvasIds: ["representationCanvas"],
   },
   {
     name: "chapter-14",
@@ -218,12 +236,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-3"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-3"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-3"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-3"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-3"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-3"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-4"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-4"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-4"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-4"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-4"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-4"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -454,6 +472,8 @@ async function checkInteractionLatency(page, label) {
     { name: "hdr", selector: "#hdrExposure", threshold: 220 },
     { name: "brdf", selector: "#brdfRoughness", threshold: 220 },
     { name: "postprocess", selector: "#postprocessThreshold", threshold: 240 },
+    { name: "gi", selector: "#giAoRadius", threshold: 240 },
+    { name: "representations", selector: "#representationDetail", threshold: 240 },
   ];
 
   for (const interaction of interactions) {
