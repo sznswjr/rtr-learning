@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="《Real-Time Rendering 4th》Chapter 0-26 中文导读与配套实验入口。" />
     <title>RTR4 中文导读 | Chapter 0-26</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-11" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-12" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -261,6 +261,15 @@
             <p>
               本章重点解释管线中每个阶段“做什么”，而不是深入实现细节。后续章节会继续展开各阶段的算法、API 用法和硬件实现。
             </p>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-2/RTR4.02.01.png" target="_blank" rel="noopener" aria-label="查看图 2.1 原图">
+                <img src="../assets/rtr4-figures/chapter-2/RTR4.02.01.png" alt="左侧为透视相机的视锥体和场景物体，右侧为相机最终看到的画面" width="743" height="245" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 2.1：透视相机只渲染视锥体内的内容，并裁剪跨越边界的物体。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
           </section>
 
           <section id="pipeline-stages">
@@ -276,6 +285,15 @@
               <div><strong>光栅化阶段</strong><span>把点、线、三角形等图元转换为屏幕上的片元，并插值相关属性。</span></div>
               <div><strong>像素处理阶段</strong><span>计算片元颜色，执行深度、模板、混合等操作，并写入帧缓冲。</span></div>
             </div>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-2/RTR4.02.02.png" target="_blank" rel="noopener" aria-label="查看图 2.2 原图">
+                <img src="../assets/rtr4-figures/chapter-2/RTR4.02.02.png" alt="应用、几何处理、光栅化和像素处理四阶段组成的渲染管线" width="589" height="145" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 2.2：渲染管线的四个基本阶段；阶段内部还可以继续流水线化或并行执行。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
             <p>
               FPS、Hz 和每帧耗时都可以描述渲染速度。FPS 常用于描述生成图像的速率，Hz 更多用于硬件刷新频率；
               实际优化时，每帧耗时通常更直观，因为一帧中的工作量会随场景复杂度变化。
@@ -360,6 +378,24 @@
             <ul class="chapter-topics">
               <li>数据并行结构</li><li>可编程着色器</li><li>曲面细分与几何阶段</li><li>像素与合并阶段</li><li>计算着色器</li>
             </ul>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-3/RTR4.03.01.png" target="_blank" rel="noopener" aria-label="查看图 3.1 原图">
+                <img src="../assets/rtr4-figures/chapter-3/RTR4.03.01.png" alt="GPU 把片元线程组成多个 warp，并在纹理读取停顿时切换 warp 执行" width="705" height="858" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 3.1：线程以 warp 为单位执行；当一个 warp 等待数据时，处理器切换到其他 warp 隐藏延迟。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-3/RTR4.03.02.png" target="_blank" rel="noopener" aria-label="查看图 3.2 原图">
+                <img src="../assets/rtr4-figures/chapter-3/RTR4.03.02.png" alt="GPU 渲染管线中的可编程、可配置和固定功能阶段" width="909" height="98" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 3.2：GPU 管线由可编程着色器、可配置阶段和固定功能单元共同组成。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
           </section>
 
           <section id="chapter-4">
@@ -372,6 +408,24 @@
             <ul class="chapter-topics">
               <li>基本矩阵变换</li><li>四元数</li><li>顶点混合与蒙皮</li><li>变形和缓存动画</li><li>投影</li>
             </ul>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-4/RTR4.04.04.png" target="_blank" rel="noopener" aria-label="查看图 4.4 原图">
+                <img src="../assets/rtr4-figures/chapter-4/RTR4.04.04.png" alt="正方形以不同顺序执行旋转和非均匀缩放后得到不同结果" width="723" height="399" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 4.4：矩阵乘法具有顺序依赖性；先旋转后缩放与先缩放后旋转会得到不同结果。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-4/RTR4.04.20.png" target="_blank" rel="noopener" aria-label="查看图 4.20 原图">
+                <img src="../assets/rtr4-figures/chapter-4/RTR4.04.20.png" alt="透视投影矩阵把视锥体变换为规则观察体" width="585" height="228" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 4.20：透视投影矩阵把视锥体转换为标准立方体形式的规则观察体。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
           </section>
 
           <section id="chapter-5">
@@ -384,6 +438,24 @@
             <ul class="chapter-topics">
               <li>着色模型</li><li>光源与衰减</li><li>计算频率</li><li>抗锯齿</li><li>透明合成</li><li>显示编码</li>
             </ul>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-5/RTR4.05.03.png" target="_blank" rel="noopener" aria-label="查看图 5.3 原图">
+                <img src="../assets/rtr4-figures/chapter-5/RTR4.05.03.png" alt="表面点处的法线、观察方向和光照方向三个单位向量" width="629" height="259" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 5.3：表面法线 n、观察方向 v 和光照方向 l 是多种着色模型的共同输入。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
+            <figure class="translation-figure">
+              <a href="../assets/rtr4-figures/chapter-5/RTR4.05.25.png" target="_blank" rel="noopener" aria-label="查看图 5.25 原图">
+                <img src="../assets/rtr4-figures/chapter-5/RTR4.05.25.png" alt="从单样本到网格、旋转网格和 N-rooks 的多种像素采样方案对比" width="533" height="626" loading="lazy" decoding="async">
+              </a>
+              <figcaption>
+                <span>图 5.25：不同采样数量与分布方式对边缘抗锯齿质量的影响。</span>
+                <small>《Real-Time Rendering》第 4 版，© CRC Press · <a href="https://www.realtimerendering.com/figures.html">官方图集</a></small>
+              </figcaption>
+            </figure>
           </section>
 
           <section id="chapter-6">

@@ -95,7 +95,8 @@
 
 - 中文 RTR4 参考内容作为 Git submodule 放在 `knowledge/Real-Time-Rendering-4th-CN`
 - 章节 Markdown 位于 `knowledge/Real-Time-Rendering-4th-CN/sourceFile`
-- `translations/rtr4-cn.html` 提供 Chapter 0-26 的完整站内导读、关键主题索引，并在每章末尾内嵌对应交互实验
+- `translations/rtr4-cn.html` 提供 Chapter 0-26 的站内导读、关键主题索引，并在每章末尾内嵌对应交互实验
+- Chapter 2-5 已加入 8 张经 RTR4 官方图集白名单核对的原书插图，资产位于 `assets/rtr4-figures/`；Chapter 1 的商业游戏截图不在官方图集中，因此未转载
 - 检出后如果目录为空，运行：
 
 ```bash
@@ -208,6 +209,8 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-26
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-26/*.js /var/www/www.jrqz776.com/src/labs/chapter-26/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
+sudo mkdir -p /var/www/www.jrqz776.com/assets/rtr4-figures
+sudo cp -R /home/ubuntu/rtr4-web-lab/assets/rtr4-figures/chapter-* /var/www/www.jrqz776.com/assets/rtr4-figures/
 ```
 
 ## 验证

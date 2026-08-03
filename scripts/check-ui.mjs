@@ -217,6 +217,7 @@ const pages = [
       ".translation-article",
       "#chapter-3",
       "#chapter-26",
+      ".translation-figure",
       ".translation-lab-embed",
     ],
   },
@@ -367,6 +368,17 @@ async function checkReadingEmbeds(browser) {
     const cardCount = await page.locator(".translation-lab-embed").count();
     const representedLabs = await page.locator(".translation-lab-select option, .translation-lab-selected-title").count();
     const initiallyLoadedFrames = await page.locator(".translation-lab-frame[src]").count();
+    const figureImages = page.locator(".translation-figure img");
+    const figureCount = await figureImages.count();
+    const chapterOneFigureCount = await page.locator("#chapter-1 .translation-figure").count();
+    const figureSources = await figureImages.evaluateAll((images) => images.map((image) => ({
+      alt: image.alt,
+      decoding: image.decoding,
+      height: image.getAttribute("height"),
+      loading: image.loading,
+      src: image.getAttribute("src"),
+      width: image.getAttribute("width"),
+    })));
     const editorialExtras = await page.locator(
       ".translation-sidebar .is-available, .translation-sidebar .is-pending, .translation-sidebar .eyebrow, .translation-action",
     ).count();
@@ -379,9 +391,35 @@ async function checkReadingEmbeds(browser) {
     assert(cardCount === expectedChapters, `reading embeds: expected ${expectedChapters} cards, got ${cardCount}`);
     assert(representedLabs === labRegistry.length, `reading embeds: expected ${labRegistry.length} labs, got ${representedLabs}`);
     assert(initiallyLoadedFrames === 0, `reading embeds: ${initiallyLoadedFrames} frames loaded before expansion`);
+    assert(figureCount === 8, `reading figures: expected 8 whitelisted figures, got ${figureCount}`);
+    assert(chapterOneFigureCount === 0, `reading figures: chapter 1 should not include non-gallery screenshots`);
+    assert(
+      figureSources.every(({ alt, decoding, height, loading, src, width }) => (
+        alt && decoding === "async" && height && loading === "lazy" && src?.startsWith("../assets/rtr4-figures/") && width
+      )),
+      `reading figures: invalid image metadata ${JSON.stringify(figureSources)}`,
+    );
+    assert(
+      await page.locator('.translation-figure a[href="https://www.realtimerendering.com/figures.html"]').count() === figureCount,
+      "reading figures: every figure must link to the official gallery credit",
+    );
     assert(editorialExtras === 0, `reading page: found ${editorialExtras} redundant status or action elements`);
     assert(sidebarLabels.length === 0, `reading page: found sidebar pseudo labels ${JSON.stringify(sidebarLabels)}`);
     assert(!/(已整理|待整理|完整导读)/.test(readingText), "reading page: redundant editorial status text is visible");
+
+    for (let index = 0; index < figureCount; index += 1) {
+      const image = figureImages.nth(index);
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate((element) => element.decode());
+      const dimensions = await image.evaluate((element) => ({
+        naturalHeight: element.naturalHeight,
+        naturalWidth: element.naturalWidth,
+      }));
+      assert(
+        dimensions.naturalWidth > 0 && dimensions.naturalHeight > 0,
+        `reading figures: image ${index + 1} did not decode (${JSON.stringify(dimensions)})`,
+      );
+    }
 
     let previousCard = null;
     for (const pilot of pilots) {

@@ -1207,6 +1207,48 @@ canvas {
   color: #e8fff8;
 }
 
+.translation-figure {
+  overflow: hidden;
+  margin: 22px 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #101415;
+}
+
+.translation-figure > a {
+  display: flex;
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: #f7f8f7;
+}
+
+.translation-figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 640px;
+}
+
+.translation-figure figcaption {
+  display: grid;
+  gap: 6px;
+  padding: 13px 15px 15px;
+  color: #d6e2df;
+  line-height: 1.6;
+}
+
+.translation-figure figcaption small {
+  color: #8fa29e;
+  font-size: 0.76rem;
+}
+
+.translation-figure figcaption a {
+  color: #9bdccc;
+}
+
 .translation-lab-embed {
   overflow: hidden;
   margin-top: 20px;
@@ -1557,6 +1599,11 @@ body.is-lab-embed {
 
   .translation-article {
     padding: 20px;
+  }
+
+  .translation-figure > a {
+    min-height: 88px;
+    padding: 12px;
   }
 
   .translation-lab-toolbar {

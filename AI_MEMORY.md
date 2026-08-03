@@ -91,7 +91,8 @@ Last updated: 2026-08-03
 - The HSL hue normalization bug in `src/render/color.js` is covered by `scripts/check-color.mjs`.
 - Expensive shading and texture controls render a coalesced preview while dragging and restore full quality after interaction settles.
 - `src/main.js` is now a small module entrypoint that initializes labs.
-- The translation page is available at `translations/rtr4-cn.html` and includes organized Chinese reading content for Chapter 0-26, with a complete chapter index, topic summaries, source links, and lazily embedded related labs.
+- The translation page is available at `translations/rtr4-cn.html` and includes Chinese reading content for Chapter 0-26, with a complete chapter index, topic summaries, source links, and lazily embedded related labs.
+- Chapter 2-5 include eight locally hosted figures verified against the official RTR4 figure gallery. They live in `assets/rtr4-figures/`, use lazy loading and official-gallery credits, and open at full size. Chapter 1 remains image-free because its two commercial game screenshots are not present in the official gallery whitelist.
 - Local knowledge base is tracked as a Git submodule at `knowledge/Real-Time-Rendering-4th-CN`, pinned to `9c2e724e688fc921ec0486d8fde4f516af2a5873` from `https://github.com/Morakito/Real-Time-Rendering-4th-CN.git`.
 
 ## Stack
@@ -181,6 +182,8 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-26
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-26/*.js /var/www/www.jrqz776.com/src/labs/chapter-26/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
+sudo mkdir -p /var/www/www.jrqz776.com/assets/rtr4-figures
+sudo cp -R /home/ubuntu/rtr4-web-lab/assets/rtr4-figures/chapter-* /var/www/www.jrqz776.com/assets/rtr4-figures/
 ```
 
 When changing JavaScript or CSS, update the query-string version in `index.html` and any static import URLs because Nginx caches static assets for 7 days.
@@ -190,6 +193,7 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-08-03
+- Added eight whitelisted original-book figures to Chapters 2-5 of the Chinese reading page, with responsive lazy-loaded presentation, full-size links, concise Chinese captions, and official gallery credits; Chapter 1 remains image-free because its screenshots are absent from the official gallery.
 - Removed editorial progress labels (`已整理` / `待整理`), the redundant `完整导读` kicker, and per-chapter experiment CTA links from the Chinese reading page; embedded lab cards remain the single experiment entry point in each chapter.
 - Embedded every registered chapter experiment into the full Chinese reading page through collapsed, registry-driven cards; only one same-origin experiment frame is active at a time, and iframe height is synchronized with the chapter lab page.
 - Added active Chapter 24 hybrid-rendering, Chapter 25 collision-pipeline, and Chapter 26 progressive software path-tracing labs; all Chapter 1–26 experiments are now implemented.
