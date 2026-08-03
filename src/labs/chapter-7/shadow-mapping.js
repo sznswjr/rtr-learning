@@ -3,16 +3,16 @@ import {
   createOrbitCamera,
   createOrthographicMatrix,
   multiplyMat4,
-} from "../../render/camera.js?v=20260803-4";
-import { createDepthTarget } from "../../render/framebuffer.js?v=20260803-4";
-import { createCubeGeometry, createIndexedMesh, createPlaneGeometry } from "../../render/mesh.js?v=20260803-4";
+} from "../../render/camera.js?v=20260803-5";
+import { createDepthTarget } from "../../render/framebuffer.js?v=20260803-5";
+import { createCubeGeometry, createIndexedMesh, createPlaneGeometry } from "../../render/mesh.js?v=20260803-5";
 import {
   createIdentityMatrix,
   createRotationYMatrix,
   createScaleMatrix,
   createTranslationMatrix,
-} from "../../render/transforms.js?v=20260803-4";
-import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-4";
+} from "../../render/transforms.js?v=20260803-5";
+import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-5";
 
 const depthVertexSource = `#version 300 es
 in vec3 position;

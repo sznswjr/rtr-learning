@@ -1,45 +1,14 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="编辑参数曲线，并比较均匀与自适应曲面细分" />
-    <title>Chapter 17 曲线和曲面 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-4" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <main class="app-shell" id="main-content">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Real-Time Rendering 4th</p>
-          <h1>Chapter 17 曲线和曲面</h1>
-        </div>
-        <div class="topbar-actions">
-          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
-          <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-17">阅读本章</a>
-        </div>
-      </header>
-
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">曲线曲面编辑器</h2>
-          <p>编辑参数曲线，并比较均匀与自适应曲面细分。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
-        </div>
-
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>Bézier</li>
-            <li>B 样条</li>
-            <li>细分曲面</li>
-            <li>自适应细分</li>
-        </ul>
-
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="编辑三次 Bézier 控制点，比较均匀和自适应曲线细分。" /><title>Chapter 17 曲线和曲面 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-5" /></head><body>
+<a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content"><header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 17 曲线和曲面</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-17">阅读本章</a></div></header>
+<nav class="chapter-nav" data-chapter="17" aria-label="章节实验导航"></nav><section class="experiment-section" id="curve-tessellation" aria-label="曲线与自适应细分实验"><div class="section-heading"><p class="eyebrow">Chapter 17</p><h2>曲线与自适应细分</h2></div>
+<div class="lab-layout"><aside class="controls" aria-label="曲线细分控制">
+<div class="control-group"><label for="curveMethod">细分方法</label><select id="curveMethod"><option value="uniform" selected>均匀参数步长</option><option value="adaptive">平坦度自适应</option><option value="compare">并排重叠</option></select></div>
+<div class="control-group"><label for="curveSegments">最大分段</label><input id="curveSegments" type="range" min="4" max="48" value="20" step="1" /><output id="curveSegmentsValue" for="curveSegments">20 段</output></div>
+<div class="control-group"><label for="curveFlatness">平坦度容限</label><input id="curveFlatness" type="range" min="10" max="180" value="55" step="5" /><output id="curveFlatnessValue" for="curveFlatness">0.055</output></div>
+<div class="control-group"><label for="curveP1">控制点 P1 高度</label><input id="curveP1" type="range" min="-90" max="90" value="62" step="2" /><output id="curveP1Value" for="curveP1">+0.62</output></div>
+<div class="control-group"><label for="curveP2">控制点 P2 高度</label><input id="curveP2" type="range" min="-90" max="90" value="-54" step="2" /><output id="curveP2Value" for="curveP2">−0.54</output></div>
+<div class="control-group"><label for="curveParameter">曲线参数 t</label><input id="curveParameter" type="range" min="0" max="100" value="58" step="1" /><output id="curveParameterValue" for="curveParameter">0.58</output></div>
+<div class="metric-panel"><div><span>输出分段</span><strong id="curveOutputSegments">20</strong></div><div><span>控制点</span><strong>4</strong></div><div><span>当前 t</span><strong id="curvePointMetric">(0.14, 0.02)</strong></div><div><span>切线角</span><strong id="curveTangentMetric">−31°</strong></div></div></aside>
+<section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>三次 Bézier 控制多边形</h2><span>圆点表示输出顶点，亮线表示当前切线</span></div><canvas class="webgl-lab-canvas curve-canvas" id="curveCanvas" width="1280" height="720"></canvas><div class="concept-strip curve-method-strip"><span data-method="uniform"><strong>U</strong>均匀参数步长</span><span data-method="adaptive"><strong>A</strong>曲率区域加密</span><span data-method="compare"><strong>Δ</strong>对比输出顶点</span></div></article></section></div></section>
+</main><script type="module" src="../src/pages/chapter-17.js?v=20260803-5"></script></body></html>

@@ -27,6 +27,7 @@ description: Use when extending this RTR4 Web Lab project with new rendering exp
 - `src/labs/chapter-1/` owns frame-budget measurement, `src/labs/chapter-2/pipeline.js` owns the rendering pipeline lab, `src/labs/chapter-3/` owns barycentric rasterization, and `src/labs/chapter-4/` owns coordinate transforms.
 - `src/labs/chapter-5/` owns the Chapter 5 labs, `src/labs/chapter-6/` owns texture filtering, `src/labs/chapter-7/` owns shadow mapping, `src/labs/chapter-8/` owns HDR/display transforms, and `src/labs/chapter-9/` owns the microfacet BRDF lab.
 - `src/labs/chapter-10/` owns environment mapping, `src/labs/chapter-11/` owns GI contribution analysis, `src/labs/chapter-12/` owns the image-space postprocess framegraph, `src/labs/chapter-13/` owns scene-representation comparison, and `src/labs/chapter-14/` owns volume sampling.
+- `src/labs/chapter-15/` owns stylized rendering, `src/labs/chapter-16/` owns mesh LOD analysis, and `src/labs/chapter-17/` owns curve tessellation.
 - `src/main.js` is a small entrypoint only; do not grow it with experiment state or drawing code.
 - Shared Canvas, camera/projection, color, framebuffer, GPU query, math, mesh geometry, postprocess, shading, transforms, and WebGL helpers live in `src/render/`.
 

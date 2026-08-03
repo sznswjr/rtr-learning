@@ -43,6 +43,9 @@ Last updated: 2026-08-03
   - Controls expose the scene, bright-pass, blurred, and final buffers, plus threshold, soft knee, blur radius, Bloom strength, and exposure.
 - Chapter 13 compares mesh, billboard, particle, and point-cloud representations of one object with adjustable density, view angle, sample size, and primitive-cost metrics.
 - Chapter 14.3 uploads a procedural 64³ density field as a WebGL2 3D texture and compares an axis slice, maximum-intensity projection, and front-to-back alpha accumulation.
+- Chapter 15 composes quantized toon lighting, normal/depth-style outlines, and screen-space hatching, with each layer independently observable.
+- Chapter 16 visualizes reference and selected mesh LODs with surface, wireframe, and error views driven by distance, pixel tolerance, and silhouette preservation.
+- Chapter 17 edits a cubic Bézier curve and compares uniform parameter samples with curvature-focused adaptive samples while exposing the point and tangent at `t`.
 - The homepage is now a chapter index instead of hosting every experiment inline.
 - Chapter 1-26 each have a static route at `chapters/chapter-<n>.html`; chapters without implemented labs use generated planning shells.
 - Page entry scripts live in `src/pages/`.
@@ -67,6 +70,7 @@ Last updated: 2026-08-03
 - Chapter 6 now owns texture filtering only. Its old environment and volume anchors remain as migration cards linking to Chapter 10.4 and Chapter 14.3.
 - Chapter 7 shadow mapping, Chapter 8 HDR display transform, and Chapter 9 microfacet BRDF live under their corresponding `src/labs/chapter-7/`, `chapter-8/`, and `chapter-9/` directories.
 - Environment mapping lives in `src/labs/chapter-10/`; GI analysis in `chapter-11/`; the Bloom framegraph in `chapter-12/`; representation comparison in `chapter-13/`; volume textures in `chapter-14/`.
+- Stylized rendering, mesh LOD, and curve tessellation live in `src/labs/chapter-15/`, `chapter-16/`, and `chapter-17/`.
 - Shared Canvas, color, math, shading, and WebGL helpers now live in `src/render/`.
 - Shared camera, orthographic projection, transform matrices, cube/plane geometry, depth/float framebuffer, GPU timing, and postprocess foundations also live in `src/render/`.
 - The HSL hue normalization bug in `src/render/color.js` is covered by `scripts/check-color.mjs`.
@@ -136,6 +140,12 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-13
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-13/*.js /var/www/www.jrqz776.com/src/labs/chapter-13/
 sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-14
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-14/*.js /var/www/www.jrqz776.com/src/labs/chapter-14/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-15
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-15/*.js /var/www/www.jrqz776.com/src/labs/chapter-15/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-16
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-16/*.js /var/www/www.jrqz776.com/src/labs/chapter-16/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-17
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-17/*.js /var/www/www.jrqz776.com/src/labs/chapter-17/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
 ```
@@ -147,7 +157,8 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-08-03
-- Added active Chapter 11 GI contribution analysis and Chapter 13 scene-representation comparison after the Chapter 12 framegraph; 12 generated planning pages remain.
+- Added active Chapter 15 stylized rendering, Chapter 16 mesh LOD, and Chapter 17 curve tessellation labs; 9 generated planning pages remain.
+- Chapter 15 separates toon bands, outlines, and hatching; Chapter 16 compares reference and selected LODs; Chapter 17 exposes cubic Bézier control and sampling.
 - Chapter 11 isolates direct light, analytic AO, low-frequency probe light, and colored bounce light in one shared ray-intersection scene.
 - Chapter 13 compares mesh, billboard, particles, and point-cloud representations while exposing view dependence and primitive counts.
 - Chapter 12 uses four floating-point intermediate targets and exposes the HDR scene, soft-threshold bright pass, separable blur, Bloom composition, and tone-mapped display output.
@@ -158,7 +169,7 @@ Latest production deployment:
 - Chapter 8 demonstrates HDR intermediate storage, exposure, tone mapping, and display encoding.
 - Chapter 9 demonstrates the GGX, Smith, and Schlick terms of a microfacet BRDF across roughness and metallic values.
 - Added reusable orthographic projection, transform/scale matrices, point transformation, cube/plane geometry, depth targets, and float framebuffer support to `src/render/`.
-- Asset cache version: `20260803-4` for CSS, navigation modules, page entry modules, and WebGL lab imports.
+- Asset cache version: `20260803-5` for CSS, navigation modules, page entry modules, and WebGL lab imports.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
@@ -168,10 +179,10 @@ Latest production deployment:
   - `sudo nginx -t`
   - `curl -I https://www.jrqz776.com` returned `HTTP/2 200`
   - Production route check passed for all Chapter 1-26 pages.
-  - Production UI check passed for 16 pages across desktop, laptop, tablet, and mobile viewports.
+  - Production UI check passed for 19 pages across desktop, laptop, tablet, and mobile viewports.
   - Production shared WebGL render-foundation check passed.
-  - The Chapter 11 and Chapter 13 pages and lab modules returned `HTTP/2 200`.
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-13/scene-representations.js?v=20260803-4` returned `HTTP/2 200`.
+  - The Chapter 15, 16, and 17 pages and lab modules returned `HTTP/2 200`.
+  - `curl -I https://www.jrqz776.com/src/labs/chapter-17/curve-tessellation.js?v=20260803-5` returned `HTTP/2 200`.
 
 ## Server Context
 

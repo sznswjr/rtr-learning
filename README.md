@@ -62,6 +62,12 @@
 - Chapter 14.3 三维纹理与体积采样
   - 使用 WebGL2 `TEXTURE_3D` 并排展示切片、最大强度投影和 Alpha 累积
   - 可调切片轴、切片位置、射线步数、密度阈值和体素插值
+- Chapter 15 风格化渲染栈
+  - 独立观察并组合卡通色阶、法线/深度轮廓和屏幕空间排线
+- Chapter 16 网格质量与 LOD
+  - 按观察距离、像素误差和轮廓保留选择细分级别，并查看表面、线框和误差热图
+- Chapter 17 曲线与自适应细分
+  - 编辑三次 Bézier 控制点，对比均匀参数步长与曲率区域加密的输出顶点
 
 ## 知识库
 
@@ -78,7 +84,7 @@ git submodule update --init --recursive
 
 - 生产仍然是静态站点，不需要构建步骤。
 - 首页只保留章节索引，不直接承载全部实验。
-- Chapter 1-26 均有独立静态路由 `chapters/chapter-<n>.html`；尚未实现实验的 12 个章节显示规划页。
+- Chapter 1-26 均有独立静态路由 `chapters/chapter-<n>.html`；尚未实现实验的 9 个章节显示规划页。
 - 规划页由 `scripts/generate-chapter-pages.mjs` 根据 `chapterRegistry` 生成并提交到仓库，生产环境仍不需要构建步骤。
 - 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成，章节卡片会显示实验数量、渲染后端和实验直达链接。
 - 章节页内目录由 `src/app/chapter-nav.js` 从同一注册表生成。
@@ -93,6 +99,7 @@ git submodule update --init --recursive
 - Chapter 6 只保留纹理过滤实验；旧环境映射和体积纹理锚点作为兼容入口，分别指向 Chapter 10.4 和 Chapter 14.3。
 - Chapter 7 阴影贴图、Chapter 8 HDR 显示变换和 Chapter 9 微表面 BRDF 分别位于对应的 `src/labs/chapter-7/`、`chapter-8/`、`chapter-9/` 目录。
 - 环境映射位于 `src/labs/chapter-10/`，GI 方法对比位于 `chapter-11/`，Bloom 后处理帧图位于 `chapter-12/`，场景表示光谱位于 `chapter-13/`，体积纹理位于 `chapter-14/`。
+- 风格化渲染、网格 LOD 和曲线细分分别位于 `src/labs/chapter-15/`、`chapter-16/`、`chapter-17/`。
 - `src/main.js` 只负责导入模块并按顺序初始化实验。
 - 共享 Canvas、颜色、数学、着色和 WebGL 工具位于 `src/render/`。
 - 相机、矩阵变换、立方体与平面网格、深度/浮点 Framebuffer、GPU Timer Query 与后处理基础模块也位于 `src/render/`，供后续章节实验复用。
@@ -149,6 +156,12 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-13
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-13/*.js /var/www/www.jrqz776.com/src/labs/chapter-13/
 sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-14
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-14/*.js /var/www/www.jrqz776.com/src/labs/chapter-14/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-15
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-15/*.js /var/www/www.jrqz776.com/src/labs/chapter-15/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-16
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-16/*.js /var/www/www.jrqz776.com/src/labs/chapter-16/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-17
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-17/*.js /var/www/www.jrqz776.com/src/labs/chapter-17/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
 ```
@@ -165,7 +178,7 @@ sudo nginx -t
 curl -I https://www.jrqz776.com
 ```
 
-`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 检查 12 个生成式规划页是否与注册表一致。`npm run check:ui` 会先检查 Chapter 1-26 路由，再使用 Playwright 检查首页、14 个已实现章节页和中文导读的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
+`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 检查 9 个生成式规划页是否与注册表一致。`npm run check:ui` 会先检查 Chapter 1-26 路由，再使用 Playwright 检查首页、17 个已实现章节页和中文导读的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
 
 如需检查尚未部署的工作区，可先启动本地静态服务器，再传入地址：
 

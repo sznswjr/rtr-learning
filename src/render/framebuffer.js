@@ -1,4 +1,4 @@
-import { assertFramebuffer } from "./webgl.js?v=20260803-4";
+import { assertFramebuffer } from "./webgl.js?v=20260803-5";
 
 export function createColorTarget(gl, {
   depth = true,

@@ -639,6 +639,9 @@ canvas {
 .postprocess-canvas,
 .gi-canvas,
 .representation-canvas,
+.stylized-canvas,
+.lod-canvas,
+.curve-canvas,
 .brdf-grid-canvas {
   aspect-ratio: 1.62;
 }
@@ -868,6 +871,31 @@ canvas {
 .representation-guide small {
   font-size: 0.69rem;
   line-height: 1.35;
+}
+
+.lod-guide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lod-guide span {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  background: #111617;
+}
+
+.lod-guide strong {
+  color: #dffbf5;
+  font-size: 0.76rem;
+}
+
+.lod-guide small {
+  color: #8fa29e;
+  font-size: 0.69rem;
 }
 
 .brdf-grid-guide {
@@ -1423,7 +1451,10 @@ canvas {
   .shadow-map-canvas,
   .hdr-display-canvas,
   .postprocess-canvas,
-  .gi-canvas {
+  .gi-canvas,
+  .stylized-canvas,
+  .lod-canvas,
+  .curve-canvas {
     aspect-ratio: 0.92;
   }
 
@@ -1445,6 +1476,10 @@ canvas {
 
   .representation-guide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lod-guide {
+    grid-template-columns: 1fr;
   }
 
   .brdf-grid-guide {

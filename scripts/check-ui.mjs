@@ -136,6 +136,24 @@ const pages = [
     canvasIds: ["volumeTextureCanvas"],
   },
   {
+    name: "chapter-15",
+    path: "/chapters/chapter-15.html",
+    selectors: [".chapter-nav", "#stylized-rendering", "#stylizedCanvas", "#stylizedBands", ".stylized-layer-strip"],
+    canvasIds: ["stylizedCanvas"],
+  },
+  {
+    name: "chapter-16",
+    path: "/chapters/chapter-16.html",
+    selectors: [".chapter-nav", "#mesh-lod", "#lodCanvas", "#lodSegments", ".lod-guide"],
+    canvasIds: ["lodCanvas"],
+  },
+  {
+    name: "chapter-17",
+    path: "/chapters/chapter-17.html",
+    selectors: [".chapter-nav", "#curve-tessellation", "#curveCanvas", "#curveSegments", ".curve-method-strip"],
+    canvasIds: ["curveCanvas"],
+  },
+  {
     name: "reading",
     path: "/translations/rtr4-cn.html",
     selectors: [
@@ -236,12 +254,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-4"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-4"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-4"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-4"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-4"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-4"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-5"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-5"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-5"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-5"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-5"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-5"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -474,6 +492,9 @@ async function checkInteractionLatency(page, label) {
     { name: "postprocess", selector: "#postprocessThreshold", threshold: 240 },
     { name: "gi", selector: "#giAoRadius", threshold: 240 },
     { name: "representations", selector: "#representationDetail", threshold: 240 },
+    { name: "stylized", selector: "#stylizedBands", threshold: 240 },
+    { name: "lod", selector: "#lodSegments", threshold: 240 },
+    { name: "curve", selector: "#curveSegments", threshold: 240 },
   ];
 
   for (const interaction of interactions) {

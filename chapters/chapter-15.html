@@ -1,45 +1,17 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="组合卡通着色、轮廓、笔触和线条形成可控视觉风格" />
-    <title>Chapter 15 非真实感渲染 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-4" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <main class="app-shell" id="main-content">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Real-Time Rendering 4th</p>
-          <h1>Chapter 15 非真实感渲染</h1>
-        </div>
-        <div class="topbar-actions">
-          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
-          <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-15">阅读本章</a>
-        </div>
-      </header>
-
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">风格化渲染栈</h2>
-          <p>组合卡通着色、轮廓、笔触和线条形成可控视觉风格。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
-        </div>
-
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>卡通着色</li>
-            <li>轮廓</li>
-            <li>笔触</li>
-            <li>线条</li>
-        </ul>
-
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="拆分卡通色阶、轮廓和屏幕空间排线，组合可控的 WebGL2 非真实感渲染风格。" />
+<title>Chapter 15 非真实感渲染 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-5" /></head><body>
+<a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content">
+<header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 15 非真实感渲染</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-15">阅读本章</a></div></header>
+<nav class="chapter-nav" data-chapter="15" aria-label="章节实验导航"></nav>
+<section class="experiment-section" id="stylized-rendering" aria-label="风格化渲染栈实验"><div class="section-heading"><p class="eyebrow">Chapter 15</p><h2>风格化渲染栈</h2></div>
+<div class="lab-layout"><aside class="controls" aria-label="风格化渲染控制">
+<div class="control-group"><label for="stylizedMode">观察层</label><select id="stylizedMode"><option value="combined" selected>完整风格</option><option value="toon">卡通色阶</option><option value="outline">轮廓</option><option value="hatch">排线</option></select></div>
+<div class="control-group"><label for="stylizedBands">明暗色阶</label><input id="stylizedBands" type="range" min="2" max="8" value="4" step="1" /><output id="stylizedBandsValue" for="stylizedBands">4 级</output></div>
+<div class="control-group"><label for="stylizedOutline">轮廓宽度</label><input id="stylizedOutline" type="range" min="20" max="180" value="85" step="5" /><output id="stylizedOutlineValue" for="stylizedOutline">0.85×</output></div>
+<div class="control-group"><label for="stylizedHatch">排线密度</label><input id="stylizedHatch" type="range" min="20" max="140" value="72" step="4" /><output id="stylizedHatchValue" for="stylizedHatch">72 lpi</output></div>
+<div class="control-group"><label for="stylizedLight">光源方向</label><input id="stylizedLight" type="range" min="-80" max="80" value="24" step="2" /><output id="stylizedLightValue" for="stylizedLight">24°</output></div>
+<div class="metric-panel"><div><span>当前层</span><strong id="stylizedLayer">完整风格</strong></div><div><span>色阶</span><strong id="stylizedBandMetric">4</strong></div><div><span>边缘来源</span><strong>法线 + 深度</strong></div><div><span>排线空间</span><strong>屏幕坐标</strong></div></div></aside>
+<section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>色阶、轮廓与笔触组合</h2><span>三种层都在片元阶段独立可观察</span></div><canvas class="webgl-lab-canvas stylized-canvas" id="stylizedCanvas" width="1280" height="720"></canvas>
+<div class="concept-strip stylized-layer-strip" aria-label="风格化渲染层"><span data-layer="toon"><strong>T</strong>量化明暗</span><span data-layer="outline"><strong>O</strong>轮廓线</span><span data-layer="hatch"><strong>H</strong>暗部排线</span></div></article></section></div></section>
+</main><script type="module" src="../src/pages/chapter-15.js?v=20260803-5"></script></body></html>
