@@ -1,45 +1,11 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="追踪动态碰撞系统从宽阶段到连续碰撞与响应的过程" />
-    <title>Chapter 25 碰撞检测 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-7" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <main class="app-shell" id="main-content">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Real-Time Rendering 4th</p>
-          <h1>Chapter 25 碰撞检测</h1>
-        </div>
-        <div class="topbar-actions">
-          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
-          <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-25">阅读本章</a>
-        </div>
-      </header>
-
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">宽—中—窄阶段流水线</h2>
-          <p>追踪动态碰撞系统从宽阶段到连续碰撞与响应的过程。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
-        </div>
-
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>宽阶段</li>
-            <li>BVH</li>
-            <li>连续碰撞</li>
-            <li>碰撞响应</li>
-        </ul>
-
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="观察宽阶段、BVH 中阶段和精确窄阶段碰撞检测。" /><title>Chapter 25 碰撞检测 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-8" /></head><body>
+<a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content"><header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 25 碰撞检测</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-25">阅读本章</a></div></header>
+<nav class="chapter-nav" data-chapter="25" aria-label="章节实验导航"></nav><section class="experiment-section" id="collision-pipeline" aria-label="碰撞检测阶段实验"><div class="section-heading"><p class="eyebrow">Chapter 25 · Online</p><h2>宽—中—窄阶段碰撞流水线</h2></div><div class="lab-layout"><aside class="controls" aria-label="碰撞检测控制">
+<div class="control-group"><label for="collisionStage">检查阶段</label><select id="collisionStage"><option value="broad">宽阶段 Sweep</option><option value="mid">中阶段 BVH</option><option value="narrow">窄阶段形状测试</option><option value="contacts" selected>接触与法线</option></select></div>
+<div class="control-group"><label for="collisionTime">模拟时间</label><input id="collisionTime" type="range" min="0" max="100" value="38" step="1" /><output id="collisionTimeValue" for="collisionTime">0.38 s</output></div>
+<div class="control-group"><label for="collisionObjects">活动物体</label><input id="collisionObjects" type="range" min="4" max="12" value="8" step="1" /><output id="collisionObjectsValue" for="collisionObjects">8</output></div>
+<div class="control-group"><label for="collisionMargin">包围盒裕量</label><input id="collisionMargin" type="range" min="0" max="18" value="6" step="1" /><output id="collisionMarginValue" for="collisionMargin">0.06 m</output></div>
+<div class="control-group"><label for="collisionVelocity">相对速度</label><input id="collisionVelocity" type="range" min="20" max="140" value="82" step="2" /><output id="collisionVelocityValue" for="collisionVelocity">0.82 m/s</output></div>
+<div class="metric-panel"><div><span>全部物体对</span><strong id="collisionPairs">28</strong></div><div><span>宽阶段候选</span><strong id="collisionCandidates">7</strong></div><div><span>窄阶段测试</span><strong id="collisionTests">3</strong></div><div><span>真实接触</span><strong id="collisionContacts">1</strong></div></div></aside>
+<section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>动态物体与候选收缩</h2><span>蓝框为宽阶段候选；黄色为精确接触与法线</span></div><canvas class="webgl-lab-canvas collision-canvas" id="collisionCanvas" width="1280" height="720"></canvas><div class="concept-strip collision-stage-strip"><span data-stage="broad"><strong>1</strong>Sweep & Prune</span><span data-stage="mid"><strong>2</strong>BVH 节点</span><span data-stage="narrow"><strong>3</strong>形状测试</span><span data-stage="contacts"><strong>4</strong>接触流形</span></div></article></section></div></section>
+</main><script type="module" src="../src/pages/chapter-25.js?v=20260803-8"></script></body></html>

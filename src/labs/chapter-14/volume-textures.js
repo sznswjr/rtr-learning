@@ -1,5 +1,5 @@
-import { createFullscreenTriangle } from "../../render/mesh.js?v=20260803-7";
-import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-7";
+import { createFullscreenTriangle } from "../../render/mesh.js?v=20260803-8";
+import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-8";
 
 const VOLUME_SIZE = 64;
 

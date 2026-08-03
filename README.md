@@ -80,6 +80,12 @@
   - 移动射线并逐级观察 BVH、AABB、三角形候选和最近命中结果
 - Chapter 23 带宽、缓存与 Overdraw
   - 比较连续/随机访问、重复写入与深度预通过的帧缓冲流量
+- Chapter 24 混合渲染路径
+  - 比较光栅、SSR、软件射线查询与分层回退的覆盖缺口和成本
+- Chapter 25 宽—中—窄阶段碰撞流水线
+  - 推进动态物体时间，观察候选对经过 BVH 与精确测试收缩为接触
+- Chapter 26 WebGL2 软件路径追踪器
+  - 使用浮点 Ping-Pong 缓冲逐样本累积解析场景的多次反弹光传输
 
 ## 知识库
 
@@ -96,7 +102,7 @@ git submodule update --init --recursive
 
 - 生产仍然是静态站点，不需要构建步骤。
 - 首页只保留章节索引，不直接承载全部实验。
-- Chapter 1-26 均有独立静态路由 `chapters/chapter-<n>.html`；尚未实现实验的 3 个章节显示规划页。
+- Chapter 1-26 均有独立静态路由 `chapters/chapter-<n>.html`，并已全部接入章节实验。
 - 规划页由 `scripts/generate-chapter-pages.mjs` 根据 `chapterRegistry` 生成并提交到仓库，生产环境仍不需要构建步骤。
 - 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成，章节卡片会显示实验数量、渲染后端和实验直达链接。
 - 章节页内目录由 `src/app/chapter-nav.js` 从同一注册表生成。
@@ -114,6 +120,7 @@ git submodule update --init --recursive
 - 风格化渲染、网格 LOD 和曲线细分分别位于 `src/labs/chapter-15/`、`chapter-16/`、`chapter-17/`。
 - GPU 瓶颈诊断、场景剔除和多光源架构实验分别位于 `src/labs/chapter-18/`、`chapter-19/`、`chapter-20/`。
 - 双目注视点、射线拾取和带宽缓存实验分别位于 `src/labs/chapter-21/`、`chapter-22/`、`chapter-23/`。
+- 混合渲染、碰撞流水线和软件路径追踪分别位于 `src/labs/chapter-24/`、`chapter-25/`、`chapter-26/`。
 - `src/main.js` 只负责导入模块并按顺序初始化实验。
 - 共享 Canvas、颜色、数学、着色和 WebGL 工具位于 `src/render/`。
 - 相机、矩阵变换、立方体与平面网格、深度/浮点 Framebuffer、GPU Timer Query 与后处理基础模块也位于 `src/render/`，供后续章节实验复用。
@@ -188,6 +195,12 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-22
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-22/*.js /var/www/www.jrqz776.com/src/labs/chapter-22/
 sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-23
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-23/*.js /var/www/www.jrqz776.com/src/labs/chapter-23/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-24
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-24/*.js /var/www/www.jrqz776.com/src/labs/chapter-24/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-25
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-25/*.js /var/www/www.jrqz776.com/src/labs/chapter-25/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-26
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-26/*.js /var/www/www.jrqz776.com/src/labs/chapter-26/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
 ```
@@ -204,7 +217,7 @@ sudo nginx -t
 curl -I https://www.jrqz776.com
 ```
 
-`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 检查 3 个生成式规划页是否与注册表一致。`npm run check:ui` 会先检查 Chapter 1-26 路由，再使用 Playwright 检查首页、23 个已实现章节页和中文导读的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
+`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 确认注册表中不再存在规划页。`npm run check:ui` 会先检查 Chapter 1-26 路由，再使用 Playwright 检查首页、26 个章节实验页和中文导读的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
 
 如需检查尚未部署的工作区，可先启动本地静态服务器，再传入地址：
 

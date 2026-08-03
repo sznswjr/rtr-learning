@@ -190,6 +190,24 @@ const pages = [
     canvasIds: ["bandwidthCanvas"],
   },
   {
+    name: "chapter-24",
+    path: "/chapters/chapter-24.html",
+    selectors: [".chapter-nav", "#hybrid-rendering", "#hybridCanvas", "#hybridSteps", ".hybrid-stage-strip"],
+    canvasIds: ["hybridCanvas"],
+  },
+  {
+    name: "chapter-25",
+    path: "/chapters/chapter-25.html",
+    selectors: [".chapter-nav", "#collision-pipeline", "#collisionCanvas", "#collisionTime", ".collision-stage-strip"],
+    canvasIds: ["collisionCanvas"],
+  },
+  {
+    name: "chapter-26",
+    path: "/chapters/chapter-26.html",
+    selectors: [".chapter-nav", "#software-path-tracer", "#pathTracerCanvas", "#pathTracerBounces", ".path-tracer-stage-strip"],
+    canvasIds: ["pathTracerCanvas"],
+  },
+  {
     name: "reading",
     path: "/translations/rtr4-cn.html",
     selectors: [
@@ -290,12 +308,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-7"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-7"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-7"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-7"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-7"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-7"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-8"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-8"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-8"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-8"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-8"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-8"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -537,6 +555,9 @@ async function checkInteractionLatency(page, label) {
     { name: "stereo", selector: "#vrIpd", threshold: 240 },
     { name: "picking", selector: "#pickingTargetX", threshold: 240 },
     { name: "bandwidth", selector: "#bandwidthOverdraw", threshold: 240 },
+    { name: "hybrid", selector: "#hybridSteps", threshold: 240 },
+    { name: "collision", selector: "#collisionTime", threshold: 240 },
+    { name: "path-tracer", selector: "#pathTracerBounces", threshold: 320 },
   ];
 
   for (const interaction of interactions) {

@@ -1,5 +1,5 @@
-import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-7";
-import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-7";
+import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-8";
+import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-8";
 const fragmentSource=`#version 300 es
 precision highp float;uniform float uSegments,uP1,uP2,uT;uniform int uMethod;in vec2 vUv;out vec4 outColor;
 vec2 curve(float t){vec2 p0=vec2(-0.82,-0.45),p1=vec2(-0.38,uP1),p2=vec2(0.38,uP2),p3=vec2(0.82,0.42);float s=1.0-t;return s*s*s*p0+3.0*s*s*t*p1+3.0*s*t*t*p2+t*t*t*p3;}

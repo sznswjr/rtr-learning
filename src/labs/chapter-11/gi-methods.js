@@ -1,5 +1,5 @@
-import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-7";
-import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-7";
+import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-8";
+import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-8";
 
 const giFragment = `#version 300 es
 precision highp float;

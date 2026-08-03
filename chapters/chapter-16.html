@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="按屏幕误差调节网格 LOD，比较表面、线框和轮廓误差。" /><title>Chapter 16 多边形技术 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-7" /></head><body>
+<meta name="description" content="按屏幕误差调节网格 LOD，比较表面、线框和轮廓误差。" /><title>Chapter 16 多边形技术 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-8" /></head><body>
 <a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content"><header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 16 多边形技术</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-16">阅读本章</a></div></header>
 <nav class="chapter-nav" data-chapter="16" aria-label="章节实验导航"></nav><section class="experiment-section" id="mesh-lod" aria-label="网格质量与 LOD 实验"><div class="section-heading"><p class="eyebrow">Chapter 16</p><h2>网格质量与 LOD</h2></div>
 <div class="lab-layout"><aside class="controls" aria-label="网格 LOD 控制">
@@ -10,4 +10,4 @@
 <div class="control-group"><label for="lodSilhouette">轮廓保留</label><input id="lodSilhouette" type="range" min="0" max="100" value="70" step="5" /><output id="lodSilhouetteValue" for="lodSilhouette">70%</output></div>
 <div class="metric-panel"><div><span>有效细分</span><strong id="lodEffective">12 环</strong></div><div><span>估算三角形</span><strong id="lodTriangles">288</strong></div><div><span>屏幕误差</span><strong id="lodError">1.10 px</strong></div><div><span>压缩率</span><strong id="lodRatio">55%</strong></div></div></aside>
 <section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>参考网格与选择后 LOD</h2><span>虚线轮廓表示高精度参考表面</span></div><canvas class="webgl-lab-canvas lod-canvas" id="lodCanvas" width="1280" height="720"></canvas><div class="lod-guide"><span><strong>Reference</strong><small>固定 32 环</small></span><span><strong>Selected LOD</strong><small id="lodGuideSelected">12 环</small></span><span><strong>Screen error</strong><small id="lodGuideError">1.10 px</small></span></div></article></section></div></section>
-</main><script type="module" src="../src/pages/chapter-16.js?v=20260803-7"></script></body></html>
+</main><script type="module" src="../src/pages/chapter-16.js?v=20260803-8"></script></body></html>

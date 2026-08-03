@@ -2,15 +2,15 @@ import {
   createOrbitCamera,
   createOrthographicMatrix,
   multiplyMat4,
-} from "../../render/camera.js?v=20260803-7";
-import { createCubeGeometry, createIndexedMesh } from "../../render/mesh.js?v=20260803-7";
+} from "../../render/camera.js?v=20260803-8";
+import { createCubeGeometry, createIndexedMesh } from "../../render/mesh.js?v=20260803-8";
 import {
   createRotationXMatrix,
   createRotationYMatrix,
   createTranslationMatrix,
   transformPoint,
-} from "../../render/transforms.js?v=20260803-7";
-import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-7";
+} from "../../render/transforms.js?v=20260803-8";
+import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-8";
 
 const cubeVertexSource = `#version 300 es
 in vec3 position;

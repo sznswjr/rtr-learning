@@ -1,5 +1,5 @@
-import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-7";
-import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-7";
+import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-8";
+import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-8";
 const fragmentSource=`#version 300 es
 precision highp float; uniform float uSegments; uniform float uSilhouette; uniform int uView; in vec2 vUv; out vec4 outColor;
 float polygonRadius(float angle,float sides){float sector=6.2831853/sides;return cos(3.14159265/sides)/cos(mod(angle+sector*0.5,sector)-sector*0.5);}

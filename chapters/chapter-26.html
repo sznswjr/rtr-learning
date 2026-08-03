@@ -1,45 +1,11 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="用 WebGL2 软件遍历 BVH，观察累积采样与时空降噪" />
-    <title>Chapter 26 实时光线追踪 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-7" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <main class="app-shell" id="main-content">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Real-Time Rendering 4th</p>
-          <h1>Chapter 26 实时光线追踪</h1>
-        </div>
-        <div class="topbar-actions">
-          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
-          <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-26">阅读本章</a>
-        </div>
-      </header>
-
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">WebGL2 软件路径追踪器</h2>
-          <p>用 WebGL2 软件遍历 BVH，观察累积采样与时空降噪。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
-        </div>
-
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>BVH</li>
-            <li>路径追踪</li>
-            <li>累积采样</li>
-            <li>降噪</li>
-        </ul>
-
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="用浮点 Ping-Pong 缓冲逐样本累积 WebGL2 软件路径追踪。" /><title>Chapter 26 实时光线追踪 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-8" /></head><body>
+<a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content"><header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 26 实时光线追踪</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-26">阅读本章</a></div></header>
+<nav class="chapter-nav" data-chapter="26" aria-label="章节实验导航"></nav><section class="experiment-section" id="software-path-tracer" aria-label="软件路径追踪实验"><div class="section-heading"><p class="eyebrow">Chapter 26 · Online</p><h2>WebGL2 软件路径追踪器</h2></div><div class="lab-layout"><aside class="controls" aria-label="路径追踪控制">
+<div class="control-group"><label for="pathTracerView">显示模式</label><select id="pathTracerView"><option value="beauty" selected>色调映射结果</option><option value="linear">线性辐照度</option><option value="samples">采样收敛视图</option></select></div>
+<div class="control-group"><label for="pathTracerBounces">最大反弹</label><input id="pathTracerBounces" type="range" min="1" max="3" value="3" step="1" /><output id="pathTracerBouncesValue" for="pathTracerBounces">3</output></div>
+<div class="control-group"><label for="pathTracerSamples">目标样本</label><input id="pathTracerSamples" type="range" min="8" max="128" value="64" step="8" /><output id="pathTracerSamplesValue" for="pathTracerSamples">64 spp</output></div>
+<div class="control-group"><label for="pathTracerResolution">内部分辨率</label><input id="pathTracerResolution" type="range" min="35" max="100" value="68" step="1" /><output id="pathTracerResolutionValue" for="pathTracerResolution">68%</output></div>
+<div class="control-group"><label for="pathTracerExposure">曝光</label><input id="pathTracerExposure" type="range" min="40" max="180" value="105" step="5" /><output id="pathTracerExposureValue" for="pathTracerExposure">1.05×</output></div>
+<button class="lab-button" id="pathTracerReset" type="button">重新累积</button><div class="metric-panel"><div><span>已累积样本</span><strong id="pathTracerAccumulated">0 spp</strong></div><div><span>追踪射线</span><strong id="pathTracerRays">0.0 M</strong></div><div><span>累积缓冲</span><strong id="pathTracerBuffer">RGBA16F</strong></div><div><span>状态</span><strong id="pathTracerStatus">采样中</strong></div></div></aside>
+<section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>逐样本路径积分</h2><span>每帧加入一个随机样本；改变场景参数会清空历史</span></div><canvas class="webgl-lab-canvas path-tracer-canvas" id="pathTracerCanvas" width="1280" height="720"></canvas><div class="concept-strip path-tracer-stage-strip"><span class="is-active"><strong>1</strong>相机射线</span><span class="is-active"><strong>2</strong>解析求交</span><span class="is-active"><strong>3</strong>多次反弹</span><span class="is-active"><strong>Σ</strong>Ping-Pong 累积</span></div></article></section></div></section>
+</main><script type="module" src="../src/pages/chapter-26.js?v=20260803-8"></script></body></html>

@@ -30,6 +30,7 @@ description: Use when extending this RTR4 Web Lab project with new rendering exp
 - `src/labs/chapter-15/` owns stylized rendering, `src/labs/chapter-16/` owns mesh LOD analysis, and `src/labs/chapter-17/` owns curve tessellation.
 - `src/labs/chapter-18/` owns GPU bottleneck analysis, `src/labs/chapter-19/` owns scene culling, and `src/labs/chapter-20/` owns many-light architecture comparison.
 - `src/labs/chapter-21/` owns stereo/foveated rendering, `src/labs/chapter-22/` owns ray-picking inspection, and `src/labs/chapter-23/` owns bandwidth/cache analysis.
+- `src/labs/chapter-24/` owns hybrid-rendering comparison, `src/labs/chapter-25/` owns collision staging, and `src/labs/chapter-26/` owns progressive software path tracing.
 - `src/main.js` is a small entrypoint only; do not grow it with experiment state or drawing code.
 - Shared Canvas, camera/projection, color, framebuffer, GPU query, math, mesh geometry, postprocess, shading, transforms, and WebGL helpers live in `src/render/`.
 
