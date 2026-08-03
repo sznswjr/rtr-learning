@@ -128,6 +128,14 @@ export const labRegistry = [
     renderer: "webgl2",
   },
   {
+    id: "postprocess-framegraph",
+    chapter: "12",
+    title: "Bloom 后处理帧图",
+    summary: "沿 HDR 场景、亮度提取、可分离模糊与合成链检查每一个中间缓冲",
+    href: "./chapters/chapter-12.html#postprocess-framegraph",
+    renderer: "webgl2",
+  },
+  {
     id: "volume-textures",
     chapter: "14.3",
     title: "三维纹理与体积采样",
@@ -251,12 +259,12 @@ export const chapterRegistry = [
   {
     id: "chapter-12",
     title: "Chapter 12 图像空间特效",
-    summary: "检查后处理链中的中间缓冲、重投影与镜头效果",
+    summary: "沿浮点 HDR 后处理帧图检查亮度提取、可分离模糊、Bloom 合成与显示变换",
     href: "./chapters/chapter-12.html",
     range: "Chapter 12",
-    status: "planned",
-    plannedLab: "后处理帧图",
-    topics: ["重投影", "Bloom", "景深", "运动模糊"],
+    status: "active",
+    plannedLab: "Bloom 后处理帧图",
+    topics: ["HDR 中间缓冲", "亮度提取", "可分离模糊", "Bloom"],
   },
   {
     id: "chapter-13",

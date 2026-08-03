@@ -100,6 +100,18 @@ const pages = [
     canvasIds: ["environmentMappingCanvas"],
   },
   {
+    name: "chapter-12",
+    path: "/chapters/chapter-12.html",
+    selectors: [
+      ".chapter-nav",
+      "#postprocess-framegraph",
+      "#postprocessCanvas",
+      "#postprocessThreshold",
+      ".postprocess-chain",
+    ],
+    canvasIds: ["postprocessCanvas"],
+  },
+  {
     name: "chapter-14",
     path: "/chapters/chapter-14.html",
     selectors: [".chapter-nav", "#volume-textures", "#volumeTextureCanvas"],
@@ -206,12 +218,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-2"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-2"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-2"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-2"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-2"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-2"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-3"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-3"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-3"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-3"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-3"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-3"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -441,6 +453,7 @@ async function checkInteractionLatency(page, label) {
     { name: "shadow", selector: "#shadowBias", threshold: 220 },
     { name: "hdr", selector: "#hdrExposure", threshold: 220 },
     { name: "brdf", selector: "#brdfRoughness", threshold: 220 },
+    { name: "postprocess", selector: "#postprocessThreshold", threshold: 240 },
   ];
 
   for (const interaction of interactions) {

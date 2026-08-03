@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="检查后处理链中的中间缓冲、重投影与镜头效果" />
+    <meta name="description" content="沿 HDR 场景、亮度提取、可分离模糊和 Bloom 合成检查真实 WebGL2 后处理帧图。" />
     <title>Chapter 12 图像空间特效 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-2" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-3" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -21,25 +21,84 @@
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">后处理帧图</h2>
-          <p>检查后处理链中的中间缓冲、重投影与镜头效果。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
+      <nav class="chapter-nav" data-chapter="12" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="postprocess-framegraph" aria-label="Bloom 后处理帧图实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 12</p>
+          <h2>Bloom 后处理帧图</h2>
         </div>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>重投影</li>
-            <li>Bloom</li>
-            <li>景深</li>
-            <li>运动模糊</li>
-        </ul>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="后处理控制">
+            <div class="control-group">
+              <label for="postprocessView">观察缓冲</label>
+              <select id="postprocessView">
+                <option value="final" selected>最终合成</option>
+                <option value="scene">HDR 场景</option>
+                <option value="bright">亮度提取</option>
+                <option value="blur">模糊结果</option>
+              </select>
+            </div>
 
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+            <div class="control-group">
+              <label for="postprocessThreshold">Bloom 阈值</label>
+              <input id="postprocessThreshold" type="range" min="50" max="600" value="180" step="10" />
+              <output id="postprocessThresholdValue" for="postprocessThreshold">1.80</output>
+            </div>
+
+            <div class="control-group">
+              <label for="postprocessKnee">软阈值宽度</label>
+              <input id="postprocessKnee" type="range" min="0" max="150" value="65" step="5" />
+              <output id="postprocessKneeValue" for="postprocessKnee">0.65</output>
+            </div>
+
+            <div class="control-group">
+              <label for="postprocessRadius">模糊半径</label>
+              <input id="postprocessRadius" type="range" min="50" max="300" value="140" step="10" />
+              <output id="postprocessRadiusValue" for="postprocessRadius">1.40×</output>
+            </div>
+
+            <div class="control-group">
+              <label for="postprocessBloom">Bloom 强度</label>
+              <input id="postprocessBloom" type="range" min="0" max="250" value="105" step="5" />
+              <output id="postprocessBloomValue" for="postprocessBloom">1.05×</output>
+            </div>
+
+            <div class="control-group">
+              <label for="postprocessExposure">最终曝光</label>
+              <input id="postprocessExposure" type="range" min="-8" max="8" value="0" step="1" />
+              <output id="postprocessExposureValue" for="postprocessExposure">+0.00 EV</output>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>当前缓冲</span><strong id="postprocessBufferName">最终合成</strong></div>
+              <div><span>Bloom 分辨率</span><strong id="postprocessResolution">640 × 360</strong></div>
+              <div><span>完整链路</span><strong>5 Pass</strong></div>
+              <div><span>浮点目标</span><strong>4 × RGBA16F</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>HDR 中间缓冲与 Bloom 合成</h2>
+                <span>点击“观察缓冲”检查每一步写入的纹理</span>
+              </div>
+              <canvas class="webgl-lab-canvas postprocess-canvas" id="postprocessCanvas" width="1280" height="720"></canvas>
+              <div class="postprocess-chain" aria-label="后处理执行顺序">
+                <span data-buffer="scene"><strong>1</strong><small>HDR 场景</small></span>
+                <span data-buffer="bright"><strong>2</strong><small>亮度提取</small></span>
+                <span data-buffer="blur"><strong>3</strong><small>水平模糊</small></span>
+                <span data-buffer="blur"><strong>4</strong><small>垂直模糊</small></span>
+                <span class="is-active" data-buffer="final"><strong>5</strong><small>合成显示</small></span>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+
+    <script type="module" src="../src/pages/chapter-12.js?v=20260803-3"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-2";
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-3";
 import { initPipelineLab } from "../labs/chapter-2/pipeline.js?v=20260710-1";
 
 renderChapterNav();
