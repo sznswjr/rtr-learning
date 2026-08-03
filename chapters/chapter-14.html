@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="使用 WebGL2 三维纹理比较体积切片、最大强度投影与 Alpha 累积。" />
+    <title>Chapter 14 体积与半透明渲染 | RTR4 实时图形实验</title>
+    <link rel="stylesheet" href="../src/styles.css?v=20260802-2" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <main class="app-shell" id="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Real-Time Rendering 4th</p>
+          <h1>Chapter 14 体积与半透明渲染</h1>
+        </div>
+        <div class="topbar-actions">
+          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
+          <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-14">阅读本章</a>
+        </div>
+      </header>
+
+      <nav class="chapter-nav" data-chapter="14" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="volume-textures" aria-label="14.3 三维纹理与体积采样实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 14.3</p>
+          <h2>三维纹理与体积采样</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="体积纹理控制">
+            <div class="control-group">
+              <label for="volumeAxis">切片轴</label>
+              <select id="volumeAxis">
+                <option value="0">X 轴</option>
+                <option value="1">Y 轴</option>
+                <option value="2" selected>Z 轴</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeSlice">切片位置</label>
+              <input id="volumeSlice" type="range" min="0" max="100" value="52" step="1" />
+              <output id="volumeSliceValue" for="volumeSlice">52%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeSteps">沿射线采样</label>
+              <input id="volumeSteps" type="range" min="24" max="160" value="80" step="8" />
+              <output id="volumeStepsValue" for="volumeSteps">80</output>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeThreshold">密度阈值</label>
+              <input id="volumeThreshold" type="range" min="0" max="80" value="24" step="1" />
+              <output id="volumeThresholdValue" for="volumeThreshold">24%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="volumeFilter">体素插值</label>
+              <select id="volumeFilter">
+                <option value="nearest">Nearest</option>
+                <option value="linear" selected>Trilinear</option>
+              </select>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>体积尺寸</span><strong id="volumeDimensions">64³ voxels</strong></div>
+              <div><span>每条射线</span><strong id="volumeSamples">80 / ray</strong></div>
+              <div><span>过滤方式</span><strong id="volumeOperation">trilinear</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>同一密度场的三种观察方式</h2>
+                <span>切片 ｜ 最大强度投影 ｜ Alpha 累积</span>
+              </div>
+              <canvas class="webgl-lab-canvas volume-texture-canvas" id="volumeTextureCanvas" width="1440" height="720"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../src/pages/chapter-14.js?v=20260802-2"></script>
+  </body>
+</html>

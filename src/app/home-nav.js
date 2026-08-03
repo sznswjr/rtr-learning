@@ -1,4 +1,4 @@
-import { homeNavGroups, labRegistry } from "./lab-registry.js?v=20260802-1";
+import { homeNavGroups, labRegistry } from "./lab-registry.js?v=20260802-2";
 
 function appendTextElement(parent, tagName, text) {
   const element = document.createElement(tagName);
@@ -18,6 +18,11 @@ function createEntryMeta(entry, labs) {
 
   if (entry.range) {
     appendTextElement(meta, "span", entry.range);
+  }
+
+  if (entry.status === "planned") {
+    const status = appendTextElement(meta, "span", "实验规划中");
+    status.className = "is-planned";
   }
 
   if (labs.length > 0) {
@@ -45,6 +50,9 @@ function createLabLink(lab) {
 function createNavEntry(entry) {
   const item = document.createElement("article");
   item.className = "home-nav-entry";
+  if (entry.status === "planned") {
+    item.classList.add("is-planned");
+  }
 
   const labs = getChapterLabs(entry);
   const link = document.createElement("a");
@@ -57,13 +65,6 @@ function createNavEntry(entry) {
   link.append(createEntryMeta(entry, labs));
 
   item.append(link);
-
-  if (labs.length > 0) {
-    const labList = document.createElement("div");
-    labList.className = "home-nav-labs";
-    labs.forEach((lab) => labList.append(createLabLink(lab)));
-    item.append(labList);
-  }
 
   return item;
 }
@@ -80,6 +81,18 @@ function createNavGroup(group) {
   return groupElement;
 }
 
+function createLabDirectory() {
+  const group = document.createElement("div");
+  group.className = "home-nav-group home-nav-lab-directory";
+  appendTextElement(group, "span", "实验直达");
+
+  const links = document.createElement("div");
+  links.className = "home-nav-lab-grid";
+  labRegistry.forEach((lab) => links.append(createLabLink(lab)));
+  group.append(links);
+  return group;
+}
+
 export function renderHomeNav(root = document.querySelector(".home-nav")) {
   if (!root) {
     return;
@@ -87,5 +100,6 @@ export function renderHomeNav(root = document.querySelector(".home-nav")) {
 
   const fragment = document.createDocumentFragment();
   homeNavGroups.forEach((group) => fragment.append(createNavGroup(group)));
+  fragment.append(createLabDirectory());
   root.replaceChildren(fragment);
 }

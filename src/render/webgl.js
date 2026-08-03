@@ -42,3 +42,16 @@ export function assertFramebuffer(gl, label) {
 export function getMaxSamples(gl) {
   return gl.getParameter(gl.MAX_SAMPLES) || 1;
 }
+
+export function resizeCanvasToDisplaySize(canvas, maxDevicePixelRatio = 2) {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, maxDevicePixelRatio);
+  const width = Math.max(1, Math.round(rect.width * dpr));
+  const height = Math.max(1, Math.round(rect.height * dpr));
+  const changed = canvas.width !== width || canvas.height !== height;
+  if (changed) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+  return { changed, dpr, height, width };
+}

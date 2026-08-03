@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="使用立方体贴图比较反射、折射与 Fresnel 环境映射。" />
+    <title>Chapter 10 局部光照 | RTR4 实时图形实验</title>
+    <link rel="stylesheet" href="../src/styles.css?v=20260802-2" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <main class="app-shell" id="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Real-Time Rendering 4th</p>
+          <h1>Chapter 10 局部光照</h1>
+        </div>
+        <div class="topbar-actions">
+          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
+          <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-10">阅读本章</a>
+        </div>
+      </header>
+
+      <nav class="chapter-nav" data-chapter="10" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="environment-mapping" aria-label="10.4 立方体贴图与环境映射实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 10.4</p>
+          <h2>立方体贴图与环境映射</h2>
+        </div>
+
+        <div class="lab-layout">
+          <aside class="controls" aria-label="环境映射控制">
+            <div class="control-group">
+              <label for="environmentMode">映射方式</label>
+              <select id="environmentMode">
+                <option value="0">反射</option>
+                <option value="1">折射</option>
+                <option value="2" selected>Fresnel 混合</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="environmentRotation">观察角度</label>
+              <input id="environmentRotation" type="range" min="-180" max="180" value="28" step="1" />
+              <output id="environmentRotationValue" for="environmentRotation">28°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="environmentRoughness">表面粗糙度</label>
+              <input id="environmentRoughness" type="range" min="0" max="100" value="18" step="1" />
+              <output id="environmentRoughnessValue" for="environmentRoughness">18%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="environmentIor">折射率</label>
+              <input id="environmentIor" type="range" min="100" max="220" value="150" step="1" />
+              <output id="environmentIorValue" for="environmentIor">1.50</output>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>方向运算</span><strong id="environmentOperation">mix(refract, reflect, F)</strong></div>
+              <div><span>正视 Fresnel</span><strong id="environmentFresnel">4.0%</strong></div>
+              <div><span>纹理查找</span><strong id="environmentDirection">samplerCube(direction)</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>方向向量采样六面环境</h2>
+                <span>reflection / refraction / Fresnel</span>
+              </div>
+              <canvas class="webgl-lab-canvas environment-map-canvas" id="environmentMappingCanvas" width="1280" height="720"></canvas>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../src/pages/chapter-10.js?v=20260802-2"></script>
+  </body>
+</html>

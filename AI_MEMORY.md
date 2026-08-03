@@ -25,13 +25,10 @@ Last updated: 2026-07-11
 - Chapter 6 has a texture filtering comparison lab:
   - Compares nearest/no filtering, bilinear, trilinear, SAT-style area averaging, and anisotropic sampling.
   - Uses a grazing-angle high-frequency procedural texture so aliasing, MIP blur, SAT stability, and anisotropic detail retention are visually obvious.
-- Chapter 6.4 uses a real WebGL2 cube-map texture to compare reflection, refraction, and Fresnel mixing with adjustable roughness and index of refraction.
-- Chapter 6.5 uploads a procedural 64³ density field as a WebGL2 3D texture and compares an axis slice, maximum-intensity projection, and front-to-back alpha accumulation.
+- Chapter 10.4 uses a real WebGL2 cube-map texture to compare reflection, refraction, and Fresnel mixing with adjustable roughness and index of refraction.
+- Chapter 14.3 uploads a procedural 64³ density field as a WebGL2 3D texture and compares an axis slice, maximum-intensity projection, and front-to-back alpha accumulation.
 - The homepage is now a chapter index instead of hosting every experiment inline.
-- Chapter pages:
-  - `chapters/chapter-2.html`
-  - `chapters/chapter-5.html`
-  - `chapters/chapter-6.html`
+- Chapter 1-26 each have a static route at `chapters/chapter-<n>.html`; chapters without implemented labs use generated planning shells.
 - Page entry scripts live in `src/pages/`.
 - The homepage navigation includes the RTR4 Chinese translation page, chapter entries, lab counts, renderer tags, and direct lab links.
 - Homepage navigation metadata now lives in `src/app/lab-registry.js` and is rendered by `src/app/home-nav.js`.
@@ -48,8 +45,10 @@ Last updated: 2026-07-11
   - `shading-frequency.js`
   - `shading-models.js`
   - `transparency-compositing.js`
-- Chapter 6 lab code now lives in `src/labs/chapter-6/`, covering texture filtering, cube-map environment mapping, and WebGL2 3D volume textures.
+- Chapter 6 now owns texture filtering only. Its old environment and volume anchors remain as migration cards linking to Chapter 10.4 and Chapter 14.3.
+- Environment mapping lives in `src/labs/chapter-10/`; volume textures live in `src/labs/chapter-14/`.
 - Shared Canvas, color, math, shading, and WebGL helpers now live in `src/render/`.
+- Shared camera, mesh, framebuffer, GPU timing, and postprocess foundations also live in `src/render/`.
 - The HSL hue normalization bug in `src/render/color.js` is covered by `scripts/check-color.mjs`.
 - Expensive shading and texture controls render a coalesced preview while dragging and restore full quality after interaction settles.
 - `src/main.js` is now a small module entrypoint that initializes labs.
@@ -95,6 +94,10 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-5
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-5/*.js /var/www/www.jrqz776.com/src/labs/chapter-5/
 sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-6
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-6/*.js /var/www/www.jrqz776.com/src/labs/chapter-6/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-10
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-10/*.js /var/www/www.jrqz776.com/src/labs/chapter-10/
+sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-14
+sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-14/*.js /var/www/www.jrqz776.com/src/labs/chapter-14/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
 ```
@@ -106,20 +109,24 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-08-02
-- Completed the Chapter 0-26 Chinese guide with navigable chapter summaries, topic indexes, source references, related lab links, and a scrollable responsive chapter navigation.
-- Asset cache version: `20260802-1` for CSS, navigation modules, and page entry modules.
+- Completed the first chapter-expansion phase: Chapter 1-26 now have registered static routes, with 21 generated planning pages and active labs in Chapters 2, 5, 6, 10, and 14.
+- Moved environment mapping to Chapter 10.4 and volume textures to Chapter 14.3; Chapter 6 keeps visible compatibility anchors that route readers to the canonical pages without loading duplicate experiments.
+- Added shared camera, mesh, framebuffer, GPU timer-query, canvas resize, and fullscreen postprocess foundations under `src/render/`.
+- Asset cache version: `20260802-2` for CSS, navigation modules, page entry modules, and WebGL lab imports.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
+  - `npm run check:chapters`
   - `npm run check:ui`
   - `git diff --check`
   - `sudo nginx -t`
   - `curl -I https://www.jrqz776.com` returned `HTTP/2 200`
-  - Production UI check passed for 5 pages across desktop, laptop, tablet, and mobile viewports.
-  - `curl -I https://www.jrqz776.com/src/main.js?v=20260802-1` returned `HTTP/2 200`
-  - `curl -I https://www.jrqz776.com/src/styles.css?v=20260802-1` returned `HTTP/2 200`
+  - Production route check passed for all Chapter 1-26 pages.
+  - Production UI check passed for 8 pages across desktop, laptop, tablet, and mobile viewports.
+  - Production shared WebGL render-foundation check passed.
+  - `curl -I https://www.jrqz776.com/src/render/postprocess.js?v=20260802-2` returned `HTTP/2 200`
+  - Chapter 1, 6, 10, 14, and 26 routes returned `HTTP/2 200`.
   - `curl -I https://www.jrqz776.com/translations/rtr4-cn.html` returned `HTTP/2 200`
-  - The deployed translation page checksum matched the workspace file.
 
 ## Server Context
 

@@ -1,4 +1,5 @@
-import { createProgram } from "../../render/webgl.js?v=20260710-1";
+import { createFullscreenTriangle } from "../../render/mesh.js?v=20260802-2";
+import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260802-2";
 
 const VOLUME_SIZE = 64;
 
@@ -193,20 +194,8 @@ class VolumeRenderer {
       steps: gl.getUniformLocation(this.program, "uSteps"),
       stacked: gl.getUniformLocation(this.program, "uStacked"),
     };
-    this.initGeometry();
+    this.mesh = createFullscreenTriangle(gl, this.locations.position);
     this.initVolumeTexture();
-  }
-
-  initGeometry() {
-    const gl = this.gl;
-    this.vao = gl.createVertexArray();
-    const buffer = gl.createBuffer();
-    gl.bindVertexArray(this.vao);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(this.locations.position);
-    gl.vertexAttribPointer(this.locations.position, 2, gl.FLOAT, false, 0, 0);
-    gl.bindVertexArray(null);
   }
 
   initVolumeTexture() {
@@ -243,17 +232,10 @@ class VolumeRenderer {
   render(nextState) {
     const gl = this.gl;
     const rect = this.canvas.getBoundingClientRect();
-    const dpr = nextState.preview ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-    const width = Math.max(1, Math.round(rect.width * dpr));
-    const height = Math.max(1, Math.round(rect.height * dpr));
-    if (this.canvas.width !== width || this.canvas.height !== height) {
-      this.canvas.width = width;
-      this.canvas.height = height;
-    }
+    const { width, height } = resizeCanvasToDisplaySize(this.canvas, nextState.preview ? 1 : 2);
 
     gl.viewport(0, 0, width, height);
     gl.useProgram(this.program);
-    gl.bindVertexArray(this.vao);
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_3D, this.texture);
     gl.uniform1i(this.locations.volume, 0);
@@ -263,8 +245,7 @@ class VolumeRenderer {
     gl.uniform1i(this.locations.axis, nextState.axis);
     gl.uniform1i(this.locations.steps, nextState.steps);
     gl.uniform1i(this.locations.stacked, rect.width <= 700 ? 1 : 0);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    gl.bindVertexArray(null);
+    this.mesh.draw();
   }
 }
 

@@ -21,12 +21,13 @@ description: Use when extending this RTR4 Web Lab project with new rendering exp
 - `index.html` owns page structure and stable experiment mount points.
 - `src/app/lab-registry.js` owns lab/content metadata used by navigation and future chapter indexes.
 - `src/app/home-nav.js` renders homepage navigation from registry data.
-- `chapters/chapter-2.html` and `chapters/chapter-5.html` own current chapter page structure.
+- `chapters/chapter-1.html` through `chapters/chapter-26.html` own chapter page structure.
+- Planned chapter shells are generated from `chapterRegistry` by `scripts/generate-chapter-pages.mjs`; keep their generated HTML committed.
 - `src/pages/` owns page entry scripts.
 - `src/labs/chapter-2/pipeline.js` owns the Chapter 2 rendering pipeline lab.
-- `src/labs/chapter-5/` owns the Chapter 5 labs.
+- `src/labs/chapter-5/` owns the Chapter 5 labs, `src/labs/chapter-6/` owns texture filtering, `src/labs/chapter-10/` owns environment mapping, and `src/labs/chapter-14/` owns volume sampling.
 - `src/main.js` is a small entrypoint only; do not grow it with experiment state or drawing code.
-- Shared Canvas, color, math, shading, and WebGL helpers live in `src/render/`.
+- Shared Canvas, camera, color, framebuffer, GPU query, math, mesh, postprocess, shading, and WebGL helpers live in `src/render/`.
 
 ## UI Rules
 
@@ -41,6 +42,7 @@ Run these checks before handing off:
 
 ```bash
 npm run check:js
+npm run check:chapters
 git diff --check
 sudo nginx -t
 ```

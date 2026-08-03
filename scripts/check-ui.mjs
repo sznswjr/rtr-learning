@@ -17,7 +17,12 @@ const pages = [
   {
     name: "home",
     path: "/",
-    selectors: [".topbar", ".home-panel", ".home-nav-card"],
+    selectors: [".topbar", ".home-panel", ".home-nav-card", ".home-nav-lab-directory", ".home-nav-lab"],
+  },
+  {
+    name: "chapter-1-plan",
+    path: "/chapters/chapter-1.html",
+    selectors: [".topbar", ".chapter-plan", ".chapter-plan-topics", ".chapter-plan-status"],
   },
   {
     name: "chapter-2",
@@ -39,11 +44,23 @@ const pages = [
       "#texture-filtering",
       "#textureFilteringCanvas",
       "#environment-mapping",
-      "#environmentMappingCanvas",
       "#volume-textures",
-      "#volumeTextureCanvas",
+      'a[href="./chapter-10.html#environment-mapping"]',
+      'a[href="./chapter-14.html#volume-textures"]',
     ],
-    canvasIds: ["textureFilteringCanvas", "environmentMappingCanvas", "volumeTextureCanvas"],
+    canvasIds: ["textureFilteringCanvas"],
+  },
+  {
+    name: "chapter-10",
+    path: "/chapters/chapter-10.html",
+    selectors: [".chapter-nav", "#environment-mapping", "#environmentMappingCanvas"],
+    canvasIds: ["environmentMappingCanvas"],
+  },
+  {
+    name: "chapter-14",
+    path: "/chapters/chapter-14.html",
+    selectors: [".chapter-nav", "#volume-textures", "#volumeTextureCanvas"],
+    canvasIds: ["volumeTextureCanvas"],
   },
   {
     name: "reading",
@@ -66,6 +83,80 @@ function pageUrl(pagePath) {
 function assert(condition, message) {
   if (!condition) {
     throw new Error(message);
+  }
+}
+
+async function checkChapterRoutes() {
+  for (let chapter = 1; chapter <= 26; chapter += 1) {
+    const response = await fetch(pageUrl(`/chapters/chapter-${chapter}.html`));
+    assert(response.ok, `chapter-${chapter}: route returned ${response.status}`);
+    const html = await response.text();
+    assert(html.includes('id="main-content"'), `chapter-${chapter}: #main-content is missing from source`);
+    assert(html.includes(`<title>Chapter ${chapter} `), `chapter-${chapter}: title does not match route`);
+  }
+}
+
+async function checkRenderFoundations(browser) {
+  const page = await browser.newPage({ viewport: viewports[0] });
+  try {
+    await page.goto(pageUrl("/"), { waitUntil: "networkidle", timeout: 30000 });
+    const result = await page.evaluate(async (urls) => {
+      const [cameraModule, framebufferModule, gpuQueryModule, postprocessModule] = await Promise.all([
+        import(urls.camera),
+        import(urls.framebuffer),
+        import(urls.gpuQuery),
+        import(urls.postprocess),
+      ]);
+
+      const camera = cameraModule.createOrbitCamera({ aspect: 16 / 9, distance: 4, pitch: 0.3, yaw: 0.7 });
+      const matrixValues = [...camera.viewProjection];
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 16;
+      canvas.height = 16;
+      const gl = canvas.getContext("webgl2", { preserveDrawingBuffer: true });
+      if (!gl) {
+        return { webgl2: false };
+      }
+
+      const target = framebufferModule.createColorTarget(gl, { height: 8, label: "foundation check", width: 8 });
+      target.resize(12, 10);
+      const timer = gpuQueryModule.createGpuTimer(gl);
+      const fragment = `#version 300 es
+precision highp float;
+in vec2 vUv;
+out vec4 outColor;
+void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
+      const pass = postprocessModule.createPostprocessPass(gl, fragment);
+      pass.draw({ height: 16, width: 16 });
+      const pixel = new Uint8Array(4);
+      gl.readPixels(8, 8, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+
+      const output = {
+        cameraFinite: matrixValues.length === 16 && matrixValues.every(Number.isFinite),
+        framebufferSize: [target.width, target.height],
+        gpuTimerAvailableType: typeof timer.available,
+        pixel: [...pixel],
+        webgl2: true,
+      };
+      pass.dispose();
+      timer.dispose();
+      target.dispose();
+      return output;
+    }, {
+      camera: pageUrl("/src/render/camera.js?v=20260802-2"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260802-2"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260802-2"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260802-2"),
+    });
+
+    assert(result.webgl2, "render foundations: WebGL2 is unavailable");
+    assert(result.cameraFinite, "render foundations: camera matrix contains invalid values");
+    assert(result.framebufferSize.join("x") === "12x10", `render foundations: framebuffer resize failed ${result.framebufferSize}`);
+    assert(result.gpuTimerAvailableType === "boolean", "render foundations: GPU timer availability is invalid");
+    assert(result.pixel[3] > 200 && result.pixel[2] > 32, `render foundations: postprocess output is blank ${result.pixel}`);
+  } finally {
+    await page.close();
   }
 }
 
@@ -346,11 +437,13 @@ async function checkPage(browser, pageConfig, viewport) {
 }
 
 await mkdir(outputDir, { recursive: true });
+await checkChapterRoutes();
 
 const browser = await chromium.launch();
 const screenshots = [];
 
 try {
+  await checkRenderFoundations(browser);
   for (const pageConfig of pages) {
     for (const viewport of viewports) {
       screenshots.push(await checkPage(browser, pageConfig, viewport));
@@ -360,6 +453,8 @@ try {
   await browser.close();
 }
 
+console.log("Chapter route check passed for Chapter 1-26.");
+console.log("Shared WebGL render foundation check passed.");
 console.log(`UI check passed for ${pages.length} pages x ${viewports.length} viewports.`);
 if (interactionTimings.length > 0) {
   const slowest = interactionTimings.reduce((current, timing) => timing.duration > current.duration ? timing : current);

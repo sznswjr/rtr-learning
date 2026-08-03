@@ -1,4 +1,5 @@
-import { createProgram } from "../../render/webgl.js?v=20260710-1";
+import { createFullscreenTriangle } from "../../render/mesh.js?v=20260802-2";
+import { createProgram, resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260802-2";
 
 const vertexSource = `#version 300 es
 in vec2 position;
@@ -167,20 +168,8 @@ class EnvironmentRenderer {
       ior: gl.getUniformLocation(this.program, "uIor"),
       mode: gl.getUniformLocation(this.program, "uMode"),
     };
-    this.initGeometry();
+    this.mesh = createFullscreenTriangle(gl, this.locations.position);
     this.initCubeMap();
-  }
-
-  initGeometry() {
-    const gl = this.gl;
-    this.vao = gl.createVertexArray();
-    const buffer = gl.createBuffer();
-    gl.bindVertexArray(this.vao);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(this.locations.position);
-    gl.vertexAttribPointer(this.locations.position, 2, gl.FLOAT, false, 0, 0);
-    gl.bindVertexArray(null);
   }
 
   initCubeMap() {
@@ -207,18 +196,10 @@ class EnvironmentRenderer {
 
   render(nextState) {
     const gl = this.gl;
-    const rect = this.canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const width = Math.max(1, Math.round(rect.width * dpr));
-    const height = Math.max(1, Math.round(rect.height * dpr));
-    if (this.canvas.width !== width || this.canvas.height !== height) {
-      this.canvas.width = width;
-      this.canvas.height = height;
-    }
+    const { width, height } = resizeCanvasToDisplaySize(this.canvas);
 
     gl.viewport(0, 0, width, height);
     gl.useProgram(this.program);
-    gl.bindVertexArray(this.vao);
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubeMap);
     gl.uniform1i(this.locations.environment, 0);
@@ -227,8 +208,7 @@ class EnvironmentRenderer {
     gl.uniform1f(this.locations.roughness, nextState.roughness / 100);
     gl.uniform1f(this.locations.ior, nextState.ior / 100);
     gl.uniform1i(this.locations.mode, nextState.mode);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    gl.bindVertexArray(null);
+    this.mesh.draw();
   }
 }
 
