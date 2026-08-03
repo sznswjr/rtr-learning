@@ -96,8 +96,8 @@ const pages = [
   {
     name: "chapter-10",
     path: "/chapters/chapter-10.html",
-    selectors: [".chapter-nav", "#environment-mapping", "#environmentMappingCanvas"],
-    canvasIds: ["environmentMappingCanvas"],
+    selectors: [".chapter-nav", "#environment-mapping", "#environmentMappingCanvas", "#rect-area-light", "#areaLightCanvas", "#areaLightWidth"],
+    canvasIds: ["environmentMappingCanvas", "areaLightCanvas"],
   },
   {
     name: "chapter-11",
@@ -132,8 +132,8 @@ const pages = [
   {
     name: "chapter-14",
     path: "/chapters/chapter-14.html",
-    selectors: [".chapter-nav", "#volume-textures", "#volumeTextureCanvas"],
-    canvasIds: ["volumeTextureCanvas"],
+    selectors: [".chapter-nav", "#volume-textures", "#volumeTextureCanvas", "#participating-media", "#mediaCanvas", "#mediaDensity"],
+    canvasIds: ["volumeTextureCanvas", "mediaCanvas"],
   },
   {
     name: "chapter-15",
@@ -308,12 +308,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-8"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-8"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-8"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-8"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-8"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-8"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-9"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-9"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-9"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-9"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-9"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-9"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -539,7 +539,9 @@ async function checkInteractionLatency(page, label) {
     { name: "shading", selector: "#surfaceHue", threshold: 160 },
     { name: "texture", selector: "#textureDetail", threshold: 250 },
     { name: "environment", selector: "#environmentRoughness", threshold: 180 },
+    { name: "area-light", selector: "#areaLightWidth", threshold: 240 },
     { name: "volume", selector: "#volumeSteps", threshold: 250 },
+    { name: "media", selector: "#mediaDensity", threshold: 280 },
     { name: "shadow", selector: "#shadowBias", threshold: 220 },
     { name: "hdr", selector: "#hdrExposure", threshold: 220 },
     { name: "brdf", selector: "#brdfRoughness", threshold: 220 },

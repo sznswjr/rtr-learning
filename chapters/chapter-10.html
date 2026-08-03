@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="使用立方体贴图比较反射、折射与 Fresnel 环境映射。" />
     <title>Chapter 10 局部光照 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-8" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-9" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -76,8 +76,26 @@
           </section>
         </div>
       </section>
+
+      <section class="experiment-section" id="rect-area-light" aria-label="10.2 矩形面光源积分实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 10.2</p>
+          <h2>矩形面光源积分</h2>
+        </div>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="矩形面光源控制">
+            <div class="control-group"><label for="areaLightMethod">积分方式</label><select id="areaLightMethod"><option value="point">中心点近似</option><option value="samples" selected>离散多采样</option><option value="ltc">LTC 风格近似</option></select></div>
+            <div class="control-group"><label for="areaLightWidth">光源宽度</label><input id="areaLightWidth" type="range" min="10" max="90" value="58" step="2" /><output id="areaLightWidthValue" for="areaLightWidth">1.16 m</output></div>
+            <div class="control-group"><label for="areaLightHeight">光源高度</label><input id="areaLightHeight" type="range" min="35" max="95" value="70" step="1" /><output id="areaLightHeightValue" for="areaLightHeight">1.40 m</output></div>
+            <div class="control-group"><label for="areaLightSamples">积分样本</label><input id="areaLightSamples" type="range" min="1" max="16" value="8" step="1" /><output id="areaLightSamplesValue" for="areaLightSamples">8</output></div>
+            <div class="control-group"><label for="areaLightRoughness">材质粗糙度</label><input id="areaLightRoughness" type="range" min="4" max="70" value="22" step="2" /><output id="areaLightRoughnessValue" for="areaLightRoughness">0.22</output></div>
+            <div class="metric-panel"><div><span>光源立体角</span><strong id="areaLightSolidAngle">0.82 sr</strong></div><div><span>着色采样</span><strong id="areaLightSampleMetric">8 / px</strong></div><div><span>高光宽度</span><strong id="areaLightHighlight">0.36</strong></div><div><span>相对成本</span><strong id="areaLightCost">8.0×</strong></div></div>
+          </aside>
+          <section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>有限面积发光体</h2><span>顶部亮条是矩形光源；球面高光宽度随光源尺寸变化</span></div><canvas class="webgl-lab-canvas area-light-canvas" id="areaLightCanvas" width="1280" height="720"></canvas><div class="concept-strip area-light-method-strip"><span data-method="point"><strong>P</strong>点光近似</span><span data-method="samples"><strong>Σ</strong>离散积分</span><span data-method="ltc"><strong>L</strong>解析近似</span></div></article></section>
+        </div>
+      </section>
     </main>
 
-    <script type="module" src="../src/pages/chapter-10.js?v=20260803-8"></script>
+    <script type="module" src="../src/pages/chapter-10.js?v=20260803-9"></script>
   </body>
 </html>

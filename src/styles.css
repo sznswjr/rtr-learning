@@ -666,6 +666,8 @@ canvas {
 .hybrid-canvas,
 .collision-canvas,
 .path-tracer-canvas,
+.area-light-canvas,
+.media-canvas,
 .brdf-grid-canvas {
   aspect-ratio: 1.62;
 }
@@ -1487,7 +1489,9 @@ canvas {
   .bandwidth-canvas,
   .hybrid-canvas,
   .collision-canvas,
-  .path-tracer-canvas {
+  .path-tracer-canvas,
+  .area-light-canvas,
+  .media-canvas {
     aspect-ratio: 0.92;
   }
 

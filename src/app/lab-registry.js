@@ -128,6 +128,14 @@ export const labRegistry = [
     renderer: "webgl2",
   },
   {
+    id: "rect-area-light",
+    chapter: "10.2",
+    title: "矩形面光源积分",
+    summary: "比较点光近似、离散多采样与 LTC 风格近似如何重建宽光源的柔和高光",
+    href: "./chapters/chapter-10.html#rect-area-light",
+    renderer: "webgl2",
+  },
+  {
     id: "gi-methods",
     chapter: "11",
     title: "实时 GI 方法对比",
@@ -157,6 +165,14 @@ export const labRegistry = [
     title: "三维纹理与体积采样",
     summary: "并排观察体积切片、最大强度投影与 Alpha 累积",
     href: "./chapters/chapter-14.html#volume-textures",
+    renderer: "webgl2",
+  },
+  {
+    id: "participating-media",
+    chapter: "14.4",
+    title: "参与介质单次散射",
+    summary: "沿视线积分密度、透射率与 Henyey–Greenstein 相函数，观察雾中光束形成",
+    href: "./chapters/chapter-14.html#participating-media",
     renderer: "webgl2",
   },
   {

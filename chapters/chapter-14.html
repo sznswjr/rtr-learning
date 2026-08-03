@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="使用 WebGL2 三维纹理比较体积切片、最大强度投影与 Alpha 累积。" />
     <title>Chapter 14 体积与半透明渲染 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-8" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-9" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -84,8 +84,26 @@
           </section>
         </div>
       </section>
+
+      <section class="experiment-section" id="participating-media" aria-label="14.4 参与介质单次散射实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 14.4</p>
+          <h2>参与介质单次散射</h2>
+        </div>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="参与介质控制">
+            <div class="control-group"><label for="mediaView">观察量</label><select id="mediaView"><option value="combined" selected>场景 + 散射</option><option value="scattering">仅散射辐亮度</option><option value="transmittance">透射率</option><option value="density">介质密度</option></select></div>
+            <div class="control-group"><label for="mediaDensity">消光密度</label><input id="mediaDensity" type="range" min="4" max="70" value="28" step="2" /><output id="mediaDensityValue" for="mediaDensity">0.28</output></div>
+            <div class="control-group"><label for="mediaAnisotropy">各向异性 g</label><input id="mediaAnisotropy" type="range" min="-70" max="85" value="52" step="1" /><output id="mediaAnisotropyValue" for="mediaAnisotropy">+0.52</output></div>
+            <div class="control-group"><label for="mediaSteps">积分步数</label><input id="mediaSteps" type="range" min="8" max="48" value="28" step="4" /><output id="mediaStepsValue" for="mediaSteps">28</output></div>
+            <div class="control-group"><label for="mediaLightAngle">光束角度</label><input id="mediaLightAngle" type="range" min="-55" max="55" value="-18" step="1" /><output id="mediaLightAngleValue" for="mediaLightAngle">−18°</output></div>
+            <div class="metric-panel"><div><span>平均透射率</span><strong id="mediaTransmittance">57%</strong></div><div><span>相函数峰值</span><strong id="mediaPhase">0.51</strong></div><div><span>积分样本</span><strong id="mediaSampleMetric">28 / ray</strong></div><div><span>散射阶数</span><strong>1</strong></div></div>
+          </aside>
+          <section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>雾中聚光束与遮挡物</h2><span>视线积分：密度 × 透射率 × 相函数 × 入射光</span></div><canvas class="webgl-lab-canvas media-canvas" id="mediaCanvas" width="1280" height="720"></canvas><div class="concept-strip media-term-strip"><span data-term="density"><strong>σ</strong>密度 / 消光</span><span data-term="transmittance"><strong>T</strong>Beer–Lambert</span><span data-term="scattering"><strong>L</strong>单次散射</span><span data-term="combined"><strong>Σ</strong>场景合成</span></div></article></section>
+        </div>
+      </section>
     </main>
 
-    <script type="module" src="../src/pages/chapter-14.js?v=20260803-8"></script>
+    <script type="module" src="../src/pages/chapter-14.js?v=20260803-9"></script>
   </body>
 </html>

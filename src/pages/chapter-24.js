@@ -1,1 +1,1 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-8"; import { initHybridRenderingLab } from "../labs/chapter-24/hybrid-rendering.js?v=20260803-8"; renderChapterNav(); initHybridRenderingLab();
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-9"; import { initHybridRenderingLab } from "../labs/chapter-24/hybrid-rendering.js?v=20260803-9"; renderChapterNav(); initHybridRenderingLab();

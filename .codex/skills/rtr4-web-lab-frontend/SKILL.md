@@ -26,7 +26,7 @@ description: Use when extending this RTR4 Web Lab project with new rendering exp
 - `src/pages/` owns page entry scripts.
 - `src/labs/chapter-1/` owns frame-budget measurement, `src/labs/chapter-2/pipeline.js` owns the rendering pipeline lab, `src/labs/chapter-3/` owns barycentric rasterization, and `src/labs/chapter-4/` owns coordinate transforms.
 - `src/labs/chapter-5/` owns the Chapter 5 labs, `src/labs/chapter-6/` owns texture filtering, `src/labs/chapter-7/` owns shadow mapping, `src/labs/chapter-8/` owns HDR/display transforms, and `src/labs/chapter-9/` owns the microfacet BRDF lab.
-- `src/labs/chapter-10/` owns environment mapping, `src/labs/chapter-11/` owns GI contribution analysis, `src/labs/chapter-12/` owns the image-space postprocess framegraph, `src/labs/chapter-13/` owns scene-representation comparison, and `src/labs/chapter-14/` owns volume sampling.
+- `src/labs/chapter-10/` owns environment mapping and rectangular-area-light integration, `src/labs/chapter-11/` owns GI contribution analysis, `src/labs/chapter-12/` owns the image-space postprocess framegraph, `src/labs/chapter-13/` owns scene-representation comparison, and `src/labs/chapter-14/` owns volume sampling and participating media.
 - `src/labs/chapter-15/` owns stylized rendering, `src/labs/chapter-16/` owns mesh LOD analysis, and `src/labs/chapter-17/` owns curve tessellation.
 - `src/labs/chapter-18/` owns GPU bottleneck analysis, `src/labs/chapter-19/` owns scene culling, and `src/labs/chapter-20/` owns many-light architecture comparison.
 - `src/labs/chapter-21/` owns stereo/foveated rendering, `src/labs/chapter-22/` owns ray-picking inspection, and `src/labs/chapter-23/` owns bandwidth/cache analysis.

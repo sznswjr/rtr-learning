@@ -1,4 +1,4 @@
-import { labRegistry } from "./lab-registry.js?v=20260803-8";
+import { labRegistry } from "./lab-registry.js?v=20260803-9";
 
 function createChapterLink(lab) {
   const link = document.createElement("a");

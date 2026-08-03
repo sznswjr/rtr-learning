@@ -1,1 +1,1 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-8"; import { initBandwidthCacheLab } from "../labs/chapter-23/bandwidth-cache.js?v=20260803-8"; renderChapterNav(); initBandwidthCacheLab();
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-9"; import { initBandwidthCacheLab } from "../labs/chapter-23/bandwidth-cache.js?v=20260803-9"; renderChapterNav(); initBandwidthCacheLab();

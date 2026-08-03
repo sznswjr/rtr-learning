@@ -1,1 +1,1 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-8"; import { initCurveTessellationLab } from "../labs/chapter-17/curve-tessellation.js?v=20260803-8"; renderChapterNav(); initCurveTessellationLab();
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-9"; import { initCurveTessellationLab } from "../labs/chapter-17/curve-tessellation.js?v=20260803-9"; renderChapterNav(); initCurveTessellationLab();

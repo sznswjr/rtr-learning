@@ -38,11 +38,13 @@ Last updated: 2026-08-03
 - Chapter 8 renders an HDR scene into an `RGBA16F` framebuffer, then applies exposure, white-point normalization, clip/Reinhard/ACES tone mapping, and linear/sRGB or false-color output.
 - Chapter 9 renders a GGX/Smith/Schlick Cook-Torrance material matrix and can isolate the D, F, and G terms while varying roughness, metallic offset, light angle, and intensity.
 - Chapter 10.4 uses a real WebGL2 cube-map texture to compare reflection, refraction, and Fresnel mixing with adjustable roughness and index of refraction.
+- Chapter 10.2 compares a center-point approximation, discrete rectangular-light integration, and an LTC-style analytic approximation.
 - Chapter 11 analytically intersects three spheres and room planes so direct lighting, AO, probe lighting, and approximate color bounce can be isolated at the same visible surface point.
 - Chapter 12 uses four `RGBA16F` render targets for a five-pass image-space framegraph: HDR scene, soft-threshold bright extraction, horizontal blur, vertical blur, and Bloom/tone-map composition.
   - Controls expose the scene, bright-pass, blurred, and final buffers, plus threshold, soft knee, blur radius, Bloom strength, and exposure.
 - Chapter 13 compares mesh, billboard, particle, and point-cloud representations of one object with adjustable density, view angle, sample size, and primitive-cost metrics.
 - Chapter 14.3 uploads a procedural 64³ density field as a WebGL2 3D texture and compares an axis slice, maximum-intensity projection, and front-to-back alpha accumulation.
+- Chapter 14.4 ray-marches participating media with Beer–Lambert transmittance and a Henyey–Greenstein phase function.
 - Chapter 15 composes quantized toon lighting, normal/depth-style outlines, and screen-space hatching, with each layer independently observable.
 - Chapter 16 visualizes reference and selected mesh LODs with surface, wireframe, and error views driven by distance, pixel tolerance, and silhouette preservation.
 - Chapter 17 edits a cubic Bézier curve and compares uniform parameter samples with curvature-focused adaptive samples while exposing the point and tangent at `t`.
@@ -78,7 +80,7 @@ Last updated: 2026-08-03
   - `transparency-compositing.js`
 - Chapter 6 now owns texture filtering only. Its old environment and volume anchors remain as migration cards linking to Chapter 10.4 and Chapter 14.3.
 - Chapter 7 shadow mapping, Chapter 8 HDR display transform, and Chapter 9 microfacet BRDF live under their corresponding `src/labs/chapter-7/`, `chapter-8/`, and `chapter-9/` directories.
-- Environment mapping lives in `src/labs/chapter-10/`; GI analysis in `chapter-11/`; the Bloom framegraph in `chapter-12/`; representation comparison in `chapter-13/`; volume textures in `chapter-14/`.
+- Environment mapping and rectangular-area-light integration live in `src/labs/chapter-10/`; GI analysis in `chapter-11/`; the Bloom framegraph in `chapter-12/`; representation comparison in `chapter-13/`; volume textures and participating media in `chapter-14/`.
 - Stylized rendering, mesh LOD, and curve tessellation live in `src/labs/chapter-15/`, `chapter-16/`, and `chapter-17/`.
 - GPU bottleneck analysis, scene culling, and many-light shading live in `src/labs/chapter-18/`, `chapter-19/`, and `chapter-20/`.
 - Stereo/foveated rendering, ray picking, and bandwidth/cache analysis live in `src/labs/chapter-21/`, `chapter-22/`, and `chapter-23/`.
@@ -188,6 +190,7 @@ Latest production deployment:
 
 - Date: 2026-08-03
 - Added active Chapter 24 hybrid-rendering, Chapter 25 collision-pipeline, and Chapter 26 progressive software path-tracing labs; all Chapter 1–26 experiments are now implemented.
+- Strengthened Chapter 10 with rectangular-area-light integration and Chapter 14 with participating-media single scattering.
 - Chapter 21–23 provide stereo/foveated, ray-picking, and bandwidth/cache labs.
 - Chapter 18–20 provide GPU bottleneck, scene-culling, and many-light architecture labs.
 - Chapter 15–17 provide stylized rendering, mesh LOD, and curve tessellation labs.
@@ -202,7 +205,7 @@ Latest production deployment:
 - Chapter 8 demonstrates HDR intermediate storage, exposure, tone mapping, and display encoding.
 - Chapter 9 demonstrates the GGX, Smith, and Schlick terms of a microfacet BRDF across roughness and metallic values.
 - Added reusable orthographic projection, transform/scale matrices, point transformation, cube/plane geometry, depth targets, and float framebuffer support to `src/render/`.
-- Asset cache version: `20260803-8` for CSS, navigation modules, page entry modules, and WebGL lab imports.
+- Asset cache version: `20260803-9` for CSS, navigation modules, page entry modules, and WebGL lab imports.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
@@ -214,8 +217,8 @@ Latest production deployment:
   - Production route check passed for all Chapter 1-26 pages.
   - Production UI check passed for 28 pages across desktop, laptop, tablet, and mobile viewports.
   - Production shared WebGL render-foundation check passed.
-  - The Chapter 24, 25, and 26 pages and lab modules returned `HTTP/2 200`.
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-26/software-path-tracer.js?v=20260803-8` returned `HTTP/2 200`.
+  - The Chapter 10 and 14 pages and new lab modules returned `HTTP/2 200`.
+  - `curl -I https://www.jrqz776.com/src/labs/chapter-14/participating-media.js?v=20260803-9` returned `HTTP/2 200`.
 
 ## Server Context
 

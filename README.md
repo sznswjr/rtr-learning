@@ -50,6 +50,8 @@
 - Chapter 10.4 立方体贴图与环境映射
   - 使用程序生成的六面 Cube Map 对比反射、折射和 Fresnel 混合
   - 可调观察角度、表面粗糙度和折射率
+- Chapter 10.2 矩形面光源积分
+  - 比较点光近似、离散多采样与 LTC 风格近似的高光宽度和成本
 - Chapter 11 实时 GI 方法对比
   - 在解析求交场景中拆分直接光、环境光遮蔽、低频光照探针和近似颜色反弹
   - 所有模式观察同一表面点，可调 AO 半径、探针/反弹强度和主光方向
@@ -62,6 +64,8 @@
 - Chapter 14.3 三维纹理与体积采样
   - 使用 WebGL2 `TEXTURE_3D` 并排展示切片、最大强度投影和 Alpha 累积
   - 可调切片轴、切片位置、射线步数、密度阈值和体素插值
+- Chapter 14.4 参与介质单次散射
+  - 沿视线积分介质密度、Beer–Lambert 透射率与 Henyey–Greenstein 相函数
 - Chapter 15 风格化渲染栈
   - 独立观察并组合卡通色阶、法线/深度轮廓和屏幕空间排线
 - Chapter 16 网格质量与 LOD
@@ -116,7 +120,7 @@ git submodule update --init --recursive
 - Chapter 5 实验已按主题拆到 `src/labs/chapter-5/`。
 - Chapter 6 只保留纹理过滤实验；旧环境映射和体积纹理锚点作为兼容入口，分别指向 Chapter 10.4 和 Chapter 14.3。
 - Chapter 7 阴影贴图、Chapter 8 HDR 显示变换和 Chapter 9 微表面 BRDF 分别位于对应的 `src/labs/chapter-7/`、`chapter-8/`、`chapter-9/` 目录。
-- 环境映射位于 `src/labs/chapter-10/`，GI 方法对比位于 `chapter-11/`，Bloom 后处理帧图位于 `chapter-12/`，场景表示光谱位于 `chapter-13/`，体积纹理位于 `chapter-14/`。
+- 环境映射与矩形面光源位于 `src/labs/chapter-10/`，GI 方法对比位于 `chapter-11/`，Bloom 后处理帧图位于 `chapter-12/`，场景表示光谱位于 `chapter-13/`，体积纹理与参与介质位于 `chapter-14/`。
 - 风格化渲染、网格 LOD 和曲线细分分别位于 `src/labs/chapter-15/`、`chapter-16/`、`chapter-17/`。
 - GPU 瓶颈诊断、场景剔除和多光源架构实验分别位于 `src/labs/chapter-18/`、`chapter-19/`、`chapter-20/`。
 - 双目注视点、射线拾取和带宽缓存实验分别位于 `src/labs/chapter-21/`、`chapter-22/`、`chapter-23/`。
