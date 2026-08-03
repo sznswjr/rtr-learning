@@ -1,6 +1,6 @@
-import { createGpuTimer } from "../../render/gpu-query.js?v=20260803-9";
-import { createFullscreenTriangle } from "../../render/mesh.js?v=20260803-9";
-import { createProgram } from "../../render/webgl.js?v=20260803-9";
+import { createGpuTimer } from "../../render/gpu-query.js?v=20260803-10";
+import { createFullscreenTriangle } from "../../render/mesh.js?v=20260803-10";
+import { createProgram } from "../../render/webgl.js?v=20260803-10";
 
 const vertexSource = `#version 300 es
 in vec2 position;

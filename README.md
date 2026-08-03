@@ -95,7 +95,7 @@
 
 - 中文 RTR4 参考内容作为 Git submodule 放在 `knowledge/Real-Time-Rendering-4th-CN`
 - 章节 Markdown 位于 `knowledge/Real-Time-Rendering-4th-CN/sourceFile`
-- `translations/rtr4-cn.html` 提供 Chapter 0-26 的完整站内导读、关键主题索引和相关交互实验入口
+- `translations/rtr4-cn.html` 提供 Chapter 0-26 的完整站内导读、关键主题索引，并在每章末尾内嵌对应交互实验
 - 检出后如果目录为空，运行：
 
 ```bash
@@ -110,6 +110,7 @@ git submodule update --init --recursive
 - 规划页由 `scripts/generate-chapter-pages.mjs` 根据 `chapterRegistry` 生成并提交到仓库，生产环境仍不需要构建步骤。
 - 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成，章节卡片会显示实验数量、渲染后端和实验直达链接。
 - 章节页内目录由 `src/app/chapter-nav.js` 从同一注册表生成。
+- 中文导读的章节实验卡片由 `src/app/reading-embeds.js` 从同一注册表生成；卡片仅在展开时加载一个实验 iframe，切换章节或折叠时会卸载旧 iframe，避免同时占用大量 WebGL 上下文。
 - 长章节在手机端保留横向 sticky 目录；中文导读在桌面端使用可滚动章节栏，Chapter 2 管线图和 Chapter 6 纹理对比会在窄屏重新排版，而不是缩小桌面画布。
 - 页面入口脚本放在 `src/pages/`，章节实验模块放在 `src/labs/<chapter>/`。
 - 新增实验时，先在 `src/app/lab-registry.js` 登记章节、标题、链接、渲染后端和摘要，再接入对应章节页面或实验模块；首页直达链接和章节页内目录会随注册表更新。
@@ -221,7 +222,7 @@ sudo nginx -t
 curl -I https://www.jrqz776.com
 ```
 
-`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 确认注册表中不再存在规划页。`npm run check:ui` 会先检查 Chapter 1-26 路由，再使用 Playwright 检查首页、26 个章节实验页和中文导读的桌面、笔记本、平板、手机视口；会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
+`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 确认注册表中不再存在规划页。`npm run check:ui` 会先检查 Chapter 1-26 路由，再使用 Playwright 检查首页、26 个章节实验页和中文导读的桌面、笔记本、平板、手机视口；还会验证阅读页默认不加载实验、全站实验注册完整、同一时间只保留一个 iframe，并对 Chapter 3、6、10、14、26 做嵌入渲染抽查。检查会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
 
 如需检查尚未部署的工作区，可先启动本地静态服务器，再传入地址：
 

@@ -1,5 +1,5 @@
-import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-9";
-import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-9";
+import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-10";
+import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-10";
 
 const triangles=[[[ -1.08,-0.05],[-0.58,0.53],[-0.35,-0.30]],[[ -0.18,-0.26],[0.12,0.62],[0.48,-0.10]],[[0.55,-0.38],[0.90,0.48],[1.28,-0.08]]];
 const boxes=[[[-1.12,-0.34],[-0.31,0.58]],[[-0.23,-0.31],[0.52,0.67]],[[0.50,-0.43],[1.32,0.53]]];

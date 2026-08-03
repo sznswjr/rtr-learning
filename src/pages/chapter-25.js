@@ -1,1 +1,1 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-9"; import { initCollisionPipelineLab } from "../labs/chapter-25/collision-pipeline.js?v=20260803-9"; renderChapterNav(); initCollisionPipelineLab();
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-10"; import { initCollisionPipelineLab } from "../labs/chapter-25/collision-pipeline.js?v=20260803-10"; renderChapterNav(); initCollisionPipelineLab();

@@ -1,6 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
+import { labRegistry } from "../src/app/lab-registry.js";
 
 const baseUrl = (process.argv[2] ?? process.env.UI_CHECK_BASE_URL ?? "https://www.jrqz776.com").replace(/\/$/, "");
 const outputDir = path.resolve(".tmp/ui-checks");
@@ -217,6 +218,7 @@ const pages = [
       "#chapter-3",
       "#chapter-26",
       ".translation-action",
+      ".translation-lab-embed",
     ],
   },
 ];
@@ -308,12 +310,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-9"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-9"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-9"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-9"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-9"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-9"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-10"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-10"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-10"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-10"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-10"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-10"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -327,6 +329,95 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
     assert(result.framebufferSize.join("x") === "12x10", `render foundations: framebuffer resize failed ${result.framebufferSize}`);
     assert(result.gpuTimerAvailableType === "boolean", "render foundations: GPU timer availability is invalid");
     assert(result.pixel[3] > 200 && result.pixel[2] > 32, `render foundations: postprocess output is blank ${result.pixel}`);
+  } finally {
+    await page.close();
+  }
+}
+
+async function checkReadingEmbeds(browser) {
+  const page = await browser.newPage({ viewport: viewports[0] });
+  const consoleErrors = [];
+  const pageErrors = [];
+  const networkErrors = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") {
+      consoleErrors.push(message.text());
+    }
+  });
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  page.on("requestfailed", (request) => {
+    networkErrors.push(`${request.failure()?.errorText ?? "failed"} ${request.url()}`);
+  });
+  page.on("response", (response) => {
+    if (response.status() >= 400) {
+      networkErrors.push(`${response.status()} ${response.url()}`);
+    }
+  });
+
+  const pilots = [
+    { canvasId: "barycentricCanvas", chapter: 3, labId: "barycentric-rasterization" },
+    { canvasId: "textureFilteringCanvas", chapter: 6, labId: "texture-filtering" },
+    { canvasId: "areaLightCanvas", chapter: 10, labId: "rect-area-light" },
+    { canvasId: "mediaCanvas", chapter: 14, labId: "participating-media" },
+    { canvasId: "pathTracerCanvas", chapter: 26, labId: "software-path-tracer" },
+  ];
+
+  try {
+    await page.goto(pageUrl("/translations/rtr4-cn.html"), { waitUntil: "networkidle", timeout: 30000 });
+    const expectedChapters = new Set(labRegistry.map((lab) => lab.chapter.split(".")[0])).size;
+    const cardCount = await page.locator(".translation-lab-embed").count();
+    const representedLabs = await page.locator(".translation-lab-select option, .translation-lab-selected-title").count();
+    const initiallyLoadedFrames = await page.locator(".translation-lab-frame[src]").count();
+    assert(cardCount === expectedChapters, `reading embeds: expected ${expectedChapters} cards, got ${cardCount}`);
+    assert(representedLabs === labRegistry.length, `reading embeds: expected ${labRegistry.length} labs, got ${representedLabs}`);
+    assert(initiallyLoadedFrames === 0, `reading embeds: ${initiallyLoadedFrames} frames loaded before expansion`);
+
+    let previousCard = null;
+    for (const pilot of pilots) {
+      const label = `reading embed/chapter-${pilot.chapter}/${pilot.labId}`;
+      const card = page.locator(`.translation-lab-embed[data-chapter="${pilot.chapter}"]`);
+      const select = card.locator("select");
+      if ((await select.count()) > 0) {
+        await select.evaluate((element, labId) => {
+          element.value = labId;
+          element.dispatchEvent(new Event("change", { bubbles: true }));
+        }, pilot.labId);
+      }
+
+      await card.locator("summary").click();
+      const iframe = card.locator("iframe");
+      await iframe.waitFor({ state: "visible", timeout: 10000 });
+      const iframeHandle = await iframe.elementHandle();
+      assert(iframeHandle, `${label}: iframe handle is missing`);
+      await page.waitForFunction(
+        ({ frame, labId }) => frame.contentDocument?.body?.dataset.embedLab === labId,
+        { frame: iframeHandle, labId: pilot.labId },
+        { timeout: 10000 },
+      );
+      const child = await iframeHandle.contentFrame();
+      assert(child, `${label}: iframe document is missing`);
+      await child.locator(`#${pilot.labId}`).waitFor({ state: "visible", timeout: 10000 });
+      await page.waitForTimeout(450);
+      const visibleSections = await child.locator(".experiment-section:visible").count();
+      assert(visibleSections === 1, `${label}: expected one visible experiment, got ${visibleSections}`);
+      await checkCanvasPixels(child, [pilot.canvasId], label);
+      const frameHeight = await iframe.evaluate((element) => Number.parseFloat(element.style.height));
+      assert(frameHeight >= 560, `${label}: parent did not receive a usable iframe height (${frameHeight})`);
+
+      if (previousCard) {
+        await page.waitForFunction((element) => !element.open, await previousCard.elementHandle());
+        const previousFrame = previousCard.locator("iframe");
+        assert(await previousFrame.isHidden(), `${label}: previous experiment frame remained visible`);
+        assert((await previousFrame.getAttribute("src")) === "about:blank", `${label}: previous frame was not unloaded`);
+      }
+      previousCard = card;
+    }
+
+    await previousCard.locator("summary").click();
+    assert(await previousCard.locator("iframe").isHidden(), "reading embeds: final frame was not unloaded on collapse");
+    assert(consoleErrors.length === 0, `reading embeds: console errors\n${consoleErrors.join("\n")}`);
+    assert(pageErrors.length === 0, `reading embeds: page errors\n${pageErrors.join("\n")}`);
+    assert(networkErrors.length === 0, `reading embeds: network errors\n${networkErrors.join("\n")}`);
   } finally {
     await page.close();
   }
@@ -619,6 +710,8 @@ async function checkPage(browser, pageConfig, viewport) {
     const screenshotPath = path.join(outputDir, `${pageConfig.name}-${viewport.name}.png`);
     await page.screenshot({ fullPage: true, path: screenshotPath });
     await checkKeyboardEntry(page, label);
+    // Keep GPU readback from the full-page screenshot outside the interaction timing window.
+    await page.waitForTimeout(300);
     await checkInteractionLatency(page, label);
 
     assert(consoleErrors.length === 0, `${label}: console errors\n${consoleErrors.join("\n")}`);
@@ -644,12 +737,14 @@ try {
       screenshots.push(await checkPage(browser, pageConfig, viewport));
     }
   }
+  await checkReadingEmbeds(browser);
 } finally {
   await browser.close();
 }
 
 console.log("Chapter route check passed for Chapter 1-26.");
 console.log("Shared WebGL render foundation check passed.");
+console.log("Lazy reading embeds passed registry, unload, sizing, and Chapter 3/6/10/14/26 pilot checks.");
 console.log(`UI check passed for ${pages.length} pages x ${viewports.length} viewports.`);
 if (interactionTimings.length > 0) {
   const slowest = interactionTimings.reduce((current, timing) => timing.duration > current.duration ? timing : current);

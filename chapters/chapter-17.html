@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="编辑三次 Bézier 控制点，比较均匀和自适应曲线细分。" /><title>Chapter 17 曲线和曲面 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-9" /></head><body>
+<meta name="description" content="编辑三次 Bézier 控制点，比较均匀和自适应曲线细分。" /><title>Chapter 17 曲线和曲面 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-10" /></head><body>
 <a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content"><header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 17 曲线和曲面</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-17">阅读本章</a></div></header>
 <nav class="chapter-nav" data-chapter="17" aria-label="章节实验导航"></nav><section class="experiment-section" id="curve-tessellation" aria-label="曲线与自适应细分实验"><div class="section-heading"><p class="eyebrow">Chapter 17</p><h2>曲线与自适应细分</h2></div>
 <div class="lab-layout"><aside class="controls" aria-label="曲线细分控制">
@@ -11,4 +11,4 @@
 <div class="control-group"><label for="curveParameter">曲线参数 t</label><input id="curveParameter" type="range" min="0" max="100" value="58" step="1" /><output id="curveParameterValue" for="curveParameter">0.58</output></div>
 <div class="metric-panel"><div><span>输出分段</span><strong id="curveOutputSegments">20</strong></div><div><span>控制点</span><strong>4</strong></div><div><span>当前 t</span><strong id="curvePointMetric">(0.14, 0.02)</strong></div><div><span>切线角</span><strong id="curveTangentMetric">−31°</strong></div></div></aside>
 <section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>三次 Bézier 控制多边形</h2><span>圆点表示输出顶点，亮线表示当前切线</span></div><canvas class="webgl-lab-canvas curve-canvas" id="curveCanvas" width="1280" height="720"></canvas><div class="concept-strip curve-method-strip"><span data-method="uniform"><strong>U</strong>均匀参数步长</span><span data-method="adaptive"><strong>A</strong>曲率区域加密</span><span data-method="compare"><strong>Δ</strong>对比输出顶点</span></div></article></section></div></section>
-</main><script type="module" src="../src/pages/chapter-17.js?v=20260803-9"></script></body></html>
+</main><script type="module" src="../src/pages/chapter-17.js?v=20260803-10"></script></body></html>

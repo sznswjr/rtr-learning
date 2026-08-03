@@ -1,5 +1,5 @@
-import { createFullscreenTriangle } from "./mesh.js?v=20260803-9";
-import { createProgram } from "./webgl.js?v=20260803-9";
+import { createFullscreenTriangle } from "./mesh.js?v=20260803-10";
+import { createProgram } from "./webgl.js?v=20260803-10";
 
 export const fullscreenVertexSource = `#version 300 es
 in vec2 position;

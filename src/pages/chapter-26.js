@@ -1,1 +1,1 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-9"; import { initSoftwarePathTracerLab } from "../labs/chapter-26/software-path-tracer.js?v=20260803-9"; renderChapterNav(); initSoftwarePathTracerLab();
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-10"; import { initSoftwarePathTracerLab } from "../labs/chapter-26/software-path-tracer.js?v=20260803-10"; renderChapterNav(); initSoftwarePathTracerLab();

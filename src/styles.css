@@ -1238,6 +1238,185 @@ canvas {
   text-decoration: none;
 }
 
+.translation-lab-embed {
+  overflow: hidden;
+  margin-top: 20px;
+  border: 1px solid rgba(142, 212, 199, 0.24);
+  border-radius: 8px;
+  background: rgba(14, 20, 21, 0.82);
+}
+
+.translation-lab-embed[open] {
+  border-color: rgba(142, 212, 199, 0.42);
+}
+
+.translation-lab-embed > summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 58px;
+  padding: 12px 14px;
+  color: #e8fff8;
+  cursor: pointer;
+  list-style: none;
+}
+
+.translation-lab-embed > summary::-webkit-details-marker {
+  display: none;
+}
+
+.translation-lab-embed > summary:hover {
+  background: rgba(142, 212, 199, 0.08);
+}
+
+.translation-lab-kicker {
+  color: #8ed4c7;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.translation-lab-embed > summary strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.translation-lab-toggle {
+  width: 11px;
+  height: 11px;
+  border-right: 2px solid #8ed4c7;
+  border-bottom: 2px solid #8ed4c7;
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 160ms ease;
+}
+
+.translation-lab-embed[open] .translation-lab-toggle {
+  transform: rotate(225deg) translate(-2px, -2px);
+}
+
+.translation-lab-embed-body {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px;
+}
+
+.translation-lab-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.translation-lab-toolbar label,
+.translation-lab-selected-title {
+  color: #b9ccc7;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.translation-lab-select {
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid rgba(142, 212, 199, 0.28);
+  border-radius: 6px;
+  padding: 8px 34px 8px 10px;
+  background: #131819;
+  color: #eef4f2;
+}
+
+.translation-lab-full-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid rgba(142, 212, 199, 0.24);
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: rgba(142, 212, 199, 0.08);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.translation-lab-frame-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 7px;
+  background: #101314;
+}
+
+.translation-lab-loading {
+  display: none;
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 1;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(16, 19, 20, 0.9);
+  color: #b9ccc7;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.translation-lab-embed.is-loading .translation-lab-loading {
+  display: block;
+}
+
+.translation-lab-frame {
+  display: block;
+  width: 100%;
+  height: 720px;
+  border: 0;
+  background: #101314;
+  color-scheme: dark;
+}
+
+.translation-lab-frame[hidden] {
+  display: none;
+}
+
+body.is-lab-embed {
+  min-width: 0;
+  min-height: 100vh;
+  background: #101314;
+}
+
+.is-lab-embed .skip-link,
+.is-lab-embed .topbar,
+.is-lab-embed .chapter-nav {
+  display: none;
+}
+
+.is-lab-embed .app-shell {
+  width: 100%;
+  max-width: none;
+  padding: 16px;
+}
+
+.is-lab-embed .experiment-section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  scroll-margin-top: 0;
+}
+
+.is-lab-embed .section-heading {
+  display: none;
+}
+
+.is-lab-embed .controls {
+  position: static;
+  top: auto;
+}
+
 .chapter-topics {
   display: flex;
   flex-wrap: wrap;
@@ -1411,6 +1590,36 @@ canvas {
     padding: 20px;
   }
 
+  .translation-lab-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .translation-lab-toolbar label {
+    margin-bottom: -4px;
+  }
+
+  .translation-lab-full-link {
+    justify-self: stretch;
+  }
+
+  .translation-lab-embed > summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .translation-lab-kicker {
+    grid-column: 1;
+  }
+
+  .translation-lab-embed > summary strong {
+    grid-column: 1;
+    white-space: normal;
+  }
+
+  .translation-lab-toggle {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
   .translation-jump {
     justify-content: flex-start;
   }
@@ -1452,6 +1661,10 @@ canvas {
 }
 
 @media (max-width: 600px) {
+  .is-lab-embed .app-shell {
+    padding: 10px;
+  }
+
   .pipeline-canvas {
     aspect-ratio: 0.5;
   }

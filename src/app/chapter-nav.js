@@ -1,4 +1,4 @@
-import { labRegistry } from "./lab-registry.js?v=20260803-9";
+import { labRegistry } from "./lab-registry.js?v=20260803-10";
 
 function createChapterLink(lab) {
   const link = document.createElement("a");
@@ -117,6 +117,51 @@ function observeActiveSection(root, labs) {
   });
 }
 
+function findEmbeddedLab(labs) {
+  const labId = new URLSearchParams(window.location.search).get("embed");
+  return labId ? labs.find((lab) => lab.id === labId) : null;
+}
+
+function configureEmbeddedLab(root, lab) {
+  document.body.classList.add("is-lab-embed");
+  document.body.dataset.embedLab = lab.id;
+  root.remove();
+
+  document.querySelectorAll(".experiment-section").forEach((section) => {
+    section.hidden = section.id !== lab.id;
+  });
+
+  enhanceCanvasSemantics([lab]);
+  enhanceRangeSemantics();
+
+  if (window.parent === window) {
+    return;
+  }
+
+  let heightFrame = 0;
+  const sendHeight = () => {
+    window.cancelAnimationFrame(heightFrame);
+    heightFrame = window.requestAnimationFrame(() => {
+      heightFrame = 0;
+      window.parent.postMessage(
+        {
+          height: Math.ceil(document.documentElement.scrollHeight),
+          labId: lab.id,
+          type: "rtr4-lab-height",
+        },
+        window.location.origin,
+      );
+    });
+  };
+
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(sendHeight).observe(document.body);
+  }
+  window.addEventListener("load", sendHeight);
+  window.addEventListener("resize", sendHeight);
+  sendHeight();
+}
+
 export function renderChapterNav(root = document.querySelector(".chapter-nav")) {
   if (!root) {
     return;
@@ -127,6 +172,12 @@ export function renderChapterNav(root = document.querySelector(".chapter-nav")) 
 
   if (labs.length === 0) {
     root.remove();
+    return;
+  }
+
+  const embeddedLab = findEmbeddedLab(labs);
+  if (embeddedLab) {
+    configureEmbeddedLab(root, embeddedLab);
     return;
   }
 

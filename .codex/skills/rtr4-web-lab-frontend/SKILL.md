@@ -21,6 +21,7 @@ description: Use when extending this RTR4 Web Lab project with new rendering exp
 - `index.html` owns page structure and stable experiment mount points.
 - `src/app/lab-registry.js` owns lab/content metadata used by navigation and future chapter indexes.
 - `src/app/home-nav.js` renders homepage navigation from registry data.
+- `src/app/reading-embeds.js` renders lazy experiment cards in the Chinese reading page from registry data and keeps at most one experiment iframe active.
 - `chapters/chapter-1.html` through `chapters/chapter-26.html` own chapter page structure.
 - Planned chapter shells are generated from `chapterRegistry` by `scripts/generate-chapter-pages.mjs`; keep their generated HTML committed.
 - `src/pages/` owns page entry scripts.

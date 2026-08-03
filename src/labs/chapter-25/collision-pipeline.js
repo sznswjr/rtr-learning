@@ -1,5 +1,5 @@
-import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-9";
-import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-9";
+import { createPostprocessPass } from "../../render/postprocess.js?v=20260803-10";
+import { resizeCanvasToDisplaySize } from "../../render/webgl.js?v=20260803-10";
 
 const state={stage:"contacts",time:38,objects:8,margin:6,velocity:82};
 function position(i){const t=state.time/100,v=state.velocity/100;if(i===0)return[-1.22+t*2.42*v,0.06+Math.sin(t*5)*.12];return[-1.25+(i%4)*.79,-.48+Math.floor(i/4)*.72+Math.sin(t*3+i)*.10];}

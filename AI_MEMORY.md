@@ -63,6 +63,7 @@ Last updated: 2026-08-03
 - The homepage navigation includes the RTR4 Chinese translation page, chapter entries, lab counts, renderer tags, and direct lab links.
 - Homepage navigation metadata now lives in `src/app/lab-registry.js` and is rendered by `src/app/home-nav.js`.
 - Chapter in-page navigation is rendered from the same registry by `src/app/chapter-nav.js`.
+- `src/app/reading-embeds.js` renders one experiment card per chapter in the Chinese reading page from the same registry. Frames are lazy-loaded on expansion, and the previous frame is unloaded whenever another card opens.
 - Chapter navigation stays sticky on narrow screens and tracks the active experiment with `aria-current`.
 - Chapter 2 and Chapter 6 use dedicated narrow-screen Canvas layouts; core diagrams are no longer compressed or clipped on phones.
 - Keyboard skip links, visible focus rings, Canvas accessible names, range `aria-valuetext`, reduced-motion behavior, and WebGL2 failure feedback are included site-wide.
@@ -90,7 +91,7 @@ Last updated: 2026-08-03
 - The HSL hue normalization bug in `src/render/color.js` is covered by `scripts/check-color.mjs`.
 - Expensive shading and texture controls render a coalesced preview while dragging and restore full quality after interaction settles.
 - `src/main.js` is now a small module entrypoint that initializes labs.
-- The translation page is available at `translations/rtr4-cn.html` and includes organized Chinese reading content for Chapter 0-26, with a complete chapter index, topic summaries, source links, and related lab entry points.
+- The translation page is available at `translations/rtr4-cn.html` and includes organized Chinese reading content for Chapter 0-26, with a complete chapter index, topic summaries, source links, and lazily embedded related labs.
 - Local knowledge base is tracked as a Git submodule at `knowledge/Real-Time-Rendering-4th-CN`, pinned to `9c2e724e688fc921ec0486d8fde4f516af2a5873` from `https://github.com/Morakito/Real-Time-Rendering-4th-CN.git`.
 
 ## Stack
@@ -189,6 +190,7 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-08-03
+- Embedded every registered chapter experiment into the full Chinese reading page through collapsed, registry-driven cards; only one same-origin experiment frame is active at a time, and iframe height is synchronized with the chapter lab page.
 - Added active Chapter 24 hybrid-rendering, Chapter 25 collision-pipeline, and Chapter 26 progressive software path-tracing labs; all Chapter 1–26 experiments are now implemented.
 - Strengthened Chapter 10 with rectangular-area-light integration and Chapter 14 with participating-media single scattering.
 - Chapter 21–23 provide stereo/foveated, ray-picking, and bandwidth/cache labs.
@@ -205,7 +207,7 @@ Latest production deployment:
 - Chapter 8 demonstrates HDR intermediate storage, exposure, tone mapping, and display encoding.
 - Chapter 9 demonstrates the GGX, Smith, and Schlick terms of a microfacet BRDF across roughness and metallic values.
 - Added reusable orthographic projection, transform/scale matrices, point transformation, cube/plane geometry, depth targets, and float framebuffer support to `src/render/`.
-- Asset cache version: `20260803-9` for CSS, navigation modules, page entry modules, and WebGL lab imports.
+- Asset cache version: `20260803-10` for CSS, navigation modules, page entry modules, and WebGL lab imports.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
@@ -217,8 +219,10 @@ Latest production deployment:
   - Production route check passed for all Chapter 1-26 pages.
   - Production UI check passed for 28 pages across desktop, laptop, tablet, and mobile viewports.
   - Production shared WebGL render-foundation check passed.
+  - Production reading embeds passed registry coverage, single-frame unload, automatic height, and Chapter 3/6/10/14/26 canvas pilot checks.
+  - `curl -I https://www.jrqz776.com/src/app/reading-embeds.js?v=20260803-10` returned `HTTP/2 200`.
   - The Chapter 10 and 14 pages and new lab modules returned `HTTP/2 200`.
-  - `curl -I https://www.jrqz776.com/src/labs/chapter-14/participating-media.js?v=20260803-9` returned `HTTP/2 200`.
+  - `curl -I https://www.jrqz776.com/src/labs/chapter-14/participating-media.js?v=20260803-10` returned `HTTP/2 200`.
 
 ## Server Context
 

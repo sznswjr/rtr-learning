@@ -1,1 +1,1 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-9"; import { initStereoFoveationLab } from "../labs/chapter-21/stereo-foveation.js?v=20260803-9"; renderChapterNav(); initStereoFoveationLab();
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-10"; import { initStereoFoveationLab } from "../labs/chapter-21/stereo-foveation.js?v=20260803-10"; renderChapterNav(); initStereoFoveationLab();
