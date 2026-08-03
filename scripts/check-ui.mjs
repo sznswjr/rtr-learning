@@ -154,6 +154,24 @@ const pages = [
     canvasIds: ["curveCanvas"],
   },
   {
+    name: "chapter-18",
+    path: "/chapters/chapter-18.html",
+    selectors: [".chapter-nav", "#gpu-bottleneck", "#bottleneckCanvas", "#bottleneckFragments", ".bottleneck-stage-strip"],
+    canvasIds: ["bottleneckCanvas"],
+  },
+  {
+    name: "chapter-19",
+    path: "/chapters/chapter-19.html",
+    selectors: [".chapter-nav", "#scene-culling", "#cullingCanvas", "#cullingDensity", ".culling-stage-strip"],
+    canvasIds: ["cullingCanvas"],
+  },
+  {
+    name: "chapter-20",
+    path: "/chapters/chapter-20.html",
+    selectors: [".chapter-nav", "#many-light-shading", "#manyLightCanvas", "#lightingCount", ".lighting-architecture-strip"],
+    canvasIds: ["manyLightCanvas"],
+  },
+  {
     name: "reading",
     path: "/translations/rtr4-cn.html",
     selectors: [
@@ -254,12 +272,12 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260803-5"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-5"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-5"),
-      mesh: pageUrl("/src/render/mesh.js?v=20260803-5"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-5"),
-      transforms: pageUrl("/src/render/transforms.js?v=20260803-5"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-6"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-6"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-6"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-6"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-6"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-6"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
@@ -495,6 +513,9 @@ async function checkInteractionLatency(page, label) {
     { name: "stylized", selector: "#stylizedBands", threshold: 240 },
     { name: "lod", selector: "#lodSegments", threshold: 240 },
     { name: "curve", selector: "#curveSegments", threshold: 240 },
+    { name: "bottleneck", selector: "#bottleneckFragments", threshold: 260 },
+    { name: "culling", selector: "#cullingDensity", threshold: 240 },
+    { name: "many-light", selector: "#lightingCount", threshold: 260 },
   ];
 
   for (const interaction of interactions) {

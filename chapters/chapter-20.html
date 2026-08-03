@@ -1,45 +1,13 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="在大量动态光源下比较 Forward、Deferred、Tiled 和 Clustered" />
-    <title>Chapter 20 高效着色 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-5" />
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <main class="app-shell" id="main-content">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Real-Time Rendering 4th</p>
-          <h1>Chapter 20 高效着色</h1>
-        </div>
-        <div class="topbar-actions">
-          <a class="status-pill nav-pill" href="../index.html">实验首页</a>
-          <a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-20">阅读本章</a>
-        </div>
-      </header>
-
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">多光源架构对比</h2>
-          <p>在大量动态光源下比较 Forward、Deferred、Tiled 和 Clustered。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
-        </div>
-
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>Deferred</li>
-            <li>Tiled</li>
-            <li>Clustered</li>
-            <li>着色频率</li>
-        </ul>
-
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="比较 Forward、Deferred、Tiled 和 Clustered 多光源架构。" /><title>Chapter 20 高效着色 | RTR4 实时图形实验</title><link rel="stylesheet" href="../src/styles.css?v=20260803-6" /></head><body>
+<a class="skip-link" href="#main-content">跳到主要内容</a><main class="app-shell" id="main-content"><header class="topbar"><div><p class="eyebrow">Real-Time Rendering 4th</p><h1>Chapter 20 高效着色</h1></div><div class="topbar-actions"><a class="status-pill nav-pill" href="../index.html">实验首页</a><a class="status-pill nav-pill" href="../translations/rtr4-cn.html#chapter-20">阅读本章</a></div></header>
+<nav class="chapter-nav" data-chapter="20" aria-label="章节实验导航"></nav><section class="experiment-section" id="many-light-shading" aria-label="多光源架构对比实验"><div class="section-heading"><p class="eyebrow">Chapter 20</p><h2>多光源架构对比</h2></div>
+<div class="lab-layout"><aside class="controls" aria-label="多光源着色控制">
+<div class="control-group"><label for="lightingArchitecture">着色架构</label><select id="lightingArchitecture"><option value="forward">Forward</option><option value="deferred">Deferred</option><option value="tiled" selected>Tiled</option><option value="clustered">Clustered</option></select></div>
+<div class="control-group"><label for="lightingCount">动态光源</label><input id="lightingCount" type="range" min="16" max="256" value="128" step="16" /><output id="lightingCountValue" for="lightingCount">128</output></div>
+<div class="control-group"><label for="lightingTile">Tile 边长</label><input id="lightingTile" type="range" min="8" max="32" value="16" step="4" /><output id="lightingTileValue" for="lightingTile">16 px</output></div>
+<div class="control-group"><label for="lightingSlices">深度切片</label><input id="lightingSlices" type="range" min="4" max="32" value="16" step="4" /><output id="lightingSlicesValue" for="lightingSlices">16</output></div>
+<div class="control-group"><label for="lightingCoverage">平均影响范围</label><input id="lightingCoverage" type="range" min="10" max="70" value="34" step="2" /><output id="lightingCoverageValue" for="lightingCoverage">34%</output></div>
+<div class="metric-panel"><div><span>光照求值</span><strong id="lightingEvaluations">1.84 M</strong></div><div><span>每 Tile 光源</span><strong id="lightingPerTile">11.2</strong></div><div><span>G-Buffer</span><strong id="lightingGbuffer">是</strong></div><div><span>相对成本</span><strong id="lightingCost">0.34×</strong></div></div></aside>
+<section class="single-viewport-grid"><article class="viewport-panel"><div class="panel-heading"><h2>光源影响域与着色分区</h2><span>亮度表示局部光源密度；网格显示当前分区粒度</span></div><canvas class="webgl-lab-canvas many-light-canvas" id="manyLightCanvas" width="1280" height="720"></canvas><div class="concept-strip lighting-architecture-strip"><span data-architecture="forward"><strong>F</strong>物体 × 全部光源</span><span data-architecture="deferred"><strong>D</strong>可见像素着色</span><span data-architecture="tiled"><strong>T</strong>2D Tile 光源表</span><span data-architecture="clustered"><strong>C</strong>3D Cluster 光源表</span></div></article></section></div></section>
+</main><script type="module" src="../src/pages/chapter-20.js?v=20260803-6"></script></body></html>

@@ -1,3 +1,3 @@
-import { renderHomeNav } from "./app/home-nav.js?v=20260803-5";
+import { renderHomeNav } from "./app/home-nav.js?v=20260803-6";
 
 renderHomeNav();

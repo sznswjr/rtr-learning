@@ -642,6 +642,9 @@ canvas {
 .stylized-canvas,
 .lod-canvas,
 .curve-canvas,
+.bottleneck-canvas,
+.culling-canvas,
+.many-light-canvas,
 .brdf-grid-canvas {
   aspect-ratio: 1.62;
 }
@@ -1454,7 +1457,10 @@ canvas {
   .gi-canvas,
   .stylized-canvas,
   .lod-canvas,
-  .curve-canvas {
+  .curve-canvas,
+  .bottleneck-canvas,
+  .culling-canvas,
+  .many-light-canvas {
     aspect-ratio: 0.92;
   }
 

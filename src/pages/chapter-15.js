@@ -1,1 +1,1 @@
-import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-5"; import { initStylizedRenderingLab } from "../labs/chapter-15/stylized-rendering.js?v=20260803-5"; renderChapterNav(); initStylizedRenderingLab();
+import { renderChapterNav } from "../app/chapter-nav.js?v=20260803-6"; import { initStylizedRenderingLab } from "../labs/chapter-15/stylized-rendering.js?v=20260803-6"; renderChapterNav(); initStylizedRenderingLab();
