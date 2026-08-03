@@ -1123,27 +1123,9 @@ canvas {
   text-decoration: none;
 }
 
-.translation-sidebar .is-active,
-.translation-sidebar .is-available {
+.translation-sidebar .is-active {
   background: rgba(142, 212, 199, 0.12);
   color: #e8fff8;
-}
-
-.translation-sidebar .is-available::after,
-.translation-sidebar .is-pending::after {
-  float: right;
-  margin-left: 8px;
-  color: #8ed4c7;
-  font-size: 0.72rem;
-}
-
-.translation-sidebar .is-available::after {
-  content: "已整理";
-}
-
-.translation-sidebar .is-pending::after {
-  content: "待整理";
-  color: #748783;
 }
 
 .translation-article {
@@ -1223,19 +1205,6 @@ canvas {
   padding: 12px 0 12px 16px;
   background: rgba(142, 212, 199, 0.08);
   color: #e8fff8;
-}
-
-.translation-action a {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  border: 1px solid rgba(142, 212, 199, 0.3);
-  border-radius: 8px;
-  padding: 10px 14px;
-  background: rgba(142, 212, 199, 0.1);
-  color: #e8fff8;
-  font-weight: 700;
-  text-decoration: none;
 }
 
 .translation-lab-embed {
@@ -1639,18 +1608,13 @@ body.is-lab-embed {
     scrollbar-width: thin;
   }
 
-  .translation-sidebar .eyebrow,
-  .translation-sidebar .is-pending {
+  .translation-sidebar .eyebrow {
     display: none;
   }
 
   .translation-sidebar a {
     flex: 0 0 auto;
     min-height: 42px;
-  }
-
-  .translation-sidebar .is-available::after {
-    display: none;
   }
 
   .book-facts div,

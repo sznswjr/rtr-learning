@@ -190,6 +190,7 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-08-03
+- Removed editorial progress labels (`已整理` / `待整理`), the redundant `完整导读` kicker, and per-chapter experiment CTA links from the Chinese reading page; embedded lab cards remain the single experiment entry point in each chapter.
 - Embedded every registered chapter experiment into the full Chinese reading page through collapsed, registry-driven cards; only one same-origin experiment frame is active at a time, and iframe height is synchronized with the chapter lab page.
 - Added active Chapter 24 hybrid-rendering, Chapter 25 collision-pipeline, and Chapter 26 progressive software path-tracing labs; all Chapter 1–26 experiments are now implemented.
 - Strengthened Chapter 10 with rectangular-area-light integration and Chapter 14 with participating-media single scattering.
@@ -207,7 +208,7 @@ Latest production deployment:
 - Chapter 8 demonstrates HDR intermediate storage, exposure, tone mapping, and display encoding.
 - Chapter 9 demonstrates the GGX, Smith, and Schlick terms of a microfacet BRDF across roughness and metallic values.
 - Added reusable orthographic projection, transform/scale matrices, point transformation, cube/plane geometry, depth targets, and float framebuffer support to `src/render/`.
-- Asset cache version: `20260803-10` for CSS, navigation modules, page entry modules, and WebGL lab imports.
+- Asset cache version: `20260803-11` for CSS and `20260803-10` for navigation modules, page entry modules, and WebGL lab imports.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
@@ -220,6 +221,7 @@ Latest production deployment:
   - Production UI check passed for 28 pages across desktop, laptop, tablet, and mobile viewports.
   - Production shared WebGL render-foundation check passed.
   - Production reading embeds passed registry coverage, single-frame unload, automatic height, and Chapter 3/6/10/14/26 canvas pilot checks.
+  - Production desktop and mobile reading-page checks confirmed zero progress labels, pseudo labels, redundant CTAs, console errors, and horizontal overflow.
   - `curl -I https://www.jrqz776.com/src/app/reading-embeds.js?v=20260803-10` returned `HTTP/2 200`.
   - The Chapter 10 and 14 pages and new lab modules returned `HTTP/2 200`.
   - `curl -I https://www.jrqz776.com/src/labs/chapter-14/participating-media.js?v=20260803-10` returned `HTTP/2 200`.

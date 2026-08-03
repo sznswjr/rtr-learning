@@ -217,7 +217,6 @@ const pages = [
       ".translation-article",
       "#chapter-3",
       "#chapter-26",
-      ".translation-action",
       ".translation-lab-embed",
     ],
   },
@@ -368,9 +367,21 @@ async function checkReadingEmbeds(browser) {
     const cardCount = await page.locator(".translation-lab-embed").count();
     const representedLabs = await page.locator(".translation-lab-select option, .translation-lab-selected-title").count();
     const initiallyLoadedFrames = await page.locator(".translation-lab-frame[src]").count();
+    const editorialExtras = await page.locator(
+      ".translation-sidebar .is-available, .translation-sidebar .is-pending, .translation-sidebar .eyebrow, .translation-action",
+    ).count();
+    const sidebarLabels = await page.locator(".translation-sidebar a").evaluateAll((links) => {
+      return links
+        .map((link) => getComputedStyle(link, "::after").content)
+        .filter((content) => content && content !== "none" && content !== "\"\"");
+    });
+    const readingText = await page.locator("body").innerText();
     assert(cardCount === expectedChapters, `reading embeds: expected ${expectedChapters} cards, got ${cardCount}`);
     assert(representedLabs === labRegistry.length, `reading embeds: expected ${labRegistry.length} labs, got ${representedLabs}`);
     assert(initiallyLoadedFrames === 0, `reading embeds: ${initiallyLoadedFrames} frames loaded before expansion`);
+    assert(editorialExtras === 0, `reading page: found ${editorialExtras} redundant status or action elements`);
+    assert(sidebarLabels.length === 0, `reading page: found sidebar pseudo labels ${JSON.stringify(sidebarLabels)}`);
+    assert(!/(已整理|待整理|完整导读)/.test(readingText), "reading page: redundant editorial status text is visible");
 
     let previousCard = null;
     for (const pilot of pilots) {
