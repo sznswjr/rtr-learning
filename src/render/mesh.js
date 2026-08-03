@@ -58,3 +58,52 @@ export function createIndexedMesh(gl, { attributes, indices, mode = gl.TRIANGLES
     vao,
   };
 }
+
+export function createCubeGeometry(size = 1) {
+  const s = size * 0.5;
+  const faces = [
+    { normal: [0, 0, 1], vertices: [[-s, -s, s], [s, -s, s], [s, s, s], [-s, s, s]] },
+    { normal: [0, 0, -1], vertices: [[s, -s, -s], [-s, -s, -s], [-s, s, -s], [s, s, -s]] },
+    { normal: [1, 0, 0], vertices: [[s, -s, s], [s, -s, -s], [s, s, -s], [s, s, s]] },
+    { normal: [-1, 0, 0], vertices: [[-s, -s, -s], [-s, -s, s], [-s, s, s], [-s, s, -s]] },
+    { normal: [0, 1, 0], vertices: [[-s, s, s], [s, s, s], [s, s, -s], [-s, s, -s]] },
+    { normal: [0, -1, 0], vertices: [[-s, -s, -s], [s, -s, -s], [s, -s, s], [-s, -s, s]] },
+  ];
+  const positions = [];
+  const normals = [];
+  const indices = [];
+
+  faces.forEach((face, faceIndex) => {
+    const offset = faceIndex * 4;
+    face.vertices.forEach((vertex) => {
+      positions.push(...vertex);
+      normals.push(...face.normal);
+    });
+    indices.push(offset, offset + 1, offset + 2, offset, offset + 2, offset + 3);
+  });
+
+  return {
+    indices: new Uint16Array(indices),
+    normals: new Float32Array(normals),
+    positions: new Float32Array(positions),
+  };
+}
+
+export function createPlaneGeometry(size = 1) {
+  const s = size * 0.5;
+  return {
+    indices: new Uint16Array([0, 1, 2, 0, 2, 3]),
+    normals: new Float32Array([
+      0, 1, 0,
+      0, 1, 0,
+      0, 1, 0,
+      0, 1, 0,
+    ]),
+    positions: new Float32Array([
+      -s, 0, -s,
+      -s, 0, s,
+      s, 0, s,
+      s, 0, -s,
+    ]),
+  };
+}

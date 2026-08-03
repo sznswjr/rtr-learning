@@ -40,6 +40,18 @@ export function createPerspectiveMatrix(fovY, aspect, near = 0.1, far = 100) {
   ]);
 }
 
+export function createOrthographicMatrix(left, right, bottom, top, near = 0.1, far = 100) {
+  const width = Math.max(right - left, Number.EPSILON);
+  const height = Math.max(top - bottom, Number.EPSILON);
+  const depth = Math.max(far - near, Number.EPSILON);
+  return new Float32Array([
+    2 / width, 0, 0, 0,
+    0, 2 / height, 0, 0,
+    0, 0, -2 / depth, 0,
+    -(right + left) / width, -(top + bottom) / height, -(far + near) / depth, 1,
+  ]);
+}
+
 export function createLookAtMatrix(eye, target = [0, 0, 0], up = [0, 1, 0]) {
   const forward = normalize3([eye[0] - target[0], eye[1] - target[1], eye[2] - target[2]]);
   const right = normalize3(cross3(up, forward));

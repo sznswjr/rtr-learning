@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="比较顶点、片元和带宽负载，理解 GPU 数据并行结构" />
+    <meta name="description" content="使用 WebGL2 观察重心坐标、属性插值与三角形采样覆盖。" />
     <title>Chapter 3 图形处理单元 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260802-2" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-2" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -21,25 +21,68 @@
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">并行负载与瓶颈</h2>
-          <p>比较顶点、片元和带宽负载，理解 GPU 数据并行结构。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
+      <nav class="chapter-nav" data-chapter="3" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="barycentric-rasterization" aria-label="重心坐标与三角形光栅化实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 3</p>
+          <h2>重心坐标与三角形光栅化</h2>
         </div>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>数据并行</li>
-            <li>着色器阶段</li>
-            <li>过度绘制</li>
-            <li>GPU 计时</li>
-        </ul>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="光栅化控制">
+            <div class="control-group">
+              <label for="rasterMode">观察内容</label>
+              <select id="rasterMode">
+                <option value="weights" selected>重心权重</option>
+                <option value="interpolation">属性插值</option>
+                <option value="coverage">像素覆盖</option>
+              </select>
+            </div>
 
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+            <div class="control-group">
+              <label for="rasterSkew">顶点 C 偏移</label>
+              <input id="rasterSkew" type="range" min="-80" max="80" value="22" step="1" />
+              <output id="rasterSkewValue" for="rasterSkew">+22%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="rasterGrid">采样网格</label>
+              <input id="rasterGrid" type="range" min="12" max="72" value="32" step="4" />
+              <output id="rasterGridValue" for="rasterGrid">32 列</output>
+            </div>
+
+            <div class="control-group">
+              <label for="rasterSample">像素内样本</label>
+              <input id="rasterSample" type="range" min="10" max="90" value="50" step="5" />
+              <output id="rasterSampleValue" for="rasterSample">(0.50, 0.50)</output>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>探针权重</span><strong id="rasterWeights">λ = (0.24, 0.29, 0.47)</strong></div>
+              <div><span>插值属性</span><strong id="rasterAttribute">0.62</strong></div>
+              <div><span>覆盖判定</span><strong id="rasterCoverage">三条边函数均 ≥ 0</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>片元网格与像素探针</h2>
+                <span>移动指针检查任意位置</span>
+              </div>
+              <canvas class="webgl-lab-canvas raster-canvas" id="barycentricCanvas" width="1280" height="720"></canvas>
+              <div class="raster-legend" aria-label="三角形顶点权重图例">
+                <span><i class="vertex-a"></i>λA · 红</span>
+                <span><i class="vertex-b"></i>λB · 绿</span>
+                <span><i class="vertex-c"></i>λC · 青</span>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+
+    <script type="module" src="../src/pages/chapter-3.js?v=20260803-2"></script>
   </body>
 </html>

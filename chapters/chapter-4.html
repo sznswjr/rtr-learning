@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="沿坐标空间追踪模型，并比较矩阵与四元数插值" />
+    <meta name="description" content="使用 WebGL2 追踪模型、观察、裁剪与 NDC 坐标。" />
     <title>Chapter 4 变换 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260802-2" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-2" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -21,25 +21,98 @@
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">坐标空间与四元数</h2>
-          <p>沿坐标空间追踪模型，并比较矩阵与四元数插值。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
+      <nav class="chapter-nav" data-chapter="4" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="coordinate-transforms" aria-label="模型观察与投影变换实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 4</p>
+          <h2>模型、观察与投影变换</h2>
         </div>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>矩阵组合</li>
-            <li>坐标空间</li>
-            <li>四元数</li>
-            <li>投影</li>
-        </ul>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="坐标变换控制">
+            <div class="control-group">
+              <label for="transformStage">检查空间</label>
+              <select id="transformStage">
+                <option value="model">Model 模型</option>
+                <option value="world">World 世界</option>
+                <option value="view">View 观察</option>
+                <option value="ndc" selected>NDC 归一化设备</option>
+              </select>
+            </div>
 
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+            <div class="control-group">
+              <label for="transformProjection">投影类型</label>
+              <select id="transformProjection">
+                <option value="perspective" selected>透视投影</option>
+                <option value="orthographic">正交投影</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="transformRotation">模型旋转</label>
+              <input id="transformRotation" type="range" min="-180" max="180" value="28" step="1" />
+              <output id="transformRotationValue" for="transformRotation">28°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="transformTranslation">世界位移 X</label>
+              <input id="transformTranslation" type="range" min="-180" max="180" value="58" step="2" />
+              <output id="transformTranslationValue" for="transformTranslation">0.58</output>
+            </div>
+
+            <div class="control-group">
+              <label for="transformCamera">相机方位</label>
+              <input id="transformCamera" type="range" min="-180" max="180" value="-32" step="1" />
+              <output id="transformCameraValue" for="transformCamera">−32°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="transformFov">垂直视场角</label>
+              <input id="transformFov" type="range" min="30" max="100" value="56" step="1" />
+              <output id="transformFovValue" for="transformFov">56°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="transformVertex">追踪顶点</label>
+              <select id="transformVertex">
+                <option value="0">左下后</option>
+                <option value="1">右下后</option>
+                <option value="2">左上后</option>
+                <option value="3">右上后</option>
+                <option value="4">左下前</option>
+                <option value="5">右下前</option>
+                <option value="6">左上前</option>
+                <option value="7" selected>右上前</option>
+              </select>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>组合顺序</span><strong>T · R<sub>y</sub> · R<sub>x</sub></strong></div>
+              <div><span>Clip w</span><strong id="transformClipW">4.21</strong></div>
+              <div><span>视锥判定</span><strong id="transformVisibility">NDC 内</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>世界网格与追踪顶点</h2>
+                <span>黄色方点标记当前顶点</span>
+              </div>
+              <canvas class="webgl-lab-canvas transform-canvas" id="coordinateTransformCanvas" width="1280" height="720"></canvas>
+              <div class="coordinate-trace" aria-label="顶点坐标空间追踪">
+                <article data-space="model"><span>Model</span><strong id="coordinateModel">(+0.70, +0.70, +0.70)</strong><small>输入顶点</small></article>
+                <article data-space="world"><span>World</span><strong id="coordinateWorld">(+1.43, +0.50, +0.19)</strong><small>M · p</small></article>
+                <article data-space="view"><span>View</span><strong id="coordinateView">(+0.91, +0.12, −4.21)</strong><small>V · M · p</small></article>
+                <article class="is-active" data-space="ndc"><span>NDC</span><strong id="coordinateNdc">(+0.21, +0.05, +0.96)</strong><small>clip.xyz / clip.w</small></article>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+
+    <script type="module" src="../src/pages/chapter-4.js?v=20260803-2"></script>
   </body>
 </html>

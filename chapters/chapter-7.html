@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="比较阴影贴图、过滤和软阴影近似的质量与代价" />
+    <meta name="description" content="使用 WebGL2 深度纹理比较阴影偏移和 PCF 过滤。" />
     <title>Chapter 7 阴影 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260802-2" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-2" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -21,25 +21,88 @@
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">阴影贴图实验室</h2>
-          <p>比较阴影贴图、过滤和软阴影近似的质量与代价。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
+      <nav class="chapter-nav" data-chapter="7" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="shadow-mapping" aria-label="阴影贴图与偏移实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 7</p>
+          <h2>阴影贴图、深度偏移与 PCF</h2>
         </div>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>Shadow Map</li>
-            <li>偏移</li>
-            <li>PCF</li>
-            <li>PCSS</li>
-        </ul>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="阴影贴图控制">
+            <div class="control-group">
+              <label for="shadowMode">观察内容</label>
+              <select id="shadowMode">
+                <option value="shaded" selected>最终着色</option>
+                <option value="factor">阴影因子</option>
+                <option value="depth">光源深度</option>
+              </select>
+            </div>
 
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+            <div class="control-group">
+              <label for="shadowResolution">贴图分辨率</label>
+              <select id="shadowResolution">
+                <option value="128">128²</option>
+                <option value="256">256²</option>
+                <option value="512" selected>512²</option>
+                <option value="1024">1024²</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="shadowBias">常量偏移</label>
+              <input id="shadowBias" type="range" min="0" max="100" value="18" step="1" />
+              <output id="shadowBiasValue" for="shadowBias">0.0022</output>
+            </div>
+
+            <div class="control-group">
+              <label for="shadowSlope">坡度偏移</label>
+              <input id="shadowSlope" type="range" min="0" max="100" value="20" step="1" />
+              <output id="shadowSlopeValue" for="shadowSlope">0.0060</output>
+            </div>
+
+            <div class="control-group">
+              <label for="shadowKernel">PCF 核</label>
+              <select id="shadowKernel">
+                <option value="0">1 × 1</option>
+                <option value="1" selected>3 × 3</option>
+                <option value="2">5 × 5</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="shadowLight">光源方位</label>
+              <input id="shadowLight" type="range" min="-180" max="180" value="42" step="1" />
+              <output id="shadowLightValue" for="shadowLight">42°</output>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>深度纹素</span><strong id="shadowTexels">262,144</strong></div>
+              <div><span>比较式</span><strong id="shadowCompare">z − bias ≤ depth</strong></div>
+              <div><span>每片元采样</span><strong id="shadowSamples">9 次</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>光源深度到相机着色</h2>
+                <span>调低偏移可观察 acne，增大 PCF 可软化锯齿</span>
+              </div>
+              <canvas class="webgl-lab-canvas shadow-map-canvas" id="shadowMappingCanvas" width="1280" height="720"></canvas>
+              <div class="concept-strip shadow-pipeline" aria-label="阴影贴图计算步骤">
+                <span><strong>1</strong>从光源写深度</span>
+                <span><strong>2</strong>投影当前片元</span>
+                <span><strong>3</strong>偏移后比较</span>
+                <span><strong>4</strong>PCF 平均</span>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+
+    <script type="module" src="../src/pages/chapter-7.js?v=20260803-2"></script>
   </body>
 </html>

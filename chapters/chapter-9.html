@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="拆解菲涅尔、微表面分布和几何遮蔽对材质的影响" />
+    <meta name="description" content="使用 WebGL2 材质阵列拆解 GGX、Smith 与 Schlick Fresnel。" />
     <title>Chapter 9 基于物理的着色 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260802-2" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-2" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -21,25 +21,90 @@
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">微表面 BRDF 材质球阵列</h2>
-          <p>拆解菲涅尔、微表面分布和几何遮蔽对材质的影响。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
+      <nav class="chapter-nav" data-chapter="9" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="microfacet-brdf" aria-label="微表面 BRDF 材质阵列实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 9</p>
+          <h2>微表面 BRDF 材质阵列</h2>
         </div>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>BRDF</li>
-            <li>Fresnel</li>
-            <li>微表面</li>
-            <li>分层材质</li>
-        </ul>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="微表面 BRDF 控制">
+            <div class="control-group">
+              <label for="brdfTerm">观察项</label>
+              <select id="brdfTerm">
+                <option value="full" selected>完整 BRDF</option>
+                <option value="distribution">D · GGX 分布</option>
+                <option value="fresnel">F · Fresnel</option>
+                <option value="geometry">G · 几何遮蔽</option>
+              </select>
+            </div>
 
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+            <div class="control-group">
+              <label for="brdfBaseColor">基础颜色</label>
+              <select id="brdfBaseColor">
+                <option value="teal" selected>青绿色</option>
+                <option value="gold">金色</option>
+                <option value="copper">铜色</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="brdfRoughness">粗糙度偏移</label>
+              <input id="brdfRoughness" type="range" min="-30" max="30" value="0" step="2" />
+              <output id="brdfRoughnessValue" for="brdfRoughness">+0.00</output>
+            </div>
+
+            <div class="control-group">
+              <label for="brdfMetallic">金属度偏移</label>
+              <input id="brdfMetallic" type="range" min="-50" max="50" value="0" step="5" />
+              <output id="brdfMetallicValue" for="brdfMetallic">+0.00</output>
+            </div>
+
+            <div class="control-group">
+              <label for="brdfLight">光源方位</label>
+              <input id="brdfLight" type="range" min="-180" max="180" value="38" step="1" />
+              <output id="brdfLightValue" for="brdfLight">38°</output>
+            </div>
+
+            <div class="control-group">
+              <label for="brdfIntensity">光照强度</label>
+              <input id="brdfIntensity" type="range" min="40" max="220" value="120" step="5" />
+              <output id="brdfIntensityValue" for="brdfIntensity">1.20</output>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>探针材质</span><strong id="brdfMaterial">r 0.50 · m 0.50</strong></div>
+              <div><span>α²</span><strong id="brdfAlpha">0.0625</strong></div>
+              <div><span>正视 F₀</span><strong id="brdfF0">mix(0.04, base, m)</strong></div>
+              <div><span>漫反射权重</span><strong id="brdfDiffuse">50%</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>粗糙度 × 金属度参数空间</h2>
+                <span>点击任意材质球移动黄色探针</span>
+              </div>
+              <canvas class="webgl-lab-canvas brdf-grid-canvas" id="microfacetBrdfCanvas" width="1280" height="720"></canvas>
+              <div class="brdf-grid-guide" aria-label="材质阵列坐标说明">
+                <span><strong>← 光滑</strong><i></i><strong>粗糙 →</strong></span>
+                <span><strong>下：电介质</strong><i></i><strong>上：金属</strong></span>
+              </div>
+              <div class="concept-strip brdf-formula" aria-label="Cook-Torrance 微表面项">
+                <span><strong>D</strong>法线分布</span>
+                <span><strong>F</strong>Fresnel</span>
+                <span><strong>G</strong>几何遮蔽</span>
+                <span><strong>fᵣ</strong>D·F·G / 4</span>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+
+    <script type="module" src="../src/pages/chapter-9.js?v=20260803-2"></script>
   </body>
 </html>

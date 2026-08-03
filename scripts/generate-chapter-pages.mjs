@@ -6,7 +6,7 @@ import { chapterRegistry } from "../src/app/lab-registry.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const checkOnly = process.argv.includes("--check");
-const cacheVersion = "20260802-2";
+const cacheVersion = "20260803-2";
 
 function escapeHtml(value) {
   return String(value)

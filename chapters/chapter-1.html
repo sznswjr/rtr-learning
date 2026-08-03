@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="观察工作量、分辨率与帧预算如何共同决定实时反馈" />
+    <meta name="description" content="使用 WebGL2 测量分辨率、片元负载与实时帧预算。" />
     <title>Chapter 1 简介 | RTR4 实时图形实验</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260802-2" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-2" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -21,25 +21,74 @@
         </div>
       </header>
 
-      <section class="chapter-plan" aria-labelledby="planned-lab-title">
-        <div>
-          <p class="eyebrow">第一阶段 · 章节框架</p>
-          <h2 id="planned-lab-title">实时渲染帧循环</h2>
-          <p>观察工作量、分辨率与帧预算如何共同决定实时反馈。本页路由和实验元数据已经建立，交互实现将在后续阶段接入。</p>
+      <nav class="chapter-nav" data-chapter="1" aria-label="章节实验导航"></nav>
+
+      <section class="experiment-section" id="frame-budget" aria-label="分辨率负载与帧预算实验">
+        <div class="section-heading">
+          <p class="eyebrow">Chapter 1</p>
+          <h2>分辨率、负载与帧预算</h2>
         </div>
 
-        <ul class="chapter-plan-topics" aria-label="计划覆盖的关键主题">
-            <li>帧预算</li>
-            <li>CPU / GPU 时间</li>
-            <li>分辨率</li>
-            <li>掉帧率</li>
-        </ul>
+        <div class="lab-layout">
+          <aside class="controls" aria-label="帧预算控制">
+            <div class="control-group">
+              <label for="frameTarget">目标刷新率</label>
+              <select id="frameTarget">
+                <option value="30">30 FPS</option>
+                <option value="60" selected>60 FPS</option>
+                <option value="120">120 FPS</option>
+              </select>
+            </div>
 
-        <div class="chapter-plan-status" role="status">
-          <span>当前状态</span>
-          <strong>实验规划中</strong>
+            <div class="control-group">
+              <label for="frameResolution">渲染分辨率</label>
+              <input id="frameResolution" type="range" min="35" max="100" value="75" step="5" />
+              <output id="frameResolutionValue" for="frameResolution">75%</output>
+            </div>
+
+            <div class="control-group">
+              <label for="frameWorkload">片元工作量</label>
+              <input id="frameWorkload" type="range" min="8" max="80" value="28" step="4" />
+              <output id="frameWorkloadValue" for="frameWorkload">28 次</output>
+            </div>
+
+            <div class="control-group">
+              <label for="frameMotion">帧循环</label>
+              <select id="frameMotion">
+                <option value="run" selected>持续运行</option>
+                <option value="pause">暂停画面</option>
+              </select>
+            </div>
+
+            <div class="metric-panel">
+              <div><span>内部尺寸</span><strong id="frameRenderSize">960 × 540</strong></div>
+              <div><span>像素数量</span><strong id="framePixelCount">0.52 MP</strong></div>
+              <div><span>目标预算</span><strong id="frameBudgetValue">16.67 ms</strong></div>
+              <div><span>帧间隔</span><strong id="frameInterval">测量中</strong></div>
+              <div><span>GPU 绘制</span><strong id="frameGpuTime">查询中</strong></div>
+              <div><span>预算状态</span><strong id="frameStatus">采样中</strong></div>
+            </div>
+          </aside>
+
+          <section class="single-viewport-grid">
+            <article class="viewport-panel">
+              <div class="panel-heading">
+                <h2>程序化片元负载</h2>
+                <span>降低分辨率会减少实际执行的片元数</span>
+              </div>
+              <canvas class="webgl-lab-canvas frame-budget-canvas" id="frameBudgetCanvas" width="1280" height="720"></canvas>
+              <div class="frame-trace" id="frameTrace" aria-label="最近帧时间相对预算的历史图"></div>
+              <div class="frame-trace-legend">
+                <span><i></i>预算内</span>
+                <span><i class="is-over"></i>超出预算</span>
+                <strong>横线 = 目标帧预算</strong>
+              </div>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+
+    <script type="module" src="../src/pages/chapter-1.js?v=20260803-2"></script>
   </body>
 </html>

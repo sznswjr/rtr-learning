@@ -20,15 +20,40 @@ const pages = [
     selectors: [".topbar", ".home-panel", ".home-nav-card", ".home-nav-lab-directory", ".home-nav-lab"],
   },
   {
-    name: "chapter-1-plan",
+    name: "chapter-1",
     path: "/chapters/chapter-1.html",
-    selectors: [".topbar", ".chapter-plan", ".chapter-plan-topics", ".chapter-plan-status"],
+    selectors: [".chapter-nav", "#frame-budget", "#frameBudgetCanvas", "#frameTarget", ".frame-trace"],
+    canvasIds: ["frameBudgetCanvas"],
   },
   {
     name: "chapter-2",
     path: "/chapters/chapter-2.html",
     selectors: [".chapter-nav", "#rendering-pipeline", "#pipelineCanvas"],
     canvasIds: ["pipelineCanvas"],
+  },
+  {
+    name: "chapter-3",
+    path: "/chapters/chapter-3.html",
+    selectors: [
+      ".chapter-nav",
+      "#barycentric-rasterization",
+      "#barycentricCanvas",
+      "#rasterMode",
+      ".raster-legend",
+    ],
+    canvasIds: ["barycentricCanvas"],
+  },
+  {
+    name: "chapter-4",
+    path: "/chapters/chapter-4.html",
+    selectors: [
+      ".chapter-nav",
+      "#coordinate-transforms",
+      "#coordinateTransformCanvas",
+      "#transformStage",
+      ".coordinate-trace [data-space='ndc']",
+    ],
+    canvasIds: ["coordinateTransformCanvas"],
   },
   {
     name: "chapter-5",
@@ -49,6 +74,24 @@ const pages = [
       'a[href="./chapter-14.html#volume-textures"]',
     ],
     canvasIds: ["textureFilteringCanvas"],
+  },
+  {
+    name: "chapter-7",
+    path: "/chapters/chapter-7.html",
+    selectors: [".chapter-nav", "#shadow-mapping", "#shadowMappingCanvas", "#shadowBias", ".shadow-pipeline"],
+    canvasIds: ["shadowMappingCanvas"],
+  },
+  {
+    name: "chapter-8",
+    path: "/chapters/chapter-8.html",
+    selectors: [".chapter-nav", "#hdr-display", "#hdrDisplayCanvas", "#hdrExposure", ".hdr-stop-strip"],
+    canvasIds: ["hdrDisplayCanvas"],
+  },
+  {
+    name: "chapter-9",
+    path: "/chapters/chapter-9.html",
+    selectors: [".chapter-nav", "#microfacet-brdf", "#microfacetBrdfCanvas", "#brdfTerm", ".brdf-formula"],
+    canvasIds: ["microfacetBrdfCanvas"],
   },
   {
     name: "chapter-10",
@@ -101,15 +144,23 @@ async function checkRenderFoundations(browser) {
   try {
     await page.goto(pageUrl("/"), { waitUntil: "networkidle", timeout: 30000 });
     const result = await page.evaluate(async (urls) => {
-      const [cameraModule, framebufferModule, gpuQueryModule, postprocessModule] = await Promise.all([
+      const [cameraModule, framebufferModule, gpuQueryModule, meshModule, postprocessModule, transformsModule] = await Promise.all([
         import(urls.camera),
         import(urls.framebuffer),
         import(urls.gpuQuery),
+        import(urls.mesh),
         import(urls.postprocess),
+        import(urls.transforms),
       ]);
 
       const camera = cameraModule.createOrbitCamera({ aspect: 16 / 9, distance: 4, pitch: 0.3, yaw: 0.7 });
       const matrixValues = [...camera.viewProjection];
+      const orthographicValues = [...cameraModule.createOrthographicMatrix(-2, 2, -1, 1, 0.1, 10)];
+      const translatedPoint = transformsModule.transformPoint(
+        transformsModule.createTranslationMatrix(2, 3, 4),
+        [1, 1, 1, 1],
+      );
+      const cube = meshModule.createCubeGeometry(2);
 
       const canvas = document.createElement("canvas");
       canvas.width = 16;
@@ -121,6 +172,7 @@ async function checkRenderFoundations(browser) {
 
       const target = framebufferModule.createColorTarget(gl, { height: 8, label: "foundation check", width: 8 });
       target.resize(12, 10);
+      const depthTarget = framebufferModule.createDepthTarget(gl, { height: 7, label: "depth foundation check", width: 9 });
       const timer = gpuQueryModule.createGpuTimer(gl);
       const fragment = `#version 300 es
 precision highp float;
@@ -134,24 +186,42 @@ void main() { outColor = vec4(vUv, 0.25, 1.0); }`;
 
       const output = {
         cameraFinite: matrixValues.length === 16 && matrixValues.every(Number.isFinite),
+        cubeGeometry: [cube.positions.length, cube.normals.length, cube.indices.length],
+        depthTargetSize: [depthTarget.width, depthTarget.height],
         framebufferSize: [target.width, target.height],
         gpuTimerAvailableType: typeof timer.available,
+        orthographicFinite: orthographicValues.length === 16 && orthographicValues.every(Number.isFinite),
         pixel: [...pixel],
+        planeGeometry: (() => {
+          const plane = meshModule.createPlaneGeometry(2);
+          return [plane.positions.length, plane.normals.length, plane.indices.length];
+        })(),
+        scaledPoint: transformsModule.transformPoint(transformsModule.createScaleMatrix(2), [1, 2, 3, 1]),
+        translatedPoint,
         webgl2: true,
       };
       pass.dispose();
       timer.dispose();
+      depthTarget.dispose();
       target.dispose();
       return output;
     }, {
-      camera: pageUrl("/src/render/camera.js?v=20260802-2"),
-      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260802-2"),
-      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260802-2"),
-      postprocess: pageUrl("/src/render/postprocess.js?v=20260802-2"),
+      camera: pageUrl("/src/render/camera.js?v=20260803-2"),
+      framebuffer: pageUrl("/src/render/framebuffer.js?v=20260803-2"),
+      gpuQuery: pageUrl("/src/render/gpu-query.js?v=20260803-2"),
+      mesh: pageUrl("/src/render/mesh.js?v=20260803-2"),
+      postprocess: pageUrl("/src/render/postprocess.js?v=20260803-2"),
+      transforms: pageUrl("/src/render/transforms.js?v=20260803-2"),
     });
 
     assert(result.webgl2, "render foundations: WebGL2 is unavailable");
     assert(result.cameraFinite, "render foundations: camera matrix contains invalid values");
+    assert(result.orthographicFinite, "render foundations: orthographic matrix contains invalid values");
+    assert(result.translatedPoint.join(",") === "3,4,5,1", `render foundations: point transform failed ${result.translatedPoint}`);
+    assert(result.scaledPoint.join(",") === "2,4,6,1", `render foundations: point scale failed ${result.scaledPoint}`);
+    assert(result.cubeGeometry.join("x") === "72x72x36", `render foundations: cube geometry is invalid ${result.cubeGeometry}`);
+    assert(result.planeGeometry.join("x") === "12x12x6", `render foundations: plane geometry is invalid ${result.planeGeometry}`);
+    assert(result.depthTargetSize.join("x") === "9x7", `render foundations: depth target is invalid ${result.depthTargetSize}`);
     assert(result.framebufferSize.join("x") === "12x10", `render foundations: framebuffer resize failed ${result.framebufferSize}`);
     assert(result.gpuTimerAvailableType === "boolean", "render foundations: GPU timer availability is invalid");
     assert(result.pixel[3] > 200 && result.pixel[2] > 32, `render foundations: postprocess output is blank ${result.pixel}`);
@@ -361,10 +431,16 @@ async function checkKeyboardEntry(page, label) {
 
 async function checkInteractionLatency(page, label) {
   const interactions = [
+    { name: "frame-budget", selector: "#frameResolution", threshold: 260 },
+    { name: "raster", selector: "#rasterSkew", threshold: 180 },
+    { name: "transform", selector: "#transformRotation", threshold: 180 },
     { name: "shading", selector: "#surfaceHue", threshold: 160 },
     { name: "texture", selector: "#textureDetail", threshold: 250 },
     { name: "environment", selector: "#environmentRoughness", threshold: 180 },
     { name: "volume", selector: "#volumeSteps", threshold: 250 },
+    { name: "shadow", selector: "#shadowBias", threshold: 220 },
+    { name: "hdr", selector: "#hdrExposure", threshold: 220 },
+    { name: "brdf", selector: "#brdfRoughness", threshold: 220 },
   ];
 
   for (const interaction of interactions) {
