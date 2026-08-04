@@ -92,7 +92,9 @@ Last updated: 2026-08-03
 - Expensive shading and texture controls render a coalesced preview while dragging and restore full quality after interaction settles.
 - `src/main.js` is now a small module entrypoint that initializes labs.
 - The translation page is available at `translations/rtr4-cn.html` and includes Chinese reading content for Chapter 0-26, with a complete chapter index, topic summaries, source links, and lazily embedded related labs.
-- Chapter 2-5 include eight locally hosted figures verified against the official RTR4 figure gallery. They live in `assets/rtr4-figures/`, use lazy loading and official-gallery credits, and open at full size. Chapter 1 remains image-free because its two commercial game screenshots are not present in the official gallery whitelist.
+- Chapter 1-5 have complete Chinese reading routes at `translations/chapters/chapter-<n>.html`, linked from the guide with a quiet `全文` action. They are generated from the pinned knowledge-base Markdown by `scripts/generate-full-translations.mjs` and committed as static HTML.
+- The full Chapter 1-5 translations include 69 locally hosted figures verified against the official RTR4 figure gallery. They live in `assets/rtr4-figures/`, use lazy loading and official-gallery credits, and open at full size. Chapter 1 remains image-free because its two commercial game screenshots are not present in the official gallery whitelist.
+- Full translation formulas are rendered to static KaTeX HTML/MathML. The production CSS and fonts are committed under `vendor/katex/`; Marked and KaTeX are generation-only development dependencies.
 - Local knowledge base is tracked as a Git submodule at `knowledge/Real-Time-Rendering-4th-CN`, pinned to `9c2e724e688fc921ec0486d8fde4f516af2a5873` from `https://github.com/Morakito/Real-Time-Rendering-4th-CN.git`.
 
 ## Stack
@@ -101,7 +103,7 @@ Last updated: 2026-08-03
 - Plain HTML, CSS, and browser ES modules.
 - WebGL2 for rendering.
 - No Node runtime, framework, bundler, or package manager is required for production.
-- `package.json` currently only provides local verification scripts.
+- `package.json` provides local generation and verification scripts; production serves only committed static files.
 
 ## Important Paths
 
@@ -182,8 +184,13 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-26
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-26/*.js /var/www/www.jrqz776.com/src/labs/chapter-26/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
+sudo mkdir -p /var/www/www.jrqz776.com/translations/chapters
+sudo cp /home/ubuntu/rtr4-web-lab/translations/chapters/*.html /var/www/www.jrqz776.com/translations/chapters/
 sudo mkdir -p /var/www/www.jrqz776.com/assets/rtr4-figures
 sudo cp -R /home/ubuntu/rtr4-web-lab/assets/rtr4-figures/chapter-* /var/www/www.jrqz776.com/assets/rtr4-figures/
+sudo mkdir -p /var/www/www.jrqz776.com/vendor/katex/fonts
+sudo cp /home/ubuntu/rtr4-web-lab/vendor/katex/katex.min.css /var/www/www.jrqz776.com/vendor/katex/katex.min.css
+sudo cp /home/ubuntu/rtr4-web-lab/vendor/katex/fonts/* /var/www/www.jrqz776.com/vendor/katex/fonts/
 ```
 
 When changing JavaScript or CSS, update the query-string version in `index.html` and any static import URLs because Nginx caches static assets for 7 days.
@@ -193,6 +200,8 @@ This is a remote server. The user cannot open `127.0.0.1` from their machine. Lo
 Latest production deployment:
 
 - Date: 2026-08-03
+- Added complete static Chinese translations for Chapter 1-5 with generated in-page outlines, tables, server-rendered KaTeX formulas, previous/next navigation, and links back to each guide and experiment page.
+- Expanded the official-gallery image set to all 69 whitelisted figures used by Chapter 2-5; Chapter 1 remains image-free because its screenshots are absent from the official gallery.
 - Added eight whitelisted original-book figures to Chapters 2-5 of the Chinese reading page, with responsive lazy-loaded presentation, full-size links, concise Chinese captions, and official gallery credits; Chapter 1 remains image-free because its screenshots are absent from the official gallery.
 - Removed editorial progress labels (`已整理` / `待整理`), the redundant `完整导读` kicker, and per-chapter experiment CTA links from the Chinese reading page; embedded lab cards remain the single experiment entry point in each chapter.
 - Embedded every registered chapter experiment into the full Chinese reading page through collapsed, registry-driven cards; only one same-origin experiment frame is active at a time, and iframe height is synchronized with the chapter lab page.
@@ -212,11 +221,12 @@ Latest production deployment:
 - Chapter 8 demonstrates HDR intermediate storage, exposure, tone mapping, and display encoding.
 - Chapter 9 demonstrates the GGX, Smith, and Schlick terms of a microfacet BRDF across roughness and metallic values.
 - Added reusable orthographic projection, transform/scale matrices, point transformation, cube/plane geometry, depth targets, and float framebuffer support to `src/render/`.
-- Asset cache version: `20260803-11` for CSS and `20260803-10` for navigation modules, page entry modules, and WebGL lab imports.
+- Asset cache version: `20260803-13` for CSS and `20260803-10` for navigation modules, page entry modules, and WebGL lab imports.
 - Verification passed:
   - `npm run check:js`
   - `npm run check:color`
   - `npm run check:chapters`
+  - `npm run check:translations`
   - `npm run check:ui`
   - `git diff --check`
   - `sudo nginx -t`
@@ -244,6 +254,7 @@ Useful checks:
 
 ```bash
 npm run check:js
+npm run check:translations
 npm run check:ui
 sudo nginx -t
 curl -I https://www.jrqz776.com
@@ -255,7 +266,8 @@ Expected:
 - `https://www.jrqz776.com` returns `HTTP/2 200`.
 - `http://www.jrqz776.com` redirects to HTTPS.
 - The proxy gRPC path returns `HTTP/2 415` for plain curl, which means it still routes to the proxy service.
-- `npm run check:ui` uses Playwright Chromium against production, checks responsive screenshots, console/network errors, horizontal overflow, crushed headings, and key 2D canvas nonblank pixels. Screenshots are written to `.tmp/ui-checks/`.
+- `npm run check:translations` byte-compares the committed Chapter 1-5 HTML, official-gallery figures, and KaTeX assets with a fresh generation.
+- `npm run check:ui` uses Playwright Chromium against production, checks Chapter 1-5 full-translation routes and responsive layouts in addition to the guide and lab pages, and catches console/network errors, horizontal overflow, crushed headings, broken formulas or figures, and key canvas failures. Screenshots are written to `.tmp/ui-checks/`.
 
 ## Code Notes
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="《Real-Time Rendering 4th》Chapter 0-26 中文导读与配套实验入口。" />
     <title>RTR4 中文导读 | Chapter 0-26</title>
-    <link rel="stylesheet" href="../src/styles.css?v=20260803-12" />
+    <link rel="stylesheet" href="../src/styles.css?v=20260803-13" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -171,7 +171,10 @@
 
           <section id="chapter-1">
             <p class="eyebrow">Chapter 1</p>
-            <h2>Introduction 简介</h2>
+            <div class="translation-heading-row">
+              <h2>Introduction 简介</h2>
+              <a class="translation-full-link" href="./chapters/chapter-1.html">全文</a>
+            </div>
             <p>
               实时渲染关注的是快速生成图像，并让用户的观察、输入和系统下一帧的输出形成连续反馈。
               当这个循环足够快时，观看者不会把画面感知为一张张离散图片，而会进入一个可交互的动态过程。
@@ -252,7 +255,10 @@
 
           <section id="chapter-2">
             <p class="eyebrow">Chapter 2</p>
-            <h2>The Graphics Rendering Pipeline 图形渲染管线</h2>
+            <div class="translation-heading-row">
+              <h2>The Graphics Rendering Pipeline 图形渲染管线</h2>
+              <a class="translation-full-link" href="./chapters/chapter-2.html">全文</a>
+            </div>
             <p>
               图形渲染管线是实时渲染的核心工具。它根据虚拟相机、三维物体、光源、材质、纹理和着色方程等信息，
               把场景转换为一张二维图像。最终图像中的位置和形状主要由几何结构、环境和相机决定，
@@ -370,7 +376,10 @@
 
           <section id="chapter-3">
             <p class="eyebrow">Chapter 3</p>
-            <h2>The Graphics Processing Unit 图形处理单元</h2>
+            <div class="translation-heading-row">
+              <h2>The Graphics Processing Unit 图形处理单元</h2>
+              <a class="translation-full-link" href="./chapters/chapter-3.html">全文</a>
+            </div>
             <p>
               本章从数据并行的角度解释 GPU：大量着色器调用以成组线程执行，固定功能单元与可编程阶段共同组成现代图形管线。
               阅读重点是理解数据怎样依次经过顶点、曲面细分、几何、像素与合并阶段，以及计算着色器如何把同一套并行硬件用于通用任务。
@@ -400,7 +409,10 @@
 
           <section id="chapter-4">
             <p class="eyebrow">Chapter 4</p>
-            <h2>Transform 变换</h2>
+            <div class="translation-heading-row">
+              <h2>Transform 变换</h2>
+              <a class="translation-full-link" href="./chapters/chapter-4.html">全文</a>
+            </div>
             <p>
               变换把模型、相机和投影连接在统一的数学框架中。本章从平移、旋转、缩放和矩阵组合出发，继续讨论矩阵分解、四元数、
               蒙皮与变形、几何缓存回放，以及正交和透视投影。关键实践是明确坐标空间、组合顺序和法线变换，避免看似细小却会贯穿整条管线的错误。
@@ -430,7 +442,10 @@
 
           <section id="chapter-5">
             <p class="eyebrow">Chapter 5</p>
-            <h2>Shading Basics 着色基础</h2>
+            <div class="translation-heading-row">
+              <h2>Shading Basics 着色基础</h2>
+              <a class="translation-full-link" href="./chapters/chapter-5.html">全文</a>
+            </div>
             <p>
               本章建立后续外观计算的共同语言：着色模型描述表面对光的响应，光源提供方向、颜色与衰减，实现时还要选择逐物体、逐顶点或逐像素的计算频率。
               采样与抗锯齿、透明度和 Alpha 合成、线性颜色与显示编码则决定最终像素怎样稳定而正确地出现在屏幕上。

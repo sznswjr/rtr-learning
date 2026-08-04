@@ -96,7 +96,8 @@
 - 中文 RTR4 参考内容作为 Git submodule 放在 `knowledge/Real-Time-Rendering-4th-CN`
 - 章节 Markdown 位于 `knowledge/Real-Time-Rendering-4th-CN/sourceFile`
 - `translations/rtr4-cn.html` 提供 Chapter 0-26 的站内导读、关键主题索引，并在每章末尾内嵌对应交互实验
-- Chapter 2-5 已加入 8 张经 RTR4 官方图集白名单核对的原书插图，资产位于 `assets/rtr4-figures/`；Chapter 1 的商业游戏截图不在官方图集中，因此未转载
+- Chapter 1-5 另有完整中文译文页 `translations/chapters/chapter-<n>.html`；导读页各章标题旁的“全文”链接进入对应译文
+- 完整译文共收录 69 张经 RTR4 官方图集白名单核对的原书插图，资产位于 `assets/rtr4-figures/`；Chapter 1 的商业游戏截图不在官方图集中，因此未转载
 - 检出后如果目录为空，运行：
 
 ```bash
@@ -109,6 +110,7 @@ git submodule update --init --recursive
 - 首页只保留章节索引，不直接承载全部实验。
 - Chapter 1-26 均有独立静态路由 `chapters/chapter-<n>.html`，并已全部接入章节实验。
 - 规划页由 `scripts/generate-chapter-pages.mjs` 根据 `chapterRegistry` 生成并提交到仓库，生产环境仍不需要构建步骤。
+- Chapter 1-5 的完整译文页由 `scripts/generate-full-translations.mjs` 从知识库 Markdown 生成并提交；脚本同时渲染公式、目录、表格，并复制官方图集白名单内的图片和 KaTeX 静态资源。
 - 首页实验导航由 `src/app/lab-registry.js` 和 `src/app/home-nav.js` 生成，章节卡片会显示实验数量、渲染后端和实验直达链接。
 - 章节页内目录由 `src/app/chapter-nav.js` 从同一注册表生成。
 - 中文导读的章节实验卡片由 `src/app/reading-embeds.js` 从同一注册表生成；卡片仅在展开时加载一个实验 iframe，切换章节或折叠时会卸载旧 iframe，避免同时占用大量 WebGL 上下文。
@@ -130,7 +132,7 @@ git submodule update --init --recursive
 - `src/main.js` 只负责导入模块并按顺序初始化实验。
 - 共享 Canvas、颜色、数学、着色和 WebGL 工具位于 `src/render/`。
 - 相机、矩阵变换、立方体与平面网格、深度/浮点 Framebuffer、GPU Timer Query 与后处理基础模块也位于 `src/render/`，供后续章节实验复用。
-- `package.json` 只提供本地检查脚本；生产不依赖 Node、npm 或前端包管理器。
+- `package.json` 提供本地生成和检查脚本；Marked 与 KaTeX 仅在生成阶段使用，生产不依赖 Node、npm 或前端包管理器。
 - 纹理与着色滑杆使用逐帧合并和预览质量，松手后恢复全质量，避免主线程连续重绘。
 - 修改 JavaScript 模块时，除了更新 `index.html` 里的入口 query-string，也要同步更新静态 import URL 上的版本号，避免 Nginx 7 天缓存命中旧模块。
 
@@ -209,8 +211,13 @@ sudo mkdir -p /var/www/www.jrqz776.com/src/labs/chapter-26
 sudo cp /home/ubuntu/rtr4-web-lab/src/labs/chapter-26/*.js /var/www/www.jrqz776.com/src/labs/chapter-26/
 sudo mkdir -p /var/www/www.jrqz776.com/translations
 sudo cp /home/ubuntu/rtr4-web-lab/translations/rtr4-cn.html /var/www/www.jrqz776.com/translations/rtr4-cn.html
+sudo mkdir -p /var/www/www.jrqz776.com/translations/chapters
+sudo cp /home/ubuntu/rtr4-web-lab/translations/chapters/*.html /var/www/www.jrqz776.com/translations/chapters/
 sudo mkdir -p /var/www/www.jrqz776.com/assets/rtr4-figures
 sudo cp -R /home/ubuntu/rtr4-web-lab/assets/rtr4-figures/chapter-* /var/www/www.jrqz776.com/assets/rtr4-figures/
+sudo mkdir -p /var/www/www.jrqz776.com/vendor/katex/fonts
+sudo cp /home/ubuntu/rtr4-web-lab/vendor/katex/katex.min.css /var/www/www.jrqz776.com/vendor/katex/katex.min.css
+sudo cp /home/ubuntu/rtr4-web-lab/vendor/katex/fonts/* /var/www/www.jrqz776.com/vendor/katex/fonts/
 ```
 
 ## 验证
@@ -219,13 +226,14 @@ sudo cp -R /home/ubuntu/rtr4-web-lab/assets/rtr4-figures/chapter-* /var/www/www.
 npm run check:js
 npm run check:color
 npm run check:chapters
+npm run check:translations
 npm run check:ui
 git diff --check
 sudo nginx -t
 curl -I https://www.jrqz776.com
 ```
 
-`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 确认注册表中不再存在规划页。`npm run check:ui` 会先检查 Chapter 1-26 路由，再使用 Playwright 检查首页、26 个章节实验页和中文导读的桌面、笔记本、平板、手机视口；还会验证阅读页默认不加载实验、全站实验注册完整、同一时间只保留一个 iframe，并对 Chapter 3、6、10、14、26 做嵌入渲染抽查。检查会捕获 console/network 错误、横向溢出、被压成窄列的标题、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
+`npm run check:color` 检查 HSL 的标准色相换算。`npm run check:chapters` 确认注册表中不再存在规划页。`npm run check:translations` 确认 Chapter 1-5 译文、图片和 KaTeX 文件与生成结果完全一致。`npm run check:ui` 会先检查 Chapter 1-26 实验路由和 Chapter 1-5 全文路由，再使用 Playwright 检查首页、26 个章节实验页、中文导读和完整译文的桌面、笔记本、平板、手机视口；还会验证阅读页默认不加载实验、全站实验注册完整、同一时间只保留一个 iframe，并对 Chapter 3、6、10、14、26 做嵌入渲染抽查。检查会捕获 console/network 错误、横向溢出、被压成窄列的标题、公式错误、图片元数据、关键 canvas 空白、Canvas 可访问名称、sticky 导航、窄屏画布布局与关键滑杆响应时间，并把截图输出到 `.tmp/ui-checks/`。
 
 如需检查尚未部署的工作区，可先启动本地静态服务器，再传入地址：
 

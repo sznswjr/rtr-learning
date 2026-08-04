@@ -4,6 +4,7 @@ import { chromium } from "playwright";
 import { labRegistry } from "../src/app/lab-registry.js";
 
 const baseUrl = (process.argv[2] ?? process.env.UI_CHECK_BASE_URL ?? "https://www.jrqz776.com").replace(/\/$/, "");
+const galleryUrl = "https://www.realtimerendering.com/figures.html";
 const outputDir = path.resolve(".tmp/ui-checks");
 const interactionTimings = [];
 
@@ -243,6 +244,130 @@ async function checkChapterRoutes() {
   }
 }
 
+async function checkFullTranslationRoutes() {
+  const expectedFigures = [0, 9, 11, 17, 32];
+  for (let chapter = 1; chapter <= 5; chapter += 1) {
+    const response = await fetch(pageUrl(`/translations/chapters/chapter-${chapter}.html`));
+    assert(response.ok, `full translation chapter-${chapter}: route returned ${response.status}`);
+    const html = await response.text();
+    const figureCount = (html.match(/class="full-reading-figure"/g) ?? []).length;
+    assert(html.includes(`data-source-chapter="${chapter}"`), `full translation chapter-${chapter}: source marker is missing`);
+    assert(html.includes('class="full-reading-article"'), `full translation chapter-${chapter}: article is missing`);
+    assert(html.includes('class="full-reading-toc"'), `full translation chapter-${chapter}: table of contents is missing`);
+    assert(html.includes("katex.min.css?v=0.18.1"), `full translation chapter-${chapter}: KaTeX stylesheet is missing`);
+    assert(html.includes("styles.css?v=20260803-13"), `full translation chapter-${chapter}: stylesheet version is stale`);
+    assert(html.includes("class=\"katex"), `full translation chapter-${chapter}: rendered math is missing`);
+    assert(figureCount === expectedFigures[chapter - 1], `full translation chapter-${chapter}: expected ${expectedFigures[chapter - 1]} figures, got ${figureCount}`);
+    assert(!/<img[^>]+src="https?:/i.test(html), `full translation chapter-${chapter}: remote image source found`);
+    assert(html.length > 30000, `full translation chapter-${chapter}: generated article appears truncated (${html.length} characters)`);
+  }
+}
+
+async function checkFullTranslations(browser) {
+  const expectedFigures = [0, 9, 11, 17, 32];
+  const screenshots = [];
+
+  for (let chapter = 1; chapter <= 5; chapter += 1) {
+    for (const viewport of viewports) {
+      const label = `full translation chapter-${chapter}/${viewport.name}`;
+      const page = await browser.newPage({ viewport });
+      const consoleErrors = [];
+      const pageErrors = [];
+      const networkErrors = [];
+      page.on("console", (message) => {
+        if (message.type() === "error") {
+          consoleErrors.push(message.text());
+        }
+      });
+      page.on("pageerror", (error) => pageErrors.push(error.message));
+      page.on("requestfailed", (request) => networkErrors.push(`${request.failure()?.errorText ?? "failed"} ${request.url()}`));
+      page.on("response", (response) => {
+        if (response.status() >= 400) {
+          networkErrors.push(`${response.status()} ${response.url()}`);
+        }
+      });
+
+      try {
+        await page.goto(pageUrl(`/translations/chapters/chapter-${chapter}.html`), { waitUntil: "networkidle", timeout: 30000 });
+        await checkRequiredSelectors(page, [
+          ".full-reading-shell",
+          ".full-reading-hero",
+          ".full-reading-toc",
+          ".full-reading-article",
+          ".full-reading-pager",
+          ".katex",
+        ], label);
+        await checkHorizontalOverflow(page, label);
+        await checkCrushedText(page, label);
+        await checkAccessibility(page, label);
+
+        const structure = await page.evaluate(() => {
+          const headingLinks = [...document.querySelectorAll(".full-reading-toc a")];
+          const article = document.querySelector(".full-reading-article");
+          return {
+            articleTextLength: article?.textContent?.trim().length ?? 0,
+            brokenHeadingLinks: headingLinks
+              .map((link) => link.getAttribute("href"))
+              .filter((href) => !href || !document.querySelector(href)),
+            headingCount: headingLinks.length,
+            katexErrors: document.querySelectorAll(".katex-error").length,
+            tocPosition: getComputedStyle(document.querySelector(".full-reading-toc")).position,
+          };
+        });
+        assert(structure.articleTextLength > 5000, `${label}: article text appears truncated (${structure.articleTextLength})`);
+        assert(structure.headingCount > 4, `${label}: table of contents is too short (${structure.headingCount})`);
+        assert(structure.brokenHeadingLinks.length === 0, `${label}: broken heading links ${JSON.stringify(structure.brokenHeadingLinks)}`);
+        assert(structure.katexErrors === 0, `${label}: found ${structure.katexErrors} KaTeX errors`);
+        assert(structure.tocPosition === "sticky", `${label}: full-reading table of contents is not sticky`);
+
+        if (viewport.name === "desktop") {
+          const figures = page.locator(".full-reading-figure");
+          const figureCount = await figures.count();
+          assert(figureCount === expectedFigures[chapter - 1], `${label}: expected ${expectedFigures[chapter - 1]} figures, got ${figureCount}`);
+          assert(
+            await figures.locator(`a[href="${galleryUrl}"]`).count() === figureCount,
+            `${label}: every figure must include an official-gallery credit`,
+          );
+          for (let index = 0; index < figureCount; index += 1) {
+            const image = figures.nth(index).locator("img");
+            const metadata = await image.evaluate((element) => ({
+              alt: element.alt,
+              decoding: element.decoding,
+              height: element.getAttribute("height"),
+              loading: element.loading,
+              src: element.getAttribute("src"),
+              width: element.getAttribute("width"),
+            }));
+            assert(
+              metadata.alt && metadata.decoding === "async" && metadata.height && metadata.loading === "lazy"
+                && metadata.src?.startsWith("../../assets/rtr4-figures/") && metadata.width,
+              `${label}: invalid figure metadata ${JSON.stringify(metadata)}`,
+            );
+            await image.scrollIntoViewIfNeeded();
+            await image.evaluate((element) => element.decode());
+            const decoded = await image.evaluate((element) => element.naturalWidth > 0 && element.naturalHeight > 0);
+            assert(decoded, `${label}: figure ${index + 1} did not decode`);
+          }
+        }
+
+        if ((chapter === 1 || chapter === 5) && (viewport.name === "desktop" || viewport.name === "mobile")) {
+          const screenshotPath = path.join(outputDir, `full-reading-chapter-${chapter}-${viewport.name}.png`);
+          await page.screenshot({ path: screenshotPath });
+          screenshots.push(screenshotPath);
+        }
+
+        assert(consoleErrors.length === 0, `${label}: console errors\n${consoleErrors.join("\n")}`);
+        assert(pageErrors.length === 0, `${label}: page errors\n${pageErrors.join("\n")}`);
+        assert(networkErrors.length === 0, `${label}: network errors\n${networkErrors.join("\n")}`);
+      } finally {
+        await page.close();
+      }
+    }
+  }
+
+  return screenshots;
+}
+
 async function checkRenderFoundations(browser) {
   const page = await browser.newPage({ viewport: viewports[0] });
   try {
@@ -370,6 +495,7 @@ async function checkReadingEmbeds(browser) {
     const initiallyLoadedFrames = await page.locator(".translation-lab-frame[src]").count();
     const figureImages = page.locator(".translation-figure img");
     const figureCount = await figureImages.count();
+    const fullTranslationLinks = page.locator(".translation-full-link");
     const chapterOneFigureCount = await page.locator("#chapter-1 .translation-figure").count();
     const figureSources = await figureImages.evaluateAll((images) => images.map((image) => ({
       alt: image.alt,
@@ -392,6 +518,13 @@ async function checkReadingEmbeds(browser) {
     assert(representedLabs === labRegistry.length, `reading embeds: expected ${labRegistry.length} labs, got ${representedLabs}`);
     assert(initiallyLoadedFrames === 0, `reading embeds: ${initiallyLoadedFrames} frames loaded before expansion`);
     assert(figureCount === 8, `reading figures: expected 8 whitelisted figures, got ${figureCount}`);
+    assert(await fullTranslationLinks.count() === 5, "reading page: expected Chapter 1-5 full translation links");
+    assert(
+      await fullTranslationLinks.evaluateAll((links) => links.every((link, index) => (
+        link.textContent?.trim() === "全文" && link.getAttribute("href") === `./chapters/chapter-${index + 1}.html`
+      ))),
+      "reading page: full translation links are invalid",
+    );
     assert(chapterOneFigureCount === 0, `reading figures: chapter 1 should not include non-gallery screenshots`);
     assert(
       figureSources.every(({ alt, decoding, height, loading, src, width }) => (
@@ -775,12 +908,14 @@ async function checkPage(browser, pageConfig, viewport) {
 
 await mkdir(outputDir, { recursive: true });
 await checkChapterRoutes();
+await checkFullTranslationRoutes();
 
 const browser = await chromium.launch();
 const screenshots = [];
 
 try {
   await checkRenderFoundations(browser);
+  screenshots.push(...await checkFullTranslations(browser));
   for (const pageConfig of pages) {
     for (const viewport of viewports) {
       screenshots.push(await checkPage(browser, pageConfig, viewport));
@@ -792,6 +927,7 @@ try {
 }
 
 console.log("Chapter route check passed for Chapter 1-26.");
+console.log("Full translation route and content checks passed for Chapter 1-5.");
 console.log("Shared WebGL render foundation check passed.");
 console.log("Lazy reading embeds passed registry, unload, sizing, and Chapter 3/6/10/14/26 pilot checks.");
 console.log(`UI check passed for ${pages.length} pages x ${viewports.length} viewports.`);
